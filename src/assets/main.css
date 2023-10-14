@@ -1,35 +1,53 @@
-@import './base.css';
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
+:root {
+  --vintage-main-color: #009499;
+  --vintage-hover-color: #00676a;
 }
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+li {
+  list-style: none;
 }
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+.font-main {
+  font-family: "Inter", sans-serif;
+}
+.font-500 {
+  font-weight: 500;
+}
+.font-400 {
+  font-weight: 400;
+}
+.btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--vintage-main-color);
+  --bs-btn-border-color: var(--vintage-main-color);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--vintage-hover-color);
+  --bs-btn-hover-border-color: var(--vintage-main-color);
+  --bs-btn-focus-shadow-rgb: 49, 132, 253;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--vintage-main-color);
+  --bs-btn-active-border-color: #0a53be;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: var(--vintage-main-color);
+  --bs-btn-disabled-border-color: var(--vintage-main-color);
+}
+.btn-outline-primary {
+  --bs-btn-color: var(--vintage-main-color);
+  --bs-btn-border-color: var(--vintage-main-color);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--vintage-hover-color);
+  --bs-btn-hover-border-color: var(--vintage-hover-color);
+  --bs-btn-focus-shadow-rgb: 13, 110, 253;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--vintage-main-color);
+  --bs-btn-active-border-color: var(--vintage-main-color);
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: var(--vintage-main-color);
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: var(--vintage-main-color);
+  --bs-gradient: none;
 }
