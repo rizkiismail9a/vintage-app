@@ -2,15 +2,15 @@
   <div class="navbar font-main fixed-top bg-white">
     <div class="container navbar__container d-flex flex-md-row flex-column">
       <!-- logo -->
-      <img src="../../assets/images/logo.png" alt="vintage logo" class="navbar__logo" />
+      <router-link to="/"><img src="../../assets/images/logo.png" alt="vintage logo" class="navbar__logo" /></router-link>
       <!-- hamburger button -->
       <i class="fa-solid fa-bars fs-1 d-block d-md-none hamburger_btn mb-4" @click="showNavbar = !showNavbar"></i>
 
       <div class="nav-collapse d-flex flex-md-row flex-column align-items-center flex-grow-1" :class="{ toggle: showNavbar }">
         <!-- search form -->
-        <form class="d-flex navbar__form border flex-grow-1 align-items-center" role="search">
+        <form @submit.prevent="$emit('search', keyword)" class="d-flex navbar__form border flex-grow-1 align-items-center" role="search">
           <i class="fa-solid fa-magnifying-glass fs-5 px-2"></i>
-          <input class="me-2 border-0 w-100 font-400" type="text" placeholder="Search for items" />
+          <input class="me-2 border-0 w-100 font-400" type="text" placeholder="Search for items" @click="goToCollection" autofocus v-model="keyword" />
         </form>
         <!-- auth menu -->
         <div class="d-flex navbar__auth justify-content-between align-items-center">
@@ -25,7 +25,20 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 const showNavbar = ref(false);
+const router = useRouter();
+const emits = defineEmits(["goToCollection"]);
+const props = defineProps({
+  isAtCollection: { type: Boolean, default: false },
+});
+const keyword = ref("");
+
+function goToCollection() {
+  if (!props.isAtCollection) {
+    router.push("/collection");
+  }
+}
 </script>
 
 <style scoped>

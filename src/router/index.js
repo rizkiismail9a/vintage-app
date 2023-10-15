@@ -6,10 +6,18 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "home",
+      name: "Home",
       component: HomeView,
     },
+    {
+      path: "/collection",
+      name: "Collection",
+      component: () => import("../views/productCollections.vue"),
+    },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 };
+  },
 });
 
 export default router;

@@ -1,4 +1,5 @@
 <template>
+  <NavbarComponent />
   <!-- banner -->
   <bannerView></bannerView>
   <!-- main session -->
@@ -21,6 +22,7 @@
 
 <script setup>
 import { ref } from "vue";
+import NavbarComponent from "../components/Navbar/NavbarComponent.vue";
 import bannerView from "../components/header/bannerView.vue";
 import productsList from "../components/products/productsList.vue";
 const brands = ref(["Vans", "Boho", "Mango", "Reebok", "Converse", "Sandro", "Nike", "Adidas", "Dior", "Puma", "Zara", "Bershka", "American Eagle"]);
