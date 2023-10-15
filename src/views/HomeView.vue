@@ -18,11 +18,13 @@
     <!-- New products -->
     <productsList product-title="New Products" class="new-products"></productsList>
   </main>
+  <footerComponent></footerComponent>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import NavbarComponent from "../components/Navbar/NavbarComponent.vue";
+import footerComponent from "../components/Footer/footerComponent.vue";
 import bannerView from "../components/header/bannerView.vue";
 import productsList from "../components/products/productsList.vue";
 const brands = ref(["Vans", "Boho", "Mango", "Reebok", "Converse", "Sandro", "Nike", "Adidas", "Dior", "Puma", "Zara", "Bershka", "American Eagle"]);

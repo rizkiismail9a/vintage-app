@@ -14,8 +14,8 @@
         </form>
         <!-- auth menu -->
         <div class="d-flex navbar__auth justify-content-between align-items-center">
-          <button class="btn btn-outline-primary btn-login">Login</button>
-          <button class="btn btn-primary btn-signup">Signup</button>
+          <router-link to="/login" class="btn btn-outline-primary btn-login">Login</router-link>
+          <router-link to="/signup" class="btn btn-primary btn-signup">Signup</router-link>
         </div>
         <div style="color: #404040" class="language border-start">EN<i class="fa-solid fa-chevron-down"></i></div>
       </div>

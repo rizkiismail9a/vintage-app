@@ -18,6 +18,7 @@
       <productCard></productCard>
     </div>
   </div>
+  <footerComponent></footerComponent>
 </template>
 
 <script setup>
@@ -25,6 +26,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import NavbarComponent from "../components/Navbar/NavbarComponent.vue";
 import productCard from "../components/products/productCard.vue";
+import footerComponent from "../components/Footer/footerComponent.vue";
 const keyCard = ref("");
 const router = useRouter();
 function search(keyword) {

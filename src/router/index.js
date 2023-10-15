@@ -14,6 +14,16 @@ const router = createRouter({
       name: "Collection",
       component: () => import("../views/productCollections.vue"),
     },
+    {
+      path: "/login",
+      name: "Login",
+      component: () => import("../views/LoginView.vue"),
+    },
+    {
+      path: "/signup",
+      name: "Sign Up",
+      component: () => import("../views/registerView.vue"),
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     return { top: 0 };
