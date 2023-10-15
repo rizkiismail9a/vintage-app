@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar font-main">
+  <div class="navbar font-main fixed-top bg-white">
     <div class="container navbar__container d-flex flex-md-row flex-column">
       <!-- logo -->
       <img src="../../assets/images/logo.png" alt="vintage logo" class="navbar__logo" />
@@ -17,7 +17,7 @@
           <button class="btn btn-outline-primary btn-login">Login</button>
           <button class="btn btn-primary btn-signup">Signup</button>
         </div>
-        <div style="color: #404040" class="language border-start">EN <i class="fa-solid fa-chevron-down"></i></div>
+        <div style="color: #404040" class="language border-start">EN<i class="fa-solid fa-chevron-down"></i></div>
       </div>
     </div>
   </div>
@@ -78,6 +78,7 @@ const showNavbar = ref(false);
     right: -1000px;
     background-color: white;
     transition: all 0.3s ease-in-out;
+    z-index: 40;
   }
   div .navbar__form {
     width: 100%;
