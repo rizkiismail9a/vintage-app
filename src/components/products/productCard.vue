@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-2 col-6 product__card">
+  <div class="col-6 product__card" :class="{ 'col-md-3': isOnDetail === true, 'col-md-2': isOnDetail === false }">
     <div class="d-flex flex-column row-gap-2">
       <img src="../../assets/images/baju1.png" alt="gambar baju" class="product__image" />
       <div class="product__info d-flex flex-column">
@@ -17,7 +17,11 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps({
+  isOnDetail: { type: Boolean, default: false },
+});
+</script>
 <style scoped>
 .product__card {
   height: 300px;

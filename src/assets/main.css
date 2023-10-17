@@ -13,6 +13,13 @@ a {
 li {
   list-style: none;
 }
+
+.form-control {
+  border: none;
+}
+.form-control:focus {
+  outline: 0;
+}
 .font-main {
   font-family: "Inter", sans-serif;
 }

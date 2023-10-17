@@ -2,7 +2,7 @@
   <footer class="d-flex flex-column">
     <div class="container-sm footer__content row mx-auto">
       <!-- footer 1 -->
-      <div class="d-flex flex-column col-md-3 col">
+      <div class="d-flex flex-column col-md-3 col-12">
         <h1 class="footer__menu-title font-500">Vintage</h1>
         <ul class="footer__menu-list ps-0">
           <li>About Us</li>
@@ -12,7 +12,7 @@
         </ul>
       </div>
       <!-- footer 2 -->
-      <div class="d-flex flex-column col-md-3 col">
+      <div class="d-flex flex-column col-md-3 col-12">
         <h1 class="footer__menu-title font-500">Discover</h1>
         <ul class="footer__menu-list ps-0">
           <li>How it works</li>
@@ -22,7 +22,7 @@
         </ul>
       </div>
       <!-- footer 3 -->
-      <div class="d-flex flex-column col-md-3 col">
+      <div class="d-flex flex-column col-md-3 col-12">
         <h1 class="footer__menu-title font-500">Help</h1>
         <ul class="footer__menu-list ps-0">
           <li>Help center</li>
@@ -31,7 +31,7 @@
         </ul>
       </div>
       <!-- footer 4 -->
-      <div class="d-flex flex-column col-md-3 col">
+      <div class="d-flex flex-column col-md-3 col-12">
         <h1 class="footer__menu-title font-500">Comunity</h1>
         <ul class="footer__menu-list ps-0">
           <li>Form</li>

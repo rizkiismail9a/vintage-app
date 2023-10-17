@@ -3,7 +3,7 @@
     <!-- title -->
     <h1 class="register__title m-0 d-flex justify-content-between"><span>Sign up</span> <i class="fa-solid fa-xmark"></i></h1>
     <div class="register__form">
-      <form class="d-flex flex-column justify-content-between">
+      <form @submit.prevent="register" class="d-flex flex-column justify-content-between">
         <p class="register__subtitle">Enter your details below</p>
         <!-- full name -->
         <div class="d-flex flex-column position-relative">
@@ -32,9 +32,15 @@
           <input type="password" id="passwordConfirm" class="input__form mx-0" placeholder="Enter your password" />
           <i class="fa-solid fa-eye position-absolute" style="right: 15px; top: 38px"></i>
         </div>
+        <!-- checkbox -->
         <div class="d-flex gap-2 agreement d-flex align-items-start">
-          <input type="checkbox" name="" id="" />
-          <p class="m-0">By clicking sign up, I hereby agree and consent to Term & Conditions; I confirm that I have read Privacy policy.</p>
+          <label class="checkbox__wrapper">
+            <input type="checkbox" />
+            <span class="checkmark"></span>
+          </label>
+          <p class="m-0 font-400">
+            By clicking sign up, I hereby agree and consent to <span style="color: var(--vintage-main-color)"> Term & Conditions </span>; I confirm that I have read <span style="color: var(--vintage-main-color)">Privacy policy</span>.
+          </p>
         </div>
         <button class="register__button btn btn-primary">Sign up</button>
       </form>
@@ -42,9 +48,81 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const emits = defineEmits(["register"]);
+function register() {
+  emits("register");
+}
+</script>
 
 <style scoped>
+.checkbox__wrapper {
+  display: block;
+  position: relative;
+  padding-left: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox__wrapper input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #eee;
+  border: none;
+  border-radius: 6px;
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox__wrapper:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox__wrapper input:checked ~ .checkmark {
+  background-color: var(--vintage-main-color);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox__wrapper input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox__wrapper .checkmark:after {
+  left: 7px;
+  top: 4px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
 .card {
   width: 450px;
   height: fit-content;
@@ -86,8 +164,8 @@ label {
   text-align: left;
   color: #404040;
 }
-.agreement input {
+/* .agreement input {
   width: 20px;
   height: 20px;
-}
+} */
 </style>

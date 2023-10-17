@@ -8,9 +8,12 @@
 
       <div class="nav-collapse d-flex flex-md-row flex-column align-items-center flex-grow-1" :class="{ toggle: showNavbar }">
         <!-- search form -->
-        <form @submit.prevent="$emit('search', keyword)" class="d-flex navbar__form border flex-grow-1 align-items-center" role="search">
+        <form @submit.prevent="$emit('search', keyword)" class="d-flex navbar__form flex-grow-1 align-items-center" role="search">
           <i class="fa-solid fa-magnifying-glass fs-5 px-2"></i>
-          <input class="me-2 border-0 w-100 font-400" type="text" placeholder="Search for items" @click="goToCollection" autofocus v-model="keyword" />
+          <label for="exampleInputEmail1" class="form-label flex-grow-1 m-0">
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" @click="goToCollection" autofocus v-model="keyword" placeholder="Search for items" />
+          </label>
+          <div class="mb-3"></div>
         </form>
         <!-- auth menu -->
         <div class="d-flex navbar__auth justify-content-between align-items-center">
@@ -42,6 +45,21 @@ function goToCollection() {
 </script>
 
 <style scoped>
+input:focus {
+  outline: 3px solid var(--vintage-main-color) !important;
+}
+.navbar__form input {
+  border-right: 1px solid #ededed;
+}
+.navbar__form {
+  border: 1px solid #ededed;
+  border-radius: 8px;
+  color: #757575;
+  font-size: 14px;
+}
+.navbar__form input {
+  border-right: 1px solid #ededed;
+}
 @media screen and (min-width: 992px) {
   .navbar {
     padding: 12px 120px 12px 120px;
@@ -53,18 +71,7 @@ function goToCollection() {
   .navbar__form {
     margin-right: 32px;
   }
-  .navbar__form {
-    padding: 10px 12px 10px 12px;
-    border-radius: 8px;
-    justify-content: space-around;
-    color: #757575;
-    font-size: 14px;
-  }
-  .navbar__form input {
-    outline: none;
-    padding: 0 15px;
-    background-color: transparent;
-  }
+
   .btn {
     width: 83px !important;
     height: 36px !important;
@@ -95,7 +102,7 @@ function goToCollection() {
   }
   div .navbar__form {
     width: 100%;
-    padding: 10px 12px 10px 12px;
+    padding: 0 12px 0 12px;
     border-radius: 8px;
     justify-content: space-around;
     color: #757575;

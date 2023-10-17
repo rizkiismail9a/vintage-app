@@ -1,7 +1,7 @@
 <template>
   <NavbarComponent />
   <!-- banner -->
-  <bannerView></bannerView>
+  <BannerView></BannerView>
   <!-- main session -->
   <main class="main__container container font-main">
     <!-- Popular Items -->
@@ -12,22 +12,32 @@
         <h2 class="font-500" style="font-size: 24px">Shop by brand</h2>
       </div>
       <div class="brands d-flex justify-content-between">
-        <div class="brand__cards" v-for="b in brands">{{ b }}</div>
+        <div class="brand__cards" v-for="b in brands" @click="findByBrand(b)">
+          {{ b }}
+        </div>
       </div>
     </div>
     <!-- New products -->
-    <productsList product-title="New Products" class="new-products"></productsList>
+    <products-list product-title="New Products" class="new-products"></products-list>
   </main>
-  <footerComponent></footerComponent>
+  <FooterComponent></FooterComponent>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import NavbarComponent from "../components/Navbar/NavbarComponent.vue";
-import footerComponent from "../components/Footer/footerComponent.vue";
-import bannerView from "../components/header/bannerView.vue";
-import productsList from "../components/products/productsList.vue";
+import NavbarComponent from "../components/navbar/NavbarComponent.vue";
+import FooterComponent from "../components/Footer/FooterComponent.vue";
+import BannerView from "../components/Header/BannerView.vue";
+import ProductsList from "../components/Products/ProductsList.vue";
+import { useRouter } from "vue-router";
 const brands = ref(["Vans", "Boho", "Mango", "Reebok", "Converse", "Sandro", "Nike", "Adidas", "Dior", "Puma", "Zara", "Bershka", "American Eagle"]);
+const router = useRouter();
+function findByBrand(brand) {
+  router.push({
+    name: "Collection",
+    query: { brand },
+  });
+}
 </script>
 <style scoped>
 .main__container {
@@ -54,5 +64,6 @@ const brands = ref(["Vans", "Boho", "Mango", "Reebok", "Converse", "Sandro", "Ni
   font-weight: 500;
   font-size: 14px;
   color: #404040;
+  cursor: pointer;
 }
 </style>

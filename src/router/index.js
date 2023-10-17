@@ -12,7 +12,17 @@ const router = createRouter({
     {
       path: "/collection",
       name: "Collection",
-      component: () => import("../views/productCollections.vue"),
+      component: () => import("../views/ProductCollections.vue"),
+    },
+    {
+      path: "/collection/:id",
+      name: "Detail Product",
+      component: () => import("../views/DetailProduct.vue"),
+    },
+    {
+      path: "/cart",
+      name: "Cart",
+      component: () => import("../views/CartView.vue"),
     },
     {
       path: "/login",
@@ -22,10 +32,10 @@ const router = createRouter({
     {
       path: "/signup",
       name: "Sign Up",
-      component: () => import("../views/registerView.vue"),
+      component: () => import("../views/RegisterView.vue"),
     },
   ],
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior() {
     return { top: 0 };
   },
 });

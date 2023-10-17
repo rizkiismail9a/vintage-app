@@ -1,12 +1,12 @@
 <template>
-  <div class="position-absolute card__wrapper p-3 d-flex align-items-center w-100 h-100">
+  <div class="position-absolute card__wrapper p-3 d-md-flex align-items-center w-100 h-100 d-none">
     <div class="container mx-auto">
       <div class="card border-0 rounded">
         <h1 class="card__jargon">
           Ready to declutter<br />
           your closet?
         </h1>
-        <button class="btn btn-primary card__button d-md-block d-none">Shop Now</button>
+        <router-link to="/collection" class="btn btn-primary card__button d-md-block d-none">Shop Now</router-link>
       </div>
     </div>
   </div>
@@ -31,13 +31,5 @@
 }
 .card__button {
   margin: 8px 24px 24px 24px;
-}
-@media screen and (max-width: 768px) {
-  .card {
-    background-color: transparent;
-  }
-  .card__jargon {
-    color: #fafafa;
-  }
 }
 </style>

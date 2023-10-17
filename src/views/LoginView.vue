@@ -1,11 +1,11 @@
 <template>
-  <simpleNavbar></simpleNavbar>
+  <simple-navbar></simple-navbar>
   <div class="container mx-auto d-flex justify-content-center align-items-center" style="min-height: 100vh">
-    <loginCard></loginCard>
+    <LoginCard></LoginCard>
   </div>
 </template>
 
 <script setup>
-import simpleNavbar from "../components/Navbar/simpleNavbar.vue";
-import loginCard from "../components/auth/loginCard.vue";
+import SimpleNavbar from "../components/Navbar/SimpleNavbar.vue";
+import LoginCard from "../components/Auth/LoginCard.vue";
 </script>

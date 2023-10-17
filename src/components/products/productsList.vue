@@ -4,6 +4,7 @@
       <h2 class="font-500" style="font-size: 24px">{{ props.productTitle }}</h2>
       <router-link to="/collection" class="m-0 font-400" style="color: #009499" v-if="!props.isForCollection">See all</router-link>
     </div>
+    <!-- list of products -->
     <div class="popular-products__cards row gx-4 gy-md-0 gy-4 m-0">
       <!-- product cards -->
       <product-card></product-card>
@@ -22,7 +23,7 @@
 
 <script setup>
 import { useRouter } from "vue-router";
-import productCard from "./productCard.vue";
+import ProductCard from "./ProductCard.vue";
 const props = defineProps({
   productTitle: { type: String },
   isForCollection: { type: Boolean, default: false },

@@ -1,12 +1,12 @@
 <template>
   <div class="banner position-relative">
     <img src="../../assets/images/header.png" alt="person shopping" class="w-100 object-fit-cover" />
-    <sellingCard></sellingCard>
+    <selling-card></selling-card>
   </div>
 </template>
 
 <script setup>
-import sellingCard from "./sellingCard.vue";
+import SellingCard from "./SellingCard.vue";
 </script>
 
 <style scoped>
