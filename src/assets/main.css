@@ -29,6 +29,9 @@ li {
 .font-400 {
   font-weight: 400;
 }
+.font-0a {
+  color: #0a0a0a;
+}
 .btn-primary {
   --bs-btn-color: #fff;
   --bs-btn-bg: var(--vintage-main-color);

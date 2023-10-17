@@ -1,7 +1,9 @@
 <template>
   <div class="col-6 product__card" :class="{ 'col-md-3': isOnDetail === true, 'col-md-2': isOnDetail === false }">
     <div class="d-flex flex-column row-gap-2">
-      <img src="../../assets/images/baju1.png" alt="gambar baju" class="product__image" />
+      <router-link to="/collection/id">
+        <img src="../../assets/images/baju1.png" alt="gambar baju" class="product__image" />
+      </router-link>
       <div class="product__info d-flex flex-column">
         <h3 class="product__price font-500">Rp200.000</h3>
         <h1 class="product__name flex-grow-1">Baju Kuning</h1>

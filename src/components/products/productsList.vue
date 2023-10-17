@@ -14,9 +14,9 @@
       <product-card></product-card>
       <product-card v-if="props.isForCollection"></product-card>
       <!-- see-all menu -->
-      <router-link to="/collection" class="col-md-2 col-6" v-if="!props.isForCollection">
+      <a href="/collection" class="col-md-2 col-6" v-if="!props.isForCollection">
         <div class="see-all-menu d-flex font-400 align-items-center justify-content-center mx-auto text-center p-0 h-100">See All <br />Products</div>
-      </router-link>
+      </a>
     </div>
   </div>
 </template>

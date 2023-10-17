@@ -7,7 +7,7 @@
     :sub-modal-msg="'“Vintage chicago cubs white” successfully added to cart. Check now on the cart or continue shopping.'"
   >
     <button class="btn btn-outline-primary" @click="showModal = false">Continue shopping</button>
-    <router-link to="/cart" class="btn btn-primary">Go to cart</router-link>
+    <router-link to="/cart/cart-product-card/cart-summary" class="btn btn-primary">Go to cart</router-link>
   </base-modal-one>
   <NavbarComponent></NavbarComponent>
   <div class="detail__wrapper container-md mx-auto row gx-5 flex-column-reverse flex-md-row">

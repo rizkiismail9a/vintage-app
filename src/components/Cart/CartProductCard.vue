@@ -1,4 +1,8 @@
 <template>
+  <div class="address mx-4 d-flex gap-3 align-items-center p-0">
+    <img src="../../assets/images/addressPin.png" alt="address pin" width="16" />
+    <p class="m-0" style="color: #404040">Shipping to <b style="color: #0a0a0a">Cianjur, Jawa Barat</b></p>
+  </div>
   <div class="cart__product-card bg-white d-flex flex-column gap-4">
     <div class="product__info d-flex gap-4 flex-grow-1">
       <img src="../../assets/images/baju1.png" alt="gambar produk" width="80" class="object-fit-cover" height="80" />
@@ -32,7 +36,8 @@
   color: #0a0a0a;
   line-height: 2;
 }
-input:focus {
-  outline: 3px solid var(--vintage-main-color) !important;
+
+.address {
+  margin-top: 12px;
 }
 </style>
