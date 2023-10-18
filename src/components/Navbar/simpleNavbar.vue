@@ -4,7 +4,7 @@
       <!-- logo -->
       <router-link to="/"><img src="../../assets/images/logo.png" alt="vintage logo" class="navbar__logo" /></router-link>
       <div>
-        <div style="color: #404040" class="language">EN<i class="fa-solid fa-chevron-down"></i></div>
+        <div class="language font-40">EN<i class="fa-solid fa-chevron-down" style="margin-left: 8px"></i></div>
       </div>
     </div>
   </div>

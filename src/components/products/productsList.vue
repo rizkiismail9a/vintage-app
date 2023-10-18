@@ -6,7 +6,7 @@
     </div>
     <!-- list of products -->
     <div class="popular-products__cards row gx-4 gy-md-0 gy-4 m-0">
-      <!-- product cards -->
+      <!-- product cards , looping starts here-->
       <product-card></product-card>
       <product-card></product-card>
       <product-card></product-card>

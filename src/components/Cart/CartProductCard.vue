@@ -36,8 +36,21 @@
   color: #0a0a0a;
   line-height: 2;
 }
-
 .address {
   margin-top: 12px;
+}
+input:focus {
+  outline: 3px solid var(--vintage-main-color) !important;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 </style>

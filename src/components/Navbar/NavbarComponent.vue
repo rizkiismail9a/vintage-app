@@ -8,10 +8,10 @@
 
       <div class="nav-collapse d-flex flex-md-row flex-column align-items-center flex-grow-1" :class="{ toggle: showNavbar }">
         <!-- search form -->
-        <form @submit.prevent="$emit('search', keyword)" class="d-flex navbar__form flex-grow-1 align-items-center" role="search">
-          <i class="fa-solid fa-magnifying-glass fs-5 px-2"></i>
-          <label for="searchProduct" class="form-label flex-grow-1 m-0">
-            <input type="text" class="form-control" id="searchProduct" aria-describedby="emailHelp" @click="goToCollection" autofocus v-model="keyword" placeholder="Search for items" />
+        <form @submit.prevent="$emit('search', keyword)" class="d-flex navbar__form flex-grow-1 align-items-center position-relative" role="search">
+          <i class="fa-solid fa-magnifying-glass fs-5 px-2 position-absolute"></i>
+          <label for="searchProduct" class="form-label flex-grow-1 m-0 w-100">
+            <input type="text" class="form-control ps-5" id="searchProduct" aria-describedby="emailHelp" @click="goToCollection" autofocus v-model="keyword" placeholder="Search for items" />
           </label>
           <div class="mb-3"></div>
         </form>
@@ -20,7 +20,7 @@
           <router-link to="/login" class="btn btn-outline-primary btn-login">Login</router-link>
           <router-link to="/signup" class="btn btn-primary btn-signup">Signup</router-link>
         </div>
-        <div style="color: #404040" class="language border-start">EN<i class="fa-solid fa-chevron-down"></i></div>
+        <div class="language font-40 border-start">EN<i class="fa-solid fa-chevron-down" style="margin-left: 8px"></i></div>
       </div>
     </div>
   </div>
@@ -59,6 +59,10 @@ input:focus {
 }
 .navbar__form input {
   border-right: 1px solid #ededed;
+}
+.fa-magnifying-glasss {
+  top: 10px;
+  left: 10px;
 }
 @media screen and (min-width: 992px) {
   .navbar {

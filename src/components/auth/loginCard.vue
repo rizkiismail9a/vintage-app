@@ -23,6 +23,9 @@
 <script setup></script>
 
 <style scoped>
+input:focus {
+  outline: 3px solid var(--vintage-main-color) !important;
+}
 .card {
   width: 402px;
   height: fit-content;

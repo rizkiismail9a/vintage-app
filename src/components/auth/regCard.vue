@@ -56,6 +56,9 @@ function register() {
 </script>
 
 <style scoped>
+input:focus {
+  outline: 3px solid var(--vintage-main-color) !important;
+}
 .checkbox__wrapper {
   display: block;
   position: relative;
