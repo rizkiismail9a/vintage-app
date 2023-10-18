@@ -43,6 +43,7 @@ function findByBrand(brand) {
 .main__container {
   margin-top: 46px;
   margin-bottom: 140px;
+  min-height: 100vh;
 }
 .new-products,
 .shop-by-brand {

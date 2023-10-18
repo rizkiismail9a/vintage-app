@@ -69,6 +69,7 @@ const getParams2 = computed(() => {
 .cart__wrapper {
   padding-top: 88px;
   margin-bottom: 140px;
+  min-height: 100vh;
 }
 .bg-f5 {
   background-color: #f5f5f5;

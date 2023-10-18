@@ -1,12 +1,12 @@
 <template>
   <BaseModalOne
     v-if="showModal"
-    image-link="/images/paySuccess.png"
+    image-link="/images/orderSuccess.gif"
     modal-msg="Order #ORD-89123-823 placed successfully"
     sub-modal-msg="Thank you for do online shopping at Vintage. You can track and see your order on transaction history menu."
   >
     <router-link to="/" class="btn btn-outline-primary" @click="showModal = false">Continue shopping</router-link>
-    <router-link to="/" class="btn btn-primary">Go to History Transaction</router-link>
+    <router-link to="/profile/transaction-history" class="btn btn-primary">Go to History Transaction</router-link>
   </BaseModalOne>
   <div class="card summary__card w-100 position-sticky d-flex flex-column" style="top: 98px">
     <p style="color: #616161" class="font-400 mb-4">Order summary</p>

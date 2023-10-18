@@ -55,6 +55,7 @@ function addToCart() {
 .detail__wrapper {
   margin-top: 88px;
   margin-bottom: 140px;
+  min-height: 100vh;
 }
 .detail__image {
   margin-bottom: 40px;

@@ -10,8 +10,8 @@
         <!-- search form -->
         <form @submit.prevent="$emit('search', keyword)" class="d-flex navbar__form flex-grow-1 align-items-center" role="search">
           <i class="fa-solid fa-magnifying-glass fs-5 px-2"></i>
-          <label for="exampleInputEmail1" class="form-label flex-grow-1 m-0">
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" @click="goToCollection" autofocus v-model="keyword" placeholder="Search for items" />
+          <label for="searchProduct" class="form-label flex-grow-1 m-0">
+            <input type="text" class="form-control" id="searchProduct" aria-describedby="emailHelp" @click="goToCollection" autofocus v-model="keyword" placeholder="Search for items" />
           </label>
           <div class="mb-3"></div>
         </form>

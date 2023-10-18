@@ -6,7 +6,7 @@
       <div class="brand__cards" v-if="keyCard">{{ keyCard }}<img src="../assets/images/close.png" width="20" @click="keyCard = ''" /></div>
     </div>
     <hr />
-    <div class="products__wrapper row gx-4 gy-5">
+    <div v-if="true" class="products__wrapper row gx-4 gy-5">
       <ProductCard></ProductCard>
       <ProductCard></ProductCard>
       <ProductCard></ProductCard>
@@ -17,6 +17,7 @@
       <ProductCard></ProductCard>
       <ProductCard></ProductCard>
     </div>
+    <product-not-found v-else image-link="/images/bag-cross.png" pop-message="Product not found" sub-message="We cannot find what you looking for, try to use other keywords or reset keyword." button-text="Reset keyword"></product-not-found>
   </div>
   <FooterComponent></FooterComponent>
 </template>
@@ -27,8 +28,10 @@ import { useRouter } from "vue-router";
 import NavbarComponent from "../components/navbar/NavbarComponent.vue";
 import ProductCard from "../components/Products/ProductCard.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
+import ProductNotFound from "../components/Products/ProductNotFound.vue";
 const keyCard = ref("");
 const router = useRouter();
+const result = ref([]);
 function search(keyword) {
   keyCard.value = keyword;
 }
@@ -38,6 +41,7 @@ function search(keyword) {
 .collection__container {
   margin-top: 88px;
   margin-bottom: 20px;
+  min-height: 100vh;
 }
 .page__title h2 {
   line-height: 32px;
@@ -54,6 +58,9 @@ function search(keyword) {
   font-weight: 500;
   font-size: 16px;
   color: #404040;
+}
+.products__404-card {
+  width: 343px;
 }
 @media screen and (max-width: 768px) {
   .collection__container {
