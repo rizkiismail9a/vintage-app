@@ -8,14 +8,6 @@
     <hr />
     <div v-if="true" class="products__wrapper row gx-4 gy-5">
       <ProductCard></ProductCard>
-      <ProductCard></ProductCard>
-      <ProductCard></ProductCard>
-      <ProductCard></ProductCard>
-      <ProductCard></ProductCard>
-      <ProductCard></ProductCard>
-      <ProductCard></ProductCard>
-      <ProductCard></ProductCard>
-      <ProductCard></ProductCard>
     </div>
     <product-not-found v-else image-link="/images/bag-cross.png" pop-message="Product not found" sub-message="We cannot find what you looking for, try to use other keywords or reset keyword." button-text="Reset keyword"></product-not-found>
   </div>

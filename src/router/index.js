@@ -44,6 +44,11 @@ const router = createRouter({
       name: "Sign Up",
       component: () => import("../views/RegisterView.vue"),
     },
+    {
+      path: "/latihan",
+      name: "Latihan",
+      component: () => import("../views/LatihanView.vue"),
+    },
   ],
   scrollBehavior() {
     return { top: 0 };

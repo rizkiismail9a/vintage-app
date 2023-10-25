@@ -19,6 +19,8 @@
     <p class="font-400" style="font-size: 14px; color: #404040">Item Description</p>
     <p class="font-400" style="font-size: 14px; color: #0a0a0a">Size Xl but fits more like M looser fit has a few minor marks (pictured)</p>
     <div class="detail__metadata row gx-3">
+      <p class="col-6" style="color: #0a0a0a">Store name</p>
+      <p class="col-6" style="color: #404040">Dara official store</p>
       <p class="col-6" style="color: #0a0a0a">Cetagory</p>
       <p class="col-6" style="color: #404040">Hodies and Sweater</p>
       <p class="col-6" style="color: #0a0a0a">Condition</p>

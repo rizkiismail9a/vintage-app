@@ -1,41 +1,46 @@
 <template>
+  <base-modal-one v-if="showModal" :image-link="'src/assets/images/regModal.png'" :modal-msg="'Successfully Register'" :sub-modal-msg="'Thank you for register at vintage. Start find your favorite pre-loved product here.'">
+    <router-link to="/" class="btn btn-primary w-100">Go to Home Page</router-link>
+  </base-modal-one>
   <div class="register__card card font-main d-flex flex-column justify-content-between">
     <!-- title -->
     <h1 class="register__title m-0 d-flex justify-content-between"><span>Sign up</span> <i class="fa-solid fa-xmark"></i></h1>
+    <BaseModalTwo class="mx-4" v-if="errorMsg">{{ errorMsg }}</BaseModalTwo>
+    <SimpleLoading v-if="isLoading">Loading...</SimpleLoading>
     <div class="register__form">
       <form @submit.prevent="register" class="d-flex flex-column justify-content-between">
         <p class="register__subtitle">Enter your details below</p>
         <!-- full name -->
         <div class="d-flex flex-column position-relative">
           <label for="fullName" class="font-500 mb-1">Full name <span style="color: red">*</span></label>
-          <input type="text" id="fullName" class="input__form mx-0" placeholder="Enter your fullname" />
+          <input type="text" id="fullName" class="input__form mx-0" placeholder="Enter your fullname" v-model="newData.fullname" />
         </div>
         <!-- username -->
         <div class="d-flex flex-column position-relative">
           <label for="username" class="font-500 mb-1">Username <span style="color: red">*</span></label>
-          <input type="text" id="username" class="input__form mx-0" placeholder="Enter your username" />
+          <input type="text" id="username" class="input__form mx-0" placeholder="Enter your username" v-model="newData.username" />
         </div>
         <!-- email -->
         <div class="d-flex flex-column position-relative">
           <label for="email" class="font-500 mb-1">Email <span style="color: red">*</span></label>
-          <input type="email" id="email" class="input__form mx-0" placeholder="Enter your email" />
+          <input type="email" id="email" class="input__form mx-0" placeholder="Enter your email" v-model="newData.email" />
         </div>
         <!-- password -->
         <div class="d-flex flex-column position-relative">
           <label for="password" class="font-500 mb-1">Password <span style="color: red">*</span></label>
-          <input type="password" id="password" class="input__form mx-0" placeholder="Enter your password" />
+          <input type="password" id="password" class="input__form mx-0" placeholder="Enter your password" v-model="newData.password" />
           <i class="fa-solid fa-eye position-absolute" style="right: 15px; top: 38px"></i>
         </div>
         <!-- password -->
         <div class="d-flex flex-column position-relative">
           <label for="passwordConfirm" class="font-500 mb-1">Confirmation Password <span style="color: red">*</span></label>
-          <input type="password" id="passwordConfirm" class="input__form mx-0" placeholder="Enter your password" />
+          <input type="password" id="passwordConfirm" class="input__form mx-0" placeholder="Enter your password" v-model="newData.passwordConfirm" />
           <i class="fa-solid fa-eye position-absolute" style="right: 15px; top: 38px"></i>
         </div>
         <!-- checkbox -->
         <div class="d-flex gap-2 agreement d-flex align-items-start">
           <label class="checkbox__wrapper">
-            <input type="checkbox" />
+            <input type="checkbox" v-model="newData.agreement" />
             <span class="checkmark"></span>
           </label>
           <p class="m-0 font-400">
@@ -49,9 +54,41 @@
 </template>
 
 <script setup>
-const emits = defineEmits(["register"]);
-function register() {
-  emits("register");
+import BaseModalOne from "../../components/Modal/BaseModalOne.vue";
+import BaseModalTwo from "../Modal/BaseModalTwo.vue";
+import SimpleLoading from "../Loading/SimpleLoading.vue";
+import { useAuthStore } from "../../stores/auth";
+import { reactive, ref } from "vue";
+const authStore = useAuthStore();
+const showModal = ref(false);
+const errorMsg = ref("");
+const isLoading = ref(false);
+const newData = reactive({
+  fullname: "",
+  username: "",
+  email: "",
+  password: "",
+  passwordConfirm: "",
+  agreement: false,
+});
+async function register() {
+  if (!newData.fullname || !newData.username || !newData.email || !newData.password) {
+    return (errorMsg.value = "Please fill out the form");
+  }
+  if (newData.password !== newData.passwordConfirm) {
+    return (errorMsg.value = "Password confirm doesn't match");
+  }
+  if (newData.agreement === false) {
+    return (errorMsg.value = "Please click the checkbox");
+  }
+  try {
+    isLoading.value = true;
+    await authStore.regitster(newData);
+    isLoading.value = false;
+    showModal.value = true;
+  } catch (error) {
+    errorMsg.value = error;
+  }
 }
 </script>
 

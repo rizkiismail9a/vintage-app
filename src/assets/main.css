@@ -41,6 +41,12 @@ li {
 .font-40 {
   color: #404040;
 }
+.font-75 {
+  color: #757575;
+}
+.pointer {
+  cursor: pointer;
+}
 .btn-primary {
   --bs-btn-color: #fff;
   --bs-btn-bg: var(--vintage-main-color);

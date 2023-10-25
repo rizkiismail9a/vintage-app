@@ -2,16 +2,18 @@
   <div class="login__card card font-main d-flex flex-column justify-content-between">
     <!-- title -->
     <h1 class="login__title m-0">Login to vintage</h1>
+    <BaseModalTwo class="mx-4" v-if="errorMsg">{{ errorMsg }}</BaseModalTwo>
+    <SimpleLoading v-if="isLoading"> Loading... </SimpleLoading>
     <div class="login__form">
-      <form class="d-flex flex-column justify-content-between">
+      <form @submit.prevent="login" class="d-flex flex-column justify-content-between">
         <p class="login__subtitle">Enter your details below</p>
         <div class="d-flex flex-column position-relative">
           <label for="email" class="font-500 mb-1">Email <span style="color: red">*</span></label>
-          <input type="email" id="email" class="input__form mx-0" placeholder="Enter your email" />
+          <input type="email" id="email" class="input__form mx-0" placeholder="Enter your email" v-model="loginData.email" />
         </div>
         <div class="d-flex flex-column position-relative">
           <label for="password" class="font-500 mb-1">Password <span style="color: red">*</span></label>
-          <input type="password" id="password" class="input__form mx-0" placeholder="Enter your password" />
+          <input type="password" id="password" class="input__form mx-0" placeholder="Enter your password" v-model="loginData.password" />
           <i class="fa-solid fa-eye position-absolute" style="right: 15px; top: 38px"></i>
         </div>
         <button class="login__button btn btn-primary">Continue</button>
@@ -20,7 +22,31 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { reactive, ref } from "vue";
+import BaseModalTwo from "../Modal/BaseModalTwo.vue";
+import SimpleLoading from "../Loading/SimpleLoading.vue";
+import { useAuthStore } from "../../stores/auth";
+import { useRouter } from "vue-router";
+
+const loginData = reactive({
+  email: "",
+  password: "",
+});
+const errorMsg = ref("");
+const authStore = useAuthStore();
+const router = useRouter();
+const isLoading = ref(false);
+async function login() {
+  try {
+    isLoading.value = true;
+    await authStore.login(loginData);
+    router.push("/");
+  } catch (error) {
+    errorMsg.value = error;
+  }
+}
+</script>
 
 <style scoped>
 input:focus {
