@@ -22,6 +22,7 @@ import SettingCard from "../components/Profile/SettingCard.vue";
 import ProfileDetail from "../components/Profile/ProfileDetail.vue";
 import EditPassword from "../components/Profile/EditPassword.vue";
 import TransactionHistory from "../components/Profile/TransactionHistory.vue";
+import MyProducts from "../components/Profile/MyProducts.vue";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 const route = useRoute();
@@ -29,6 +30,7 @@ const component = {
   "profile-detail": ProfileDetail,
   "edit-password": EditPassword,
   "transaction-history": TransactionHistory,
+  "my-products": MyProducts,
 };
 const getParams = computed(() => {
   return route.params.component;

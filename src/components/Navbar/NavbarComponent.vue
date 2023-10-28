@@ -36,12 +36,12 @@
           </div>
           <!-- profile foto -->
           <div class="d-flex align-items-center gap-1 position-relative">
-            <img v-if="user.imageLink" src="../../assets/images/user1.png" width="40" height="40" />
+            <img v-if="user.imageLink" :src="user.imageLink" width="40" height="40" class="rounded-circle" />
             <i v-else class="fa-solid fa-user fs-4"></i>
             <i @click="wannaGoToProfile = !wannaGoToProfile" class="fa-solid fa-chevron-down font-40 font-75 pointer" style="margin-left: 8px"></i>
             <div v-if="wannaGoToProfile" class="card d-flex flex-column position-absolute profile__dropdown gap-3 p-1">
-              <span class="font-400 font-40 px-2 py-2 pointer"><img class="me-2" src="../../assets/images/person.png" />Profile</span>
-              <span class="font-400 font-40 px-2 pointer"><img class="me-2" src="../../assets/images/receipt.png" />Order</span>
+              <router-link to="/profile/profile-detail" class="font-400 font-40 px-2 py-2 pointer"><img class="me-2" src="/images/person.png" />Profile</router-link>
+              <router-link to="/profile/transaction-history" class="font-400 font-40 px-2 pointer"><img class="me-2" src="../../assets/images/receipt.png" />Order</router-link>
               <span class="font-400 px-2 py-2 pointer border-top" @click="wannaLogout = true"><img class="me-2" src="../../assets/images/exit.png" />Logout</span>
             </div>
           </div>
@@ -98,9 +98,6 @@ input:focus {
   border-radius: 8px;
   color: #757575;
   font-size: 14px;
-}
-.navbar__form input {
-  border-right: 1px solid #ededed;
 }
 .notification__count {
   text-align: center;

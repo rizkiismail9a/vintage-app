@@ -39,9 +39,7 @@
 .address {
   margin-top: 12px;
 }
-input:focus {
-  outline: 3px solid var(--vintage-main-color) !important;
-}
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

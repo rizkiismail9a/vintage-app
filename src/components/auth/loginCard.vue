@@ -3,7 +3,7 @@
     <!-- title -->
     <h1 class="login__title m-0">Login to vintage</h1>
     <BaseModalTwo class="mx-4" v-if="errorMsg">{{ errorMsg }}</BaseModalTwo>
-    <SimpleLoading v-if="isLoading"> Loading... </SimpleLoading>
+    <SimpleLoading class="mx-4" v-if="isLoading"> Loading... </SimpleLoading>
     <div class="login__form">
       <form @submit.prevent="login" class="d-flex flex-column justify-content-between">
         <p class="login__subtitle">Enter your details below</p>

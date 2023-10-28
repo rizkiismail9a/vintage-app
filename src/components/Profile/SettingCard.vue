@@ -8,6 +8,7 @@
         <router-link to="/profile/profile-detail" class="list-group-item list-group-item-action font-500">Profile Details</router-link>
         <router-link to="/profile/edit-password" class="list-group-item list-group-item-action font-500">Change Password</router-link>
         <router-link to="/profile/transaction-history" class="list-group-item list-group-item-action font-500">Transaction History</router-link>
+        <router-link to="/profile/my-products" class="list-group-item list-group-item-action font-500">My Products</router-link>
       </div>
     </div>
   </div>

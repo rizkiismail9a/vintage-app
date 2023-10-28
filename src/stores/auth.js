@@ -110,5 +110,21 @@ export const useAuthStore = defineStore("auth", {
       this.accessToken = null;
       this.isLogin = false;
     },
+    async updateProfile(payload) {
+      const userId = Cookies.get("UID");
+      const { data: getAllUsers } = await axios.get(import.meta.env.VITE_BASE_URI + `/users.json`);
+      let uKey = "";
+      for (let key in getAllUsers) {
+        if (getAllUsers[key].userId === userId) {
+          uKey = key;
+          break;
+        }
+      }
+      try {
+        await axios.patch(import.meta.env.VITE_BASE_URI + `/users/${uKey}.json?auth=${this.accessToken}`, payload);
+      } catch (error) {
+        throw new Error(error.response.data.error.message);
+      }
+    },
   },
 });

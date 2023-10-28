@@ -25,8 +25,6 @@
       <p class="col-6" style="color: #404040">Hodies and Sweater</p>
       <p class="col-6" style="color: #0a0a0a">Condition</p>
       <p class="col-6" style="color: #404040">Very Good</p>
-      <p class="col-6" style="color: #0a0a0a">Color</p>
-      <p class="col-6" style="color: #404040">Green</p>
       <p class="col-6" style="color: #0a0a0a">Uploaded</p>
       <p class="col-6" style="color: #404040">5 hours ago</p>
       <p class="col-6" style="color: #0a0a0a">Shipping</p>
