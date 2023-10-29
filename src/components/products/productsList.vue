@@ -7,7 +7,7 @@
     <!-- list of products -->
     <div class="popular-products__cards row gx-4 gy-md-0 gy-4 m-0">
       <!-- product cards , looping starts here-->
-      <product-card></product-card>
+      <product-card v-for="item in products" :product="item"></product-card>
       <!-- see-all menu -->
       <a href="/collection" class="col-md-2 col-6">
         <div class="see-all-menu d-flex font-400 align-items-center justify-content-center mx-auto text-center p-0 h-100">See All <br />Products</div>
@@ -21,6 +21,7 @@ import { useRouter } from "vue-router";
 import ProductCard from "./ProductCard.vue";
 const props = defineProps({
   productTitle: { type: String },
+  products: { type: Array },
   isForCollection: { type: Boolean, default: false },
 });
 </script>

@@ -7,7 +7,7 @@
     </div>
     <hr />
     <div v-if="true" class="products__wrapper row gx-4 gy-5">
-      <ProductCard></ProductCard>
+      <ProductCard v-for="item in allProducts" :product="item"></ProductCard>
     </div>
     <product-not-found v-else image-link="/images/bag-cross.png" pop-message="Product not found" sub-message="We cannot find what you looking for, try to use other keywords or reset keyword." button-text="Reset keyword"></product-not-found>
   </div>
@@ -15,15 +15,28 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import NavbarComponent from "../components/navbar/NavbarComponent.vue";
 import ProductCard from "../components/Products/ProductCard.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
 import ProductNotFound from "../components/Products/ProductNotFound.vue";
+import { useProductStore } from "../stores/product";
 const keyCard = ref("");
+const productStore = useProductStore();
 const router = useRouter();
 const result = ref([]);
+const allProducts = computed(() => {
+  return productStore.getAllProducts;
+});
+
+onMounted(async () => {
+  try {
+    await productStore.findAllProducts();
+  } catch (error) {
+    console.log(error);
+  }
+});
 function search(keyword) {
   keyCard.value = keyword;
 }

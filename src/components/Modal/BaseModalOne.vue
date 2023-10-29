@@ -23,7 +23,6 @@ const props = defineProps({
   imageLink: { type: String },
   modalMsg: { type: String },
   subModalMsg: { type: String },
-  button: { type: Array },
 });
 </script>
 <style scoped>

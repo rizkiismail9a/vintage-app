@@ -1,7 +1,5 @@
 <template>
   <div class="profile__card card d-flex flex-column gap-3">
-    <BaseModalTwo v-if="errorMsg">{{ errorMsg }}</BaseModalTwo>
-    <SimpleLoading v-if="isLoading">{{ isLoading }}</SimpleLoading>
     <div class="d-flex align-items-center justify-content-between">
       <span class="font-400 font-61" style="font-size: 14px">My products</span>
       <router-link to="/product/register" class="d-flex align-items-center py-2 px-3 gap-2 rounded-pill pointer add-products__button font-500 text-white">
@@ -10,22 +8,44 @@
       </router-link>
     </div>
     <hr />
+    <SimpleLoading v-if="deletingMsg">{{ deletingMsg }}</SimpleLoading>
     <div class="products__list row g-4 justify-content-between">
-      <MyProductCard></MyProductCard>
+      <p v-if="isLoading">Loading...</p>
+      <p v-else-if="(!myProducts || myProducts.length < 1) && !isLoading">Nothing here, but us chicken</p>
+      <MyProductCard v-for="item in myProducts" :product="item" @delete-product="deleteThisProduct"></MyProductCard>
     </div>
   </div>
 </template>
 
 <script setup>
-import BaseModalTwo from "../Modal/BaseModalTwo.vue";
-import SimpleLoading from "../Loading/SimpleLoading.vue";
 import MyProductCard from "../Products/MyProductCard.vue";
-import { computed, ref, reactive } from "vue";
-import { useAuthStore } from "../../stores/auth";
-const authStore = useAuthStore();
-const errorMsg = ref("");
-
-const isLoading = ref("");
+import SimpleLoading from "../Loading/SimpleLoading.vue";
+import { ref, onMounted } from "vue";
+import { useProductStore } from "../../stores/product";
+const productStore = useProductStore();
+const isLoading = ref(false);
+const myProducts = ref([]);
+const deletingMsg = ref("");
+onMounted(async () => {
+  isLoading.value = true;
+  const data = await productStore.finMyProduct();
+  isLoading.value = false;
+  myProducts.value = data;
+  console.log(myProducts.value);
+});
+async function deleteThisProduct(key) {
+  try {
+    deletingMsg.value = "loading...";
+    await productStore.deleteMyProduct(key);
+    deletingMsg.value = "products has been deleted";
+    myProducts.splice(index, 1);
+    setTimeout(() => {
+      deletingMsg.value = "";
+    }, 3000);
+  } catch (error) {
+    console.log(error);
+  }
+}
 </script>
 
 <style scoped>

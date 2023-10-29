@@ -15,6 +15,7 @@ export const useAuthStore = defineStore("auth", {
       return state.user;
     },
     getLogin: (state) => state.isLogin,
+    getToken: (state) => state.accessToken,
   },
   actions: {
     // attemp

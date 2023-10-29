@@ -5,7 +5,7 @@
   <!-- main session -->
   <main class="main__container container font-main">
     <!-- Popular Items -->
-    <productsList product-title="Popular Products"></productsList>
+    <products-list product-title="Popular Products" :products="popularProducts"></products-list>
     <!-- Shop by brand -->
     <div class="shop-by-brand container">
       <div class="shop-by-brand__title">
@@ -18,20 +18,38 @@
       </div>
     </div>
     <!-- New products -->
-    <products-list product-title="New Products" class="new-products"></products-list>
+    <products-list product-title="New Products" class="new-products" :products="newProducts"></products-list>
   </main>
   <FooterComponent></FooterComponent>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
 import NavbarComponent from "../components/navbar/NavbarComponent.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
 import BannerView from "../components/Header/BannerView.vue";
 import ProductsList from "../components/Products/ProductsList.vue";
+import { useProductStore } from "../stores/product";
 import { useRouter } from "vue-router";
 const brands = ref(["Vans", "Boho", "Mango", "Reebok", "Converse", "Sandro", "Nike", "Adidas", "Dior", "Puma", "Zara", "Bershka", "American Eagle"]);
 const router = useRouter();
+const productStore = useProductStore();
+onMounted(async () => {
+  await productStore.findAllProducts();
+});
+const popularProducts = computed(() => {
+  return productStore.getAllProducts;
+});
+
+const newProducts = computed(() => {
+  return productStore.getAllProducts.sort((a, b) => {
+    const date1 = new Date(a.createdAt);
+    const date2 = new Date(b.createdAt);
+    return date1 - date2;
+  });
+  // return productStore.getAllProducts;
+});
+
 function findByBrand(brand) {
   router.push({
     name: "Collection",
