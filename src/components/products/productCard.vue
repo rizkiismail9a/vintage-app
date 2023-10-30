@@ -1,8 +1,8 @@
 <template>
   <div class="col-6 product__card" :class="{ 'col-md-3': isOnDetail === true, 'col-md-2': isOnDetail === false }">
     <div class="d-flex flex-column row-gap-2">
-      <router-link to="/collection/id">
-        <img :src="product.imageLink" alt="gambar baju" class="product__image" />
+      <router-link :to="{ name: 'Detail Product', params: { id: product.key } }">
+        <img :src="product.imageLink" :alt="product.name" class="product__image w-100" />
       </router-link>
       <div class="product__info d-flex flex-column">
         <h3 class="product__price font-500">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(product.price) }}</h3>
@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   product: { type: Object },
   isOnDetail: { type: Boolean, default: false },
 });

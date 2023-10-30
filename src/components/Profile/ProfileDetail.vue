@@ -8,13 +8,13 @@
       <div class="font-500 font-0a flex-grow-1" style="font-size: 14px">Photo</div>
       <div class="input__photo d-flex align-items-center">
         <label for="userPhoto" class="position-relative d-flex align-items-center gap-3">
-          <img v-if="!userData.imageLink" :src="temporaryLink" alt="" class="preview object-fit-cover rounded-circle" width="64" height="64" />
-          <img v-else :src="userData.imageLink" alt="" class="preview object-fit-cover rounded-circle" width="64" height="64" />
+          <img v-if="!newUserData.imageLink" :src="temporaryLink" alt="" class="preview object-fit-cover rounded-circle" width="64" height="64" />
+          <img v-else :src="newUserData.imageLink" alt="" class="preview object-fit-cover rounded-circle" width="64" height="64" />
           <button class="btn btn-secondary font-500 font-40">Choose</button>
           <input type="file" name="" id="userPhoto" class="input__file" @change="createLink" />
           <p class="font-400 font-40 m-0" style="font-size: 14px">JPG, JPEG or PNG, 1 MB max.</p>
         </label>
-        <i class="fa-solid fa-trash-can ms-5"></i>
+        <i class="fa-solid fa-trash-can ms-5 pointer" @click="deletePhoto"></i>
       </div>
     </div>
     <hr />
@@ -107,6 +107,10 @@ function createLink(e) {
     temporaryLink.value = reader.result;
     newUserData.imageLink = reader.result;
   });
+}
+function deletePhoto() {
+  temporaryLink.value = "/images/person.png";
+  newUserData.imageLink = "";
 }
 const isLoading = ref("");
 async function updateProfile() {

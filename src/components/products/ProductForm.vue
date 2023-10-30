@@ -15,6 +15,10 @@
           Product Name
           <input type="text" class="form-control" id="product__name" placeholder="Add your product name" v-model="productData.name" />
         </label>
+        <label for="product__cetagory" class="w-100 font-500 font-0a">
+          Product Cetaogry
+          <input type="text" class="form-control" id="product__cetagory" placeholder="Add your product name" v-model="productData.cetagory" />
+        </label>
         <label for="product__price" class="w-100 font-500 font-0a">
           Product Price
           <input type="number" class="form-control" id="product__price" placeholder="Add your product price" v-model.number="productData.price" />
@@ -69,6 +73,7 @@ const productData = reactive({
   size: "M",
   quality: "",
   description: "",
+  cetagory: "",
 });
 
 const createLink = (e) => {

@@ -3,30 +3,30 @@
     <!-- price -->
     <div class="d-flex justify-content-between flex-column">
       <div class="d-flex justify-content-between detail__price mb-2">
-        <h3>Rp200.000</h3>
+        <h3>{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(product.price) }}</h3>
         <i class="fa-regular fa-heart"></i>
       </div>
-      <p class="detail__name mb-2">Vintage chicago cubs white crewneck</p>
+      <p class="detail__name mb-2">{{ product.name }}</p>
       <div class="detail__size d-flex align-items-center w-75 justify-content-between mb-2">
-        <span>8/M </span>
+        <span>{{ product.size }} </span>
         <i class="fa-solid fa-circle" style="font-size: 5px"></i>
-        <span>Very good</span>
+        <span>{{ product.quality }}</span>
         <i class="fa-solid fa-circle" style="font-size: 5px"></i>
-        <span>Cipanas</span>
+        <span>{{ uploader.regency }}</span>
       </div>
     </div>
     <hr />
     <p class="font-400" style="font-size: 14px; color: #404040">Item Description</p>
-    <p class="font-400" style="font-size: 14px; color: #0a0a0a">Size Xl but fits more like M looser fit has a few minor marks (pictured)</p>
+    <p class="font-400" style="font-size: 14px; color: #0a0a0a">{{ product.description }}</p>
     <div class="detail__metadata row gx-3">
       <p class="col-6" style="color: #0a0a0a">Store name</p>
-      <p class="col-6" style="color: #404040">Dara official store</p>
+      <p class="col-6" style="color: #404040">{{ uploader.fullname }}</p>
       <p class="col-6" style="color: #0a0a0a">Cetagory</p>
-      <p class="col-6" style="color: #404040">Hodies and Sweater</p>
+      <p class="col-6" style="color: #404040">{{ product.cetagory }}</p>
       <p class="col-6" style="color: #0a0a0a">Condition</p>
-      <p class="col-6" style="color: #404040">Very Good</p>
+      <p class="col-6" style="color: #404040">{{ product.quality }}</p>
       <p class="col-6" style="color: #0a0a0a">Uploaded</p>
-      <p class="col-6" style="color: #404040">5 hours ago</p>
+      <p class="col-6" style="color: #404040">{{ product.createdAt }}</p>
       <p class="col-6" style="color: #0a0a0a">Shipping</p>
       <p class="col-6" style="color: #404040">Rp20.000</p>
     </div>
@@ -53,7 +53,19 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { computed } from "vue";
+import { useProductStore } from "../../stores/product";
+import { useAuthStore } from "../../stores/auth";
+const productStore = useProductStore();
+const authStore = useAuthStore();
+const product = computed(() => {
+  return productStore.getProductDetail;
+});
+const uploader = computed(() => {
+  return authStore.userById;
+});
+</script>
 
 <style scoped>
 .detail__information {

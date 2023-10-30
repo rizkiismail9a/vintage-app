@@ -8,6 +8,7 @@ export const useAuthStore = defineStore("auth", {
       accessToken: null,
       isLogin: false,
       tokenExp: null,
+      userById: {},
     };
   },
   getters: {
@@ -125,6 +126,19 @@ export const useAuthStore = defineStore("auth", {
         await axios.patch(import.meta.env.VITE_BASE_URI + `/users/${uKey}.json?auth=${this.accessToken}`, payload);
       } catch (error) {
         throw new Error(error.response.data.error.message);
+      }
+    },
+    async findUserById(payload) {
+      try {
+        const { data } = await axios.get(import.meta.env.VITE_BASE_URI + `/users.json`);
+        for (let key in data) {
+          if (data[key].userId === payload) {
+            this.userById = data[key];
+            return;
+          }
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
   },

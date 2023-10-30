@@ -12,21 +12,14 @@
   <NavbarComponent></NavbarComponent>
   <div class="detail__wrapper container-md mx-auto row gx-5 flex-column-reverse flex-md-row">
     <div class="col-md-8 row d-flex">
-      <img class="detail__image w-100 object-fit-cover" src="../assets/images/baju1.png" alt="product name" />
+      <img class="detail__image w-100 object-fit-cover" :src="detailProduct.imageLink" alt="product name" />
       <!-- other product list -->
       <div class="other__product d-flex flex-column w-100">
         <div class="products__title d-flex flex-row justify-content-between align-items-center">
           <h2 class="font-500" style="font-size: 24px">Other Products</h2>
         </div>
         <div class="row gy-5">
-          <product-card :is-on-detail="true"></product-card>
-          <product-card :is-on-detail="true"></product-card>
-          <product-card :is-on-detail="true"></product-card>
-          <product-card :is-on-detail="true"></product-card>
-          <product-card :is-on-detail="true"></product-card>
-          <product-card :is-on-detail="true"></product-card>
-          <product-card :is-on-detail="true"></product-card>
-          <product-card :is-on-detail="true"></product-card>
+          <product-card :is-on-detail="true" v-for="p in relatedProduct" :product="p"></product-card>
         </div>
       </div>
     </div>
@@ -39,13 +32,29 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import ProductCard from "../components/Products/ProductCard.vue";
 import NavbarComponent from "../components/navbar/NavbarComponent.vue";
 import FooterComponent from "../components/footer/FooterComponent.vue";
 import DetailInformationCard from "../components/Detail/DetailInformationCard.vue";
 import BaseModalOne from "../components/Modal/BaseModalOne.vue";
+import { useProductStore } from "../stores/product";
+import { useRoute } from "vue-router";
 const showModal = ref(false);
+const productStore = useProductStore();
+const route = useRoute();
+onMounted(async () => {
+  await productStore.findOneProduct(route.params.id);
+  await productStore.findAllProducts();
+  await productStore.findRelatedProduct();
+});
+const detailProduct = computed(() => {
+  return productStore.getProductDetail;
+});
+const relatedProduct = computed(() => {
+  const data = productStore.getRelatedProducts;
+  return data.filter((item) => item.key !== route.params.id);
+});
 function addToCart() {
   showModal.value = true;
 }
@@ -53,7 +62,7 @@ function addToCart() {
 
 <style scoped>
 .detail__wrapper {
-  margin-top: 88px;
+  padding-top: 104px;
   margin-bottom: 140px;
   min-height: 100vh;
 }
