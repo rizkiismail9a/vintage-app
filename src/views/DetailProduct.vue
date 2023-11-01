@@ -39,13 +39,15 @@ import FooterComponent from "../components/footer/FooterComponent.vue";
 import DetailInformationCard from "../components/Detail/DetailInformationCard.vue";
 import BaseModalOne from "../components/Modal/BaseModalOne.vue";
 import { useProductStore } from "../stores/product";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import { useAuthStore } from "../stores/auth";
 const showModal = ref(false);
+const authStore = useAuthStore();
 const productStore = useProductStore();
 const route = useRoute();
+const router = useRouter();
 onMounted(async () => {
   await productStore.findOneProduct(route.params.id);
-  await productStore.findAllProducts();
   await productStore.findRelatedProduct();
 });
 const detailProduct = computed(() => {
@@ -55,8 +57,16 @@ const relatedProduct = computed(() => {
   const data = productStore.getRelatedProducts;
   return data.filter((item) => item.key !== route.params.id);
 });
-function addToCart() {
-  showModal.value = true;
+async function addToCart() {
+  if (!authStore.getLogin) {
+    return router.push("/login");
+  }
+  try {
+    await productStore.addToCart(route.params.id);
+    showModal.value = true;
+  } catch (error) {
+    console.log(error);
+  }
 }
 </script>
 

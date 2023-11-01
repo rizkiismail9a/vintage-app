@@ -31,7 +31,6 @@ onMounted(async () => {
   const data = await productStore.finMyProduct();
   isLoading.value = false;
   myProducts.value = data;
-  console.log(myProducts.value);
 });
 async function deleteThisProduct(key) {
   try {

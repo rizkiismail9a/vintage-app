@@ -26,7 +26,7 @@
       <p class="col-6" style="color: #0a0a0a">Condition</p>
       <p class="col-6" style="color: #404040">{{ product.quality }}</p>
       <p class="col-6" style="color: #0a0a0a">Uploaded</p>
-      <p class="col-6" style="color: #404040">{{ product.createdAt }}</p>
+      <p class="col-6" style="color: #404040">{{ new Date(product.createdAt).toLocaleDateString("en-EN", { weekday: "short", year: "numeric", month: "short", day: "numeric" }) }}</p>
       <p class="col-6" style="color: #0a0a0a">Shipping</p>
       <p class="col-6" style="color: #404040">Rp20.000</p>
     </div>

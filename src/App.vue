@@ -1,6 +1,7 @@
 <template>
   <div class="font-main" :class="{ 'bg-grey': routeName }">
-    <router-view></router-view>
+    <!-- router key diperlukan untuk melakukan force replacement /  rerender halaman setiap kali router berpindah -->
+    <router-view :key="$route.fullPath"></router-view>
   </div>
   <!-- {{ routeName }} -->
 </template>

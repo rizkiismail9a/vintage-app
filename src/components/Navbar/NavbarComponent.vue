@@ -25,10 +25,12 @@
         </div>
         <div v-else class="d-flex gap-4 navbar__auth justify-content-between align-items-center">
           <div class="d-flex flex-grow-1 gap-3">
-            <div class="position-relative p-0">
+            <!-- cart -->
+            <router-link to="/cart/cart-product-card/cart-summary" class="position-relative p-0">
               <img src="../../assets/images/cart.png" width="36" height="36" />
-              <span class="notification__count rounded-circle position-absolute text-white pb-1">1</span>
-            </div>
+              <span class="notification__count rounded-circle position-absolute text-white pb-1">{{ cartLength }}</span>
+            </router-link>
+            <!-- wishlist -->
             <div class="position-relative p-0">
               <img src="../../assets/images/heart.png" width="36" height="36" />
               <span class="notification__count rounded-circle position-absolute text-white pb-1">1</span>
@@ -57,6 +59,7 @@ import BaseModalThree from "../Modal/BaseModalThree.vue";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../../stores/auth";
+import { useProductStore } from "../../stores/product";
 const showNavbar = ref(false);
 const wannaLogout = ref(false);
 const router = useRouter();
@@ -67,6 +70,7 @@ const props = defineProps({
 const keyword = ref("");
 const wannaGoToProfile = ref(false);
 const authStore = useAuthStore();
+const productStore = useProductStore();
 function goToCollection() {
   if (!props.isAtCollection) {
     router.push("/collection");
@@ -77,6 +81,14 @@ const user = computed(() => {
 });
 const isLogin = computed(() => {
   return authStore.getLogin;
+});
+const cartLength = computed(() => {
+  const cartObject = authStore.getUser.cart;
+  if (cartObject) {
+    return Object.keys(authStore.getUser.cart).length;
+  } else {
+    return 0;
+  }
 });
 async function logout() {
   wannaLogout.value = true;

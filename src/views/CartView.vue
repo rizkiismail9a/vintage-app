@@ -3,14 +3,20 @@
   <div class="cart__wrapper container row mx-auto gx-4" :class="{ 'bg-f5': getRoute === 'checkout-card' }">
     <div class="cart__products col-md-8">
       <!-- cart title -->
-      <div v-if="getParams1 === 'cart-product-card'" class="cart__title d-flex justify-content-between align-items-center">
+      <div v-if="getParams1 === 'cart-product-card'" class="cart__title d-flex justify-content-between align-items-center border-bottom">
         <h1 class="font-500">Cart</h1>
-        <p class="cart__amount font-500">4 items</p>
+        <p v-if="cartLength > 0" class="cart__amount font-500">{{ cartLength }} items</p>
+        <p v-else class="cart__amount font-500">You don’t have any item yet</p>
       </div>
       <!-- products and address -->
-      <div class="cart__product-list d-flex flex-column gap-4 mb-5">
+      <div class="cart__product-list d-flex flex-column gap-4 mb-5" :class="{ 'bg-f5': cartLength > 0 }">
         <component :is="component1[getParams1]"></component>
         <!-- <cart-product-card></cart-product-card> -->
+      </div>
+      <!-- summary, for phone -->
+      <div class="cart__summary col-md-4 d-md-none d-block">
+        <component :is="component2[getParams2]"></component>
+        <!-- <cart-summary></cart-summary> -->
       </div>
       <!-- other product list -->
       <div v-if="getParams1 === 'cart-product-card'" class="other__product d-flex flex-column w-100">
@@ -18,18 +24,11 @@
           <h2 class="font-500" style="font-size: 24px">Other Products</h2>
         </div>
         <div class="row gy-5">
-          <product-card :is-on-detail="true"></product-card>
-          <product-card :is-on-detail="true"></product-card>
-          <product-card :is-on-detail="true"></product-card>
-          <product-card :is-on-detail="true"></product-card>
-          <product-card :is-on-detail="true"></product-card>
-          <product-card :is-on-detail="true"></product-card>
-          <product-card :is-on-detail="true"></product-card>
-          <product-card :is-on-detail="true"></product-card>
+          <product-card :is-on-detail="true" v-for="p in getProducts" :product="p"></product-card>
         </div>
       </div>
     </div>
-    <div class="cart__summary col-md-4">
+    <div class="cart__summary col-md-4 d-md-block d-none">
       <component :is="component2[getParams2]"></component>
       <!-- <cart-summary></cart-summary> -->
     </div>
@@ -45,10 +44,16 @@ import FooterComponent from "../components/footer/FooterComponent.vue";
 import CartSummary from "../components/Cart/CartSummary.vue";
 import CheckoutCart from "../components/Cart/CheckoutCard.vue";
 import CheckoutSummary from "../components/Cart/CheckoutSummary.vue";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { useProductStore } from "../stores/product.js";
+import { useAuthStore } from "../stores/auth";
 const route = useRoute();
-
+onMounted(async () => {
+  await productStore.findAllProducts();
+});
+const productStore = useProductStore();
+const authStore = useAuthStore();
 const component1 = {
   "cart-product-card": CartProductCard,
   "checkout-card": CheckoutCart,
@@ -63,9 +68,23 @@ const getParams1 = computed(() => {
 const getParams2 = computed(() => {
   return route.params.component2;
 });
+const getProducts = computed(() => {
+  return productStore.getAllProducts;
+});
+const cartLength = computed(() => {
+  const cartObject = authStore.getUser.cart;
+  if (cartObject) {
+    return Object.keys(authStore.getUser.cart).length;
+  } else {
+    return 0;
+  }
+});
 </script>
 
 <style scoped>
+.bg-f5 {
+  background-color: #f5f5f5;
+}
 .cart__wrapper {
   padding-top: 88px;
   margin-bottom: 140px;
@@ -75,6 +94,8 @@ const getParams2 = computed(() => {
   background-color: #f5f5f5;
 }
 .cart__title {
+  /* padding-top: 24px; */
+  padding-bottom: 20px;
   margin-bottom: 21px;
 }
 .cart__title h1 {
@@ -86,10 +107,14 @@ const getParams2 = computed(() => {
   padding: 2px 8px 2px 8px;
 }
 .cart__product-list {
-  background-color: #f5f5f5;
   padding: 12px 0 12px 0;
 }
 .other__product {
   margin-bottom: 150px;
+}
+@media screen and (max-width: 768px) {
+  .cart__wrapper {
+    padding-top: 74px !important;
+  }
 }
 </style>

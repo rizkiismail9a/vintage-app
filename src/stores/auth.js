@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useProductStore } from "./product";
 export const useAuthStore = defineStore("auth", {
   state: () => {
     return {
@@ -21,8 +22,10 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     // attemp
     async attemp(payload) {
+      // const productStore = useProductStore();
       await this.findUser(payload.UID);
       await this.refresh(payload.token);
+      // await productStore.findCartContent();
     },
     // register
     // simpan di autentikasi
@@ -81,7 +84,6 @@ export const useAuthStore = defineStore("auth", {
         Cookies.set("tokenExp", this.tokenExp, { sameSite: "None", secure: true, expires: 1 });
         await this.refresh(data.idToken);
         await this.findUser(data.localId);
-        console.log(data);
       } catch (error) {
         throw new Error(error.response.data.error.message);
       }
@@ -93,6 +95,7 @@ export const useAuthStore = defineStore("auth", {
           if (data[key].userId === payload) {
             this.isLogin = true;
             this.user = data[key];
+            Cookies.set("userKey", key, { sameSite: "None", secure: true, expires: 1 });
           }
         }
         return data;
@@ -108,6 +111,7 @@ export const useAuthStore = defineStore("auth", {
       Cookies.remove("accessToken");
       Cookies.remove("UID");
       Cookies.remove("tokenExp");
+      Cookies.remove("userKey");
       this.user = {};
       this.accessToken = null;
       this.isLogin = false;
@@ -133,7 +137,7 @@ export const useAuthStore = defineStore("auth", {
         const { data } = await axios.get(import.meta.env.VITE_BASE_URI + `/users.json`);
         for (let key in data) {
           if (data[key].userId === payload) {
-            this.userById = data[key];
+            this.userById = { key, ...data[key] };
             return;
           }
         }
