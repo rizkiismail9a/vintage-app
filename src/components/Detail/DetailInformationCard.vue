@@ -4,7 +4,8 @@
     <div class="d-flex justify-content-between flex-column">
       <div class="d-flex justify-content-between detail__price mb-2">
         <h3>{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(product.price) }}</h3>
-        <i class="fa-regular fa-heart"></i>
+        <i class="fa-regular fa-heart pointer" v-if="!isLiked" @click="likeThePost"></i>
+        <i class="fa-solid fa-heart pointer" v-else style="color: red" @click="dislikeThePost"></i>
       </div>
       <p class="detail__name mb-2">{{ product.name }}</p>
       <div class="detail__size d-flex align-items-center w-75 justify-content-between mb-2">
@@ -56,17 +57,60 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useProductStore } from "../../stores/product";
 import { useAuthStore } from "../../stores/auth";
+import { useRoute, useRouter } from "vue-router";
 const productStore = useProductStore();
 const authStore = useAuthStore();
+const isLiked = ref(false);
+const route = useRoute();
+const router = useRouter();
+onMounted(() => {
+  const likes = productStore.getProductDetail.likes;
+  const userId = authStore.getUser.userId;
+  if (userId) {
+    for (let key in likes) {
+      if (likes[key].UID == userId) {
+        isLiked.value = true;
+      }
+    }
+  } else {
+    isLiked.value = false;
+  }
+});
 const product = computed(() => {
   return productStore.getProductDetail;
 });
 const uploader = computed(() => {
   return authStore.userById;
 });
+async function likeThePost() {
+  try {
+    if (!authStore.getToken) {
+      return router.push("/login");
+    }
+    isLiked.value = true;
+    await productStore.likeAProduct({ productKey: route.params.id });
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function dislikeThePost() {
+  // ini object
+  const likes = productStore.getProductDetail.likes;
+  for (let key in likes) {
+    if (likes[key].UID === authStore.getUser.userId) {
+      try {
+        // likesCounter.value -= 1;
+        isLiked.value = false;
+        await productStore.disLikeAProduct({ productKey: route.params.id, likesKey: key });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+}
 </script>
 
 <style scoped>

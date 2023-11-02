@@ -210,5 +210,26 @@ export const useProductStore = defineStore("product", {
         console.log(error);
       }
     },
+    // like a product
+    async likeAProduct({ productKey }) {
+      const UID = Cookies.get("UID");
+      const token = Cookies.get("accessToken");
+      try {
+        await axios.post(import.meta.env.VITE_BASE_URI + `/products/${productKey}/likes.json?auth=${token}`, { UID });
+        await this.findAllProducts();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // dislike a product
+    async disLikeAProduct({ productKey, likesKey }) {
+      const token = Cookies.get("accessToken");
+      try {
+        await axios.delete(import.meta.env.VITE_BASE_URI + `/products/${productKey}/likes/${likesKey}.json?auth=${token}`);
+        await this.findAllProducts();
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 });

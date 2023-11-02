@@ -6,13 +6,14 @@
       </div>
       <div class="product__info d-flex flex-column">
         <h3 class="product__price font-500">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(props.product.price) }}</h3>
-        <h1 class="product__name flex-grow-1">{{ props.product.name }}</h1>
-        {{ typeof props.product.productKey }}
+        <h1 class="product__name flex-grow-1 text-truncate">{{ props.product.name }}</h1>
+
         <div class="d-flex justify-content-between">
           <span class="product__size">{{ props.product.size }}</span>
-          <span class="like__button">
-            <i class="fa-regular fa-heart"></i>
-            {{ props.product.likes.length }}
+          <span class="like__button pointer">
+            <i class="fa-regular fa-heart" v-if="!isLiked" @click="likeThePost(props.product.productKey)"></i>
+            <i class="fa-solid fa-heart" style="color: red" v-else @click="dislikeThePost(props.product.productKey)"></i>
+            {{ likesCounter }}
           </span>
         </div>
       </div>
@@ -21,15 +22,69 @@
 </template>
 
 <script setup>
-import { toRef } from "vue";
+import { computed, onMounted, ref, toRef } from "vue";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "../../stores/auth";
+import { useProductStore } from "../../stores/product";
 const props = defineProps({
   product: { type: Object },
   isOnDetail: { type: Boolean, default: false },
 });
+const authStore = useAuthStore();
+const productStore = useProductStore();
+onMounted(() => {
+  const likes = props.product.likes;
+  const userId = authStore.getUser.userId;
+  if (userId) {
+    for (let key in likes) {
+      if (likes[key].UID == userId) {
+        isLiked.value = true;
+      }
+    }
+  } else {
+    isLiked.value = false;
+  }
+});
 const router = useRouter();
 function goToDetail() {
   router.push({ name: "Detail Product", params: { id: props.product.productKey } });
+}
+const isLiked = ref(false);
+const likesCounter = computed(() => {
+  const likesObject = props.product.likes;
+  if (likesObject !== undefined) {
+    return Object.keys(props.product.likes).length;
+  } else {
+    return 0;
+  }
+});
+// const likesCounter = ref(Object.keys(props.product.likes).length);
+async function likeThePost(productKey) {
+  try {
+    if (!authStore.getToken) {
+      return router.push("/login");
+    }
+    // likesCounter.value += 1;
+    isLiked.value = true;
+    await productStore.likeAProduct({ productKey });
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function dislikeThePost(productKey) {
+  // ini object
+  const likes = props.product.likes;
+  for (let key in likes) {
+    if (likes[key].UID === authStore.getUser.userId) {
+      try {
+        // likesCounter.value -= 1;
+        isLiked.value = false;
+        await productStore.disLikeAProduct({ productKey, likesKey: key });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 }
 </script>
 <style scoped>

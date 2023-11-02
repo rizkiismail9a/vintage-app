@@ -72,7 +72,7 @@ const getProducts = computed(() => {
   return productStore.getOtherProducts;
 });
 const cartLength = computed(() => {
-  const cartObject = authStore.getUser.cart;
+  const cartObject = authStore.getUser?.cart;
   if (cartObject) {
     return Object.keys(authStore.getUser.cart).length;
   } else {
