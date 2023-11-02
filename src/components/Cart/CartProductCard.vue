@@ -1,12 +1,15 @@
 <template>
-  <div v-if="cartContent.length !== 0" class="address mx-4 d-flex gap-3 align-items-center p-0">
+  <div v-if="isLoading" class="d-flex justify-content-center align-items-center">
+    <LoadingSpinner></LoadingSpinner>
+  </div>
+  <div v-if="cartContent.length !== 0 && !isLoading" class="address mx-4 d-flex gap-3 align-items-center p-0">
     <img src="../../assets/images/addressPin.png" alt="address pin" width="16" />
     <p class="m-0 font-40">
       Shipping to <b style="color: #0a0a0a">{{ user.regency }}, {{ user.province }}</b>
     </p>
   </div>
   <!-- if the cart is empty -->
-  <div v-if="cartContent.length === 0" class="empty__msg d-flex gap-3 flex-column align-items-center justify-content-center mx-auto">
+  <div v-else-if="cartContent.length === 0 && !isLoading" class="empty__msg d-flex gap-3 flex-column align-items-center justify-content-center mx-auto">
     <img src="/images/emptyCart.png" alt="" width="118" height="118" />
     <div>
       <h3 class="font-500 text-center" style="font-size: 28px">Your cart still empty</h3>
@@ -15,34 +18,35 @@
     <router-link to="/collection" class="btn btn-primary find__product">Find Products</router-link>
   </div>
   <!-- looping di sini -->
-  <div v-else v-for="(c, index) in cartContent" :key="c.key" class="cart__product-card bg-white d-flex flex-column gap-4">
+  <div v-for="(product, index) in cartContent" :key="product.productKey" class="cart__product-card bg-white d-flex flex-column gap-4">
     <div class="product__info d-flex gap-4 flex-grow-1">
-      <img :src="c.imageLink" alt="gambar produk" width="80" class="object-fit-cover" height="80" />
+      <img :src="product.imageLink" alt="gambar produk" width="80" class="object-fit-cover" height="80" />
       <div class="d-flex flex-column justify-content-between">
         <div class="product__metadata m-0 flex-grow-1">
-          <p class="m-0 font-400 product__name">{{ c.name }}</p>
-          <p class="m-0 font-400" style="font-size: 12px; letter-spacing: 0.1px; color: #404040">{{ c.size }}</p>
+          <p class="m-0 font-400 product__name">{{ product.name }}</p>
+          <p class="m-0 font-400" style="font-size: 12px; letter-spacing: 0.1px; color: #404040">{{ product.size }}</p>
         </div>
-        <p class="my-0 font-500" style="font-size: 14px; color: #0a0a0a">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(c.price * c.amount) }}</p>
+        <p class="my-0 font-500" style="font-size: 14px; color: #0a0a0a">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(product.price * product.amount) }}</p>
+        {{ typeof product.productKey }}
       </div>
     </div>
     <div class="product__action d-flex justify-content-between align-items-center">
-      <p class="remove my-0 font-500 pointer" style="color: #cb3a31" @click="removeProduct(c.cartKey, index)">Remove</p>
+      <p class="remove my-0 font-500 pointer" style="color: #cb3a31" @click="removeProduct(product.cartKey, index)">Remove</p>
       <div class="amount border rounded d-flex align-items-center justify-content-evenly font-500" style="color: #404040">
         <span
           class="d-block text-center decrement_btn"
           @click="
-            c.amount--;
-            changeAmount(c.amount, c.cartKey, index);
+            product.amount--;
+            changeAmount(product.amount, product.cartKey, index);
           "
           >-</span
         >
-        <input type="number" class="d-block text-center" min="1" v-model="c.amount" @keyup="changeAmount(c.amount, c.cartKey, index)" />
+        <input type="number" class="d-block text-center" min="1" v-model="product.amount" @keyup="changeAmount(product.amount, product.cartKey, index)" />
         <span
           class="d-block text-center increment_btn"
           @click="
-            c.amount++;
-            changeAmount(c.amount, c.cartKey, index);
+            product.amount++;
+            changeAmount(product.amount, product.cartKey, index);
           "
           >+</span
         >
@@ -52,17 +56,20 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import { useProductStore } from "../../stores/product";
 const authStore = useAuthStore();
 const productStore = useProductStore();
+const isLoading = ref(false);
 const user = computed(() => {
   return authStore.getUser;
 });
 onMounted(async () => {
   try {
+    isLoading.value = true;
     await productStore.findCartContent();
+    isLoading.value = false;
   } catch (error) {
     console.log(error);
   }

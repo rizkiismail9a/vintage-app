@@ -5,7 +5,10 @@
   <!-- main session -->
   <main class="main__container container font-main">
     <!-- Popular Items -->
-    <products-list product-title="Popular Products" :products="popularProducts"></products-list>
+    <div v-if="isLoading" class="d-flex justify-content-center align-items-center">
+      <LoadingSpinner></LoadingSpinner>
+    </div>
+    <products-list v-else product-title="Popular Products" :products="popularProducts"></products-list>
     <!-- Shop by brand -->
     <div class="shop-by-brand container">
       <div class="shop-by-brand__title">
@@ -18,13 +21,17 @@
       </div>
     </div>
     <!-- New products -->
-    <products-list product-title="New Products" class="new-products" :products="newProducts"></products-list>
+    <div v-if="isLoading" class="d-flex justify-content-center align-items-center">
+      <LoadingSpinner></LoadingSpinner>
+    </div>
+    <products-list v-else product-title="New Products" class="new-products" :products="newProducts"></products-list>
   </main>
   <FooterComponent></FooterComponent>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
 import NavbarComponent from "../components/navbar/NavbarComponent.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
 import BannerView from "../components/Header/BannerView.vue";
@@ -34,8 +41,11 @@ import { useRouter } from "vue-router";
 const brands = ref(["Vans", "Boho", "Mango", "Reebok", "Converse", "Sandro", "Nike", "Adidas", "Dior", "Puma", "Zara", "Bershka", "American Eagle"]);
 const router = useRouter();
 const productStore = useProductStore();
+const isLoading = ref(false);
 onMounted(async () => {
+  isLoading.value = true;
   await productStore.findAllProducts();
+  isLoading.value = false;
 });
 const popularProducts = computed(() => {
   return productStore.popularProduct;

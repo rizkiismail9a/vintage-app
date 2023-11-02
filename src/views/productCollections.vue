@@ -6,10 +6,19 @@
       <div class="brand__cards" v-if="keyCard">{{ keyCard }}<img src="../assets/images/close.png" width="20" @click="keyCard = ''" /></div>
     </div>
     <hr />
-    <div v-if="true" class="products__wrapper row gx-4 gy-5">
+    <div v-if="isLoading" class="d-flex h-100 mx-auto p-5 justify-content-center align-items-center">
+      <LoadingSpinner></LoadingSpinner>
+    </div>
+    <div v-else-if="!isLoading" class="products__wrapper row gx-4 gy-5">
       <ProductCard v-for="item in allProducts" :product="item"></ProductCard>
     </div>
-    <product-not-found v-else image-link="/images/bag-cross.png" pop-message="Product not found" sub-message="We cannot find what you looking for, try to use other keywords or reset keyword." button-text="Reset keyword"></product-not-found>
+    <product-not-found
+      v-if="allProducts.length < 1 && !isLoading"
+      image-link="/images/bag-cross.png"
+      pop-message="Product not found"
+      sub-message="We cannot find what you looking for, try to use other keywords or reset keyword."
+      button-text="Reset keyword"
+    ></product-not-found>
   </div>
   <FooterComponent></FooterComponent>
 </template>
@@ -17,6 +26,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
 import NavbarComponent from "../components/navbar/NavbarComponent.vue";
 import ProductCard from "../components/Products/ProductCard.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
@@ -24,6 +34,7 @@ import ProductNotFound from "../components/Products/ProductNotFound.vue";
 import { useProductStore } from "../stores/product";
 const keyCard = ref("");
 const productStore = useProductStore();
+const isLoading = ref(false);
 const router = useRouter();
 const result = ref([]);
 const allProducts = computed(() => {
@@ -32,7 +43,9 @@ const allProducts = computed(() => {
 
 onMounted(async () => {
   try {
+    isLoading.value = true;
     await productStore.findAllProducts();
+    isLoading.value = false;
   } catch (error) {
     console.log(error);
   }

@@ -7,6 +7,7 @@
       <div class="product__info d-flex flex-column">
         <h3 class="product__price font-500">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(props.product.price) }}</h3>
         <h1 class="product__name flex-grow-1">{{ props.product.name }}</h1>
+        {{ typeof props.product.productKey }}
         <div class="d-flex justify-content-between">
           <span class="product__size">{{ props.product.size }}</span>
           <span class="like__button">
@@ -28,7 +29,7 @@ const props = defineProps({
 });
 const router = useRouter();
 function goToDetail() {
-  router.push({ name: "Detail Product", params: { id: props.product.key } });
+  router.push({ name: "Detail Product", params: { id: props.product.productKey } });
 }
 </script>
 <style scoped>

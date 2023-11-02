@@ -69,7 +69,7 @@ const getParams2 = computed(() => {
   return route.params.component2;
 });
 const getProducts = computed(() => {
-  return productStore.getAllProducts;
+  return productStore.getOtherProducts;
 });
 const cartLength = computed(() => {
   const cartObject = authStore.getUser.cart;

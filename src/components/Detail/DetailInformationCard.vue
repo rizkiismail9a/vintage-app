@@ -16,19 +16,21 @@
       </div>
     </div>
     <hr />
-    <p class="font-400" style="font-size: 14px; color: #404040">Item Description</p>
-    <p class="font-400" style="font-size: 14px; color: #0a0a0a">{{ product.description }}</p>
+    <p class="font-400 font-40" style="font-size: 14px">Item Description</p>
+    <p class="font-400 font-0a" style="font-size: 14px">{{ product.description }}</p>
     <div class="detail__metadata row gx-3">
-      <p class="col-6" style="color: #0a0a0a">Store name</p>
-      <p class="col-6" style="color: #404040">{{ uploader.fullname }}</p>
-      <p class="col-6" style="color: #0a0a0a">Cetagory</p>
-      <p class="col-6" style="color: #404040">{{ product.cetagory }}</p>
-      <p class="col-6" style="color: #0a0a0a">Condition</p>
-      <p class="col-6" style="color: #404040">{{ product.quality }}</p>
-      <p class="col-6" style="color: #0a0a0a">Uploaded</p>
-      <p class="col-6" style="color: #404040">{{ new Date(product.createdAt).toLocaleDateString("en-EN", { weekday: "short", year: "numeric", month: "short", day: "numeric" }) }}</p>
-      <p class="col-6" style="color: #0a0a0a">Shipping</p>
-      <p class="col-6" style="color: #404040">Rp20.000</p>
+      <p class="col-6 font-0a">Store name</p>
+      <p class="col-6 font-40">{{ uploader.fullname }}</p>
+      <p class="col-6 font-0a">Cetagory</p>
+      <p class="col-6 font-40">{{ product.cetagory }}</p>
+      <p class="col-6 font-0a">Brand</p>
+      <p class="col-6 font-40">{{ product?.brand || "-" }}</p>
+      <p class="col-6 font-0a">Condition</p>
+      <p class="col-6 font-40">{{ product.quality }}</p>
+      <p class="col-6 font-0a">Uploaded</p>
+      <p class="col-6 font-40">{{ new Date(product.createdAt).toLocaleDateString("en-EN", { weekday: "short", year: "numeric", month: "short", day: "numeric" }) }}</p>
+      <p class="col-6 font-0a">Shipping</p>
+      <p class="col-6 font-40">Rp20.000</p>
     </div>
     <hr />
     <div class="detail__button d-flex flex-column flex-grow-1 gap-3 my-2">

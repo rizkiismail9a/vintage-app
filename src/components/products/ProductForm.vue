@@ -15,13 +15,17 @@
           Product Name
           <input type="text" class="form-control" id="product__name" placeholder="Add your product name" v-model="productData.name" />
         </label>
+        <label for="product__name" class="w-100 font-500 font-0a">
+          Product Brand
+          <input type="text" class="form-control" id="product__name" placeholder="Add your brand name" v-model="productData.brand" />
+        </label>
         <label for="product__cetagory" class="w-100 font-500 font-0a">
           Product Cetaogry
           <input type="text" class="form-control" id="product__cetagory" placeholder="Add your product name" v-model="productData.cetagory" />
         </label>
         <label for="product__price" class="w-100 font-500 font-0a">
           Product Price
-          <input type="number" class="form-control" id="product__price" placeholder="Add your product price" v-model.number="productData.price" />
+          <input type="number" class="form-control" id="product__price" placeholder="Add your product price; Please input number only; Ex: 76000" v-model.number="productData.price" />
         </label>
       </div>
       <hr class="my-4" />
@@ -54,10 +58,10 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import BaseModalTwo from "../Modal/BaseModalTwo.vue";
 import SimpleLoading from "../Loading/SimpleLoading.vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useProductStore } from "../../stores/product";
 
 const props = defineProps({
@@ -66,7 +70,8 @@ const props = defineProps({
 const isLoading = ref(false);
 const errorMsg = ref("");
 const temporaryLink = ref("");
-const productData = reactive({
+const productStore = useProductStore();
+const productData = ref({
   imageLink: "",
   name: "",
   price: "",
@@ -74,27 +79,45 @@ const productData = reactive({
   quality: "",
   description: "",
   cetagory: "",
+  brand: "",
 });
-
+onMounted(async () => {
+  if (props.isForEdit) {
+    productData.value = {};
+    productData.value = productStore.productOnDetail;
+    temporaryLink.value = productStore.productOnDetail.imageLink;
+  }
+});
 const createLink = (e) => {
   const file = e.target.files[0];
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.addEventListener("load", () => {
     temporaryLink.value = reader.result;
-    productData.imageLink = reader.result;
+    productData.value.imageLink = reader.result;
   });
 };
 const router = useRouter();
-const productStore = useProductStore();
+const route = useRoute();
 async function addNewProduct() {
-  try {
-    isLoading.value = true;
-    await productStore.addNewProduct(productData);
-    router.push("/profile/my-products");
-  } catch (error) {
-    isLoading.value = false;
-    errorMsg.value = error;
+  if (!props.isForEdit) {
+    try {
+      isLoading.value = true;
+      await productStore.addNewProduct(productData.value);
+      router.push("/profile/my-products");
+    } catch (error) {
+      isLoading.value = false;
+      errorMsg.value = error;
+    }
+  } else {
+    try {
+      isLoading.value = true;
+      await productStore.editProduct({ product: productData.value, id: route.params.id });
+      router.push("/profile/my-products");
+    } catch (error) {
+      isLoading.value = false;
+      errorMsg.value = error;
+    }
   }
 }
 </script>

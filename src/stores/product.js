@@ -29,6 +29,14 @@ export const useProductStore = defineStore("product", {
     },
     getRelatedProducts: (state) => state.relatedProducts,
     getCart: (state) => state.cart,
+    getOtherProducts: (state) => {
+      const arrOfProductKeyInCart = [];
+      for (let i = 0; i < state.cart.length; i++) {
+        arrOfProductKeyInCart.push(state.cart[i].productKey);
+      }
+      console.log(arrOfProductKeyInCart);
+      return state.products.filter((item) => !arrOfProductKeyInCart.includes(item.productKey));
+    },
   },
   actions: {
     // get all products
@@ -37,7 +45,7 @@ export const useProductStore = defineStore("product", {
         const { data: products } = await axios.get(import.meta.env.VITE_BASE_URI + `/products.json`);
         this.products = [];
         for (let key in products) {
-          const result = { key, ...products[key] };
+          const result = { productKey: key, ...products[key] };
           this.products.push(result);
         }
       } catch (error) {
@@ -47,12 +55,25 @@ export const useProductStore = defineStore("product", {
     // create new product
     async addNewProduct(payload) {
       const authStore = useAuthStore();
-      const key = authStore.getToken;
+      const token = authStore.getToken;
       try {
         const userId = Cookies.get("UID");
         const createdAt = new Date();
         const newData = { userId, likes: "", createdAt, ...payload };
-        await axios.post(import.meta.env.VITE_BASE_URI + `/products.json?auth=${key}`, newData);
+        await axios.post(import.meta.env.VITE_BASE_URI + `/products.json?auth=${token}`, newData);
+      } catch (error) {
+        throw new Error(error.response.data.error.message);
+        // console.log(error);
+      }
+    },
+    async editProduct(payload) {
+      const authStore = useAuthStore();
+      const token = authStore.getToken;
+      try {
+        // const userId = Cookies.get("UID");
+        // const createdAt = new Date();
+        const newData = { ...payload.product };
+        await axios.put(import.meta.env.VITE_BASE_URI + `/products/${payload.id}.json?auth=${token}`, newData);
       } catch (error) {
         throw new Error(error.response.data.error.message);
         // console.log(error);
@@ -60,12 +81,12 @@ export const useProductStore = defineStore("product", {
     },
     // get my product
     async finMyProduct() {
-      const { data: producst } = await axios.get(import.meta.env.VITE_BASE_URI + `/products.json`);
+      const { data: products } = await axios.get(import.meta.env.VITE_BASE_URI + `/products.json`);
       const userId = Cookies.get("UID");
       const myProducts = [];
-      for (let key in producst) {
-        if (producst[key].userId === userId) {
-          myProducts.push({ key, ...producst[key] });
+      for (let key in products) {
+        if (products[key].userId === userId) {
+          myProducts.push({ productKey: key, ...products[key] });
         }
       }
       // console.log(myProducts);
@@ -114,7 +135,7 @@ export const useProductStore = defineStore("product", {
       const data = [];
       this.products.forEach((item) => {
         for (let key in userCart) {
-          if (item.key === userCart[key].productKey) {
+          if (item.productKey === userCart[key].productKey) {
             data.push({ amount: userCart[key].amount, cartKey: key, ...item });
           }
         }
@@ -177,6 +198,7 @@ export const useProductStore = defineStore("product", {
     },
     // remove a product
     async removeFromCart({ cartKey, index }) {
+      const authStore = useAuthStore();
       const UID = Cookies.get("UID");
       const userKey = Cookies.get("userKey");
       const token = Cookies.get("accessToken");

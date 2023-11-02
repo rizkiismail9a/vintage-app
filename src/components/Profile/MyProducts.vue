@@ -9,10 +9,11 @@
     </div>
     <hr />
     <SimpleLoading v-if="deletingMsg">{{ deletingMsg }}</SimpleLoading>
+    <SimpleLoading v-if="isGoingToEdit">Loading...</SimpleLoading>
     <div class="products__list row g-4 justify-content-between">
       <p v-if="isLoading">Loading...</p>
       <p v-else-if="(!myProducts || myProducts.length < 1) && !isLoading">Nothing here, but us chicken</p>
-      <MyProductCard v-for="item in myProducts" :product="item" @delete-product="deleteThisProduct"></MyProductCard>
+      <MyProductCard v-for="item in myProducts" :product="item" @delete-product="deleteThisProduct" @editProduct="editThisProduct"></MyProductCard>
     </div>
   </div>
 </template>
@@ -22,20 +23,23 @@ import MyProductCard from "../Products/MyProductCard.vue";
 import SimpleLoading from "../Loading/SimpleLoading.vue";
 import { ref, onMounted } from "vue";
 import { useProductStore } from "../../stores/product";
+import { useRouter } from "vue-router";
 const productStore = useProductStore();
 const isLoading = ref(false);
 const myProducts = ref([]);
 const deletingMsg = ref("");
+const isGoingToEdit = ref(false);
+const router = useRouter();
 onMounted(async () => {
   isLoading.value = true;
   const data = await productStore.finMyProduct();
   isLoading.value = false;
   myProducts.value = data;
 });
-async function deleteThisProduct(key) {
+async function deleteThisProduct(productKey) {
   try {
     deletingMsg.value = "loading...";
-    await productStore.deleteMyProduct(key);
+    await productStore.deleteMyProduct(productKey);
     deletingMsg.value = "products has been deleted";
     myProducts.splice(index, 1);
     setTimeout(() => {
@@ -44,6 +48,12 @@ async function deleteThisProduct(key) {
   } catch (error) {
     console.log(error);
   }
+}
+async function editThisProduct(productKey) {
+  isGoingToEdit.value = true;
+  await productStore.findOneProduct(productKey);
+  isGoingToEdit.value = false;
+  router.push({ name: "Edit New Product", params: { id: productKey } });
 }
 </script>
 

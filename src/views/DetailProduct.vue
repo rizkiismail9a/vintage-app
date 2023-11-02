@@ -55,7 +55,7 @@ const detailProduct = computed(() => {
 });
 const relatedProduct = computed(() => {
   const data = productStore.getRelatedProducts;
-  return data.filter((item) => item.key !== route.params.id);
+  return data.filter((item) => item.productKey !== route.params.id);
 });
 async function addToCart() {
   if (!authStore.getLogin) {

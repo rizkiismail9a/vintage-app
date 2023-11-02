@@ -40,6 +40,11 @@ const router = createRouter({
       component: () => import("../views/AddProductView.vue"),
     },
     {
+      path: "/product/edit/:id",
+      name: "Edit New Product",
+      component: () => import("../views/EditProductView.vue"),
+    },
+    {
       path: "/login",
       name: "Login",
       component: () => import("../views/LoginView.vue"),
@@ -48,11 +53,6 @@ const router = createRouter({
       path: "/signup",
       name: "Sign Up",
       component: () => import("../views/RegisterView.vue"),
-    },
-    {
-      path: "/latihan",
-      name: "Latihan",
-      component: () => import("../views/LatihanView.vue"),
     },
   ],
   scrollBehavior() {
