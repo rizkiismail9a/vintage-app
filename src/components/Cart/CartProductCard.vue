@@ -83,7 +83,7 @@ async function changeAmount(inputan, cartKey, index) {
       cartContent[index].amount = 1;
       inputan = 1;
     }
-    await productStore.updateCartAmont({ inputan, cartKey });
+    await productStore.updateCartAmount({ inputan, cartKey });
   } catch (error) {
     console.log(error);
   }

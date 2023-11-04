@@ -34,8 +34,20 @@ export const useProductStore = defineStore("product", {
       for (let i = 0; i < state.cart.length; i++) {
         arrOfProductKeyInCart.push(state.cart[i].productKey);
       }
-      console.log(arrOfProductKeyInCart);
       return state.products.filter((item) => !arrOfProductKeyInCart.includes(item.productKey));
+    },
+    getFavoriteProduct: (state) => {
+      const userId = Cookies.get("UID");
+      const likedProductArr = [];
+
+      state.products.forEach((item) => {
+        for (let key in item.likes) {
+          if (item.likes[key].UID === userId) {
+            likedProductArr.push(item);
+          }
+        }
+      });
+      return likedProductArr;
     },
   },
   actions: {
@@ -175,7 +187,7 @@ export const useProductStore = defineStore("product", {
       }
     },
     // update product amount in the cart
-    async updateCartAmont({ inputan, cartKey }) {
+    async updateCartAmount({ inputan, cartKey }) {
       const authStore = useAuthStore();
       const { cart } = authStore.getUser;
       const userKey = Cookies.get("userKey");
@@ -225,7 +237,17 @@ export const useProductStore = defineStore("product", {
     async disLikeAProduct({ productKey, likesKey }) {
       const token = Cookies.get("accessToken");
       try {
-        await axios.delete(import.meta.env.VITE_BASE_URI + `/products/${productKey}/likes/${likesKey}.json?auth=${token}`);
+        const { data: product } = await axios.get(import.meta.env.VITE_BASE_URI + `/products/${productKey}.json`);
+        const { likes } = product;
+        for (let key in likes) {
+          if (key === likesKey) {
+            console.log(key, likesKey);
+            delete likes[key];
+          }
+        }
+        const newData = { ...likes };
+        console.log(newData);
+        await axios.put(import.meta.env.VITE_BASE_URI + `/products/${productKey}/likes.json?auth=${token}`, newData);
         await this.findAllProducts();
       } catch (error) {
         console.log(error);

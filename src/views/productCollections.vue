@@ -12,13 +12,9 @@
     <div v-else-if="!isLoading" class="products__wrapper row gx-4 gy-5">
       <ProductCard v-for="item in allProducts" :product="item"></ProductCard>
     </div>
-    <product-not-found
-      v-if="allProducts.length < 1 && !isLoading"
-      image-link="/images/bag-cross.png"
-      pop-message="Product not found"
-      sub-message="We cannot find what you looking for, try to use other keywords or reset keyword."
-      button-text="Reset keyword"
-    ></product-not-found>
+    <product-not-found v-if="allProducts.length < 1 && !isLoading" image-link="/images/bag-cross.png" pop-message="Product not found" sub-message="We cannot find what you looking for, try to use other keywords or reset keyword.">
+      <button class="btn btn-primary" style="width: 234px">Reset Keyword</button>
+    </product-not-found>
   </div>
   <FooterComponent></FooterComponent>
 </template>

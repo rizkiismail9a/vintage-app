@@ -13,7 +13,7 @@
           <span class="like__button pointer">
             <i class="fa-regular fa-heart" v-if="!isLiked" @click="likeThePost(props.product.productKey)"></i>
             <i class="fa-solid fa-heart" style="color: red" v-else @click="dislikeThePost(props.product.productKey)"></i>
-            {{ likesCounter }}
+            {{ likesCounterRef }}
           </span>
         </div>
       </div>
@@ -53,18 +53,18 @@ const isLiked = ref(false);
 const likesCounter = computed(() => {
   const likesObject = props.product.likes;
   if (likesObject !== undefined) {
-    return Object.keys(props.product.likes).length;
+    return Object.keys(props.product?.likes).length;
   } else {
     return 0;
   }
 });
-// const likesCounter = ref(Object.keys(props.product.likes).length);
+const likesCounterRef = toRef(likesCounter);
 async function likeThePost(productKey) {
   try {
     if (!authStore.getToken) {
       return router.push("/login");
     }
-    // likesCounter.value += 1;
+    likesCounterRef.value += 1;
     isLiked.value = true;
     await productStore.likeAProduct({ productKey });
   } catch (error) {
@@ -77,7 +77,7 @@ async function dislikeThePost(productKey) {
   for (let key in likes) {
     if (likes[key].UID === authStore.getUser.userId) {
       try {
-        // likesCounter.value -= 1;
+        likesCounterRef.value -= 1;
         isLiked.value = false;
         await productStore.disLikeAProduct({ productKey, likesKey: key });
       } catch (error) {

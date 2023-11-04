@@ -31,10 +31,10 @@
               <span class="notification__count rounded-circle position-absolute text-white pb-1">{{ cartLength }}</span>
             </router-link>
             <!-- wishlist -->
-            <div class="position-relative p-0">
+            <router-link to="/product/favorite" class="position-relative p-0">
               <img src="../../assets/images/heart.png" width="36" height="36" />
-              <span class="notification__count rounded-circle position-absolute text-white pb-1">1</span>
-            </div>
+              <span class="notification__count rounded-circle position-absolute text-white pb-1">{{ likesLength }}</span>
+            </router-link>
           </div>
           <!-- profile foto -->
           <div class="d-flex align-items-center gap-1 position-relative">
@@ -89,6 +89,9 @@ const cartLength = computed(() => {
   } else {
     return 0;
   }
+});
+const likesLength = computed(() => {
+  return productStore.getFavoriteProduct.length;
 });
 async function logout() {
   wannaLogout.value = true;
