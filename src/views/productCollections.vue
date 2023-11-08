@@ -3,17 +3,38 @@
   <div class="collection__container container mx-auto">
     <div class="page__title d-flex flex-row justify-content-between align-items-center">
       <h2 class="font-500" style="font-size: 24px">{{ $route.query?.brand }} Items</h2>
-      <div class="brand__cards" v-if="keyCard">{{ keyCard }}<img src="../assets/images/close.png" width="20" @click="keyCard = ''" /></div>
+      <div class="brand__cards" v-if="keyCard">
+        {{ keyCard
+        }}<img
+          src="../assets/images/close.png"
+          width="20"
+          @click="
+            keyCard = '';
+            bringBackAllProducts();
+          "
+        />
+      </div>
     </div>
     <hr />
     <div v-if="isLoading" class="d-flex h-100 mx-auto p-5 justify-content-center align-items-center">
       <LoadingSpinner></LoadingSpinner>
     </div>
     <div v-else-if="!isLoading" class="products__wrapper row gx-4 gy-5">
-      <ProductCard v-for="item in allProducts" :product="item"></ProductCard>
+      <ProductCard v-for="item in productsCollection" :product="item"></ProductCard>
     </div>
-    <product-not-found v-if="allProducts.length < 1 && !isLoading" image-link="/images/bag-cross.png" pop-message="Product not found" sub-message="We cannot find what you looking for, try to use other keywords or reset keyword.">
-      <button class="btn btn-primary" style="width: 234px">Reset Keyword</button>
+    <product-not-found v-if="productsCollection.length < 1 && !isLoading" image-link="/images/bag-cross.png" pop-message="Product not found" sub-message="We cannot find what you looking for, try to use other keywords or reset keyword.">
+      <button
+        v-if="!$route.query.brand"
+        class="btn btn-primary"
+        style="width: 234px"
+        @click="
+          bringBackAllProducts();
+          keyCard = '';
+        "
+      >
+        Reset Keyword
+      </button>
+      <router-link to="/" v-else class="btn btn-primary">Back to Home</router-link>
     </product-not-found>
   </div>
   <FooterComponent></FooterComponent>
@@ -21,7 +42,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
 import NavbarComponent from "../components/navbar/NavbarComponent.vue";
 import ProductCard from "../components/Products/ProductCard.vue";
@@ -31,23 +52,35 @@ import { useProductStore } from "../stores/product";
 const keyCard = ref("");
 const productStore = useProductStore();
 const isLoading = ref(false);
-const router = useRouter();
-const result = ref([]);
-const allProducts = computed(() => {
-  return productStore.getAllProducts;
-});
-
+const route = useRoute();
+const productsCollection = ref([]);
 onMounted(async () => {
   try {
     isLoading.value = true;
-    await productStore.findAllProducts();
+    const result = await productStore.findAllProducts();
+    if (route.query.brand) {
+      const result = productsCollection.value.filter((item) => item.brand.toLowerCase().includes(route.query.brand.toLowerCase()));
+      isLoading.value = false;
+      productsCollection.value = result;
+      return;
+    }
     isLoading.value = false;
+    productsCollection.value = result;
   } catch (error) {
     console.log(error);
   }
 });
+function bringBackAllProducts() {
+  productsCollection.value = productStore.getAllProducts;
+}
 function search(keyword) {
   keyCard.value = keyword;
+
+  if (keyword === "") {
+    bringBackAllProducts();
+  }
+  const result = productsCollection.value.filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()));
+  productsCollection.value = result;
 }
 </script>
 

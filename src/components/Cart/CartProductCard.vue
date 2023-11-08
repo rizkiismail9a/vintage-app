@@ -55,6 +55,7 @@
 </template>
 
 <script setup>
+import LoadingSpinner from "../Loading/LoadingSpinner.vue";
 import { computed, onMounted, ref } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import { useProductStore } from "../../stores/product";

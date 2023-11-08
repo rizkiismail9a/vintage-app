@@ -10,6 +10,9 @@
     <router-link to="/cart/cart-product-card/cart-summary" class="btn btn-primary">Go to cart</router-link>
   </base-modal-one>
   <NavbarComponent></NavbarComponent>
+  <div v-if="isLoading" class="detail__wrapper d-flex justify-content-center align-items-center h-100">
+    <LoadingSpinner></LoadingSpinner>
+  </div>
   <div class="detail__wrapper container-md mx-auto row gx-5 flex-column-reverse flex-md-row">
     <div class="col-md-8 row d-flex">
       <img class="detail__image w-100 object-fit-cover" :src="detailProduct.imageLink" alt="product name" />
@@ -25,7 +28,7 @@
     </div>
     <!-- detail information -->
     <div class="col-md-4">
-      <detail-information-card @addToCart="addToCart"></detail-information-card>
+      <detail-information-card @addToCart="addToCart" @buyNow="buyNow"></detail-information-card>
     </div>
   </div>
   <FooterComponent></FooterComponent>
@@ -33,6 +36,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
+import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
 import ProductCard from "../components/Products/ProductCard.vue";
 import NavbarComponent from "../components/navbar/NavbarComponent.vue";
 import FooterComponent from "../components/footer/FooterComponent.vue";
@@ -46,9 +50,13 @@ const authStore = useAuthStore();
 const productStore = useProductStore();
 const route = useRoute();
 const router = useRouter();
+const isLoading = ref(false);
+
 onMounted(async () => {
+  isLoading.value = true;
   await productStore.findOneProduct(route.params.id);
   await productStore.findRelatedProduct();
+  isLoading.value = false;
 });
 const detailProduct = computed(() => {
   return productStore.getProductDetail;
@@ -64,6 +72,17 @@ async function addToCart() {
   try {
     await productStore.addToCart(route.params.id);
     showModal.value = true;
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function buyNow() {
+  if (!authStore.getLogin) {
+    return router.push("/login");
+  }
+  try {
+    await productStore.buyTheProductNow(route.params.id);
+    router.push("/cart/checkout-card/checkout-summary");
   } catch (error) {
     console.log(error);
   }

@@ -49,11 +49,13 @@ import { useRoute } from "vue-router";
 import { useProductStore } from "../stores/product.js";
 import { useAuthStore } from "../stores/auth";
 const route = useRoute();
-onMounted(async () => {
-  await productStore.findAllProducts();
-});
 const productStore = useProductStore();
 const authStore = useAuthStore();
+onMounted(async () => {
+  // Ini dipakai untuk ambil other products
+  // await productStore.findAllProducts();
+  await productStore.findCartContent();
+});
 const component1 = {
   "cart-product-card": CartProductCard,
   "checkout-card": CheckoutCart,

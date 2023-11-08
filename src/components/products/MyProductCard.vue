@@ -1,6 +1,7 @@
 <template>
-  <BaseModalOne :image-link="'/images/coffee.png'" modal-msg="Are You Sure?" sub-modal-msg="the product you've deleted, can be restored" v-if="showModal">
-    <button class="btn btn-danger" @click="deleteProduct(product.key)">Delete Products</button>
+  <BaseModalOne :image-link="'/images/coffee.png'" modal-msg="Are You Sure?" sub-modal-msg="the product you've deleted, can't be restored" v-if="showModal">
+    <button class="btn btn-danger" @click="deleteProduct(product.productKey)">Delete Products</button>
+    <button class="btn btn-primary" @click="showModal = false">Cancel</button>
   </BaseModalOne>
 
   <div class="col-md-6">

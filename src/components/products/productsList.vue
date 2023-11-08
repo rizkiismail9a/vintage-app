@@ -9,9 +9,9 @@
       <!-- product cards , looping starts here-->
       <product-card v-for="item in products" :product="item"></product-card>
       <!-- see-all menu -->
-      <a href="/collection" class="col-md-2 col-6">
+      <router-link to="/collection" class="col-md-2 col-6">
         <div class="see-all-menu d-flex font-400 align-items-center justify-content-center mx-auto text-center p-0 h-100">See All <br />Products</div>
-      </a>
+      </router-link>
     </div>
   </div>
 </template>

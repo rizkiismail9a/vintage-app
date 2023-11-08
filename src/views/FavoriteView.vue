@@ -19,7 +19,7 @@
       pop-message="No favorite items yet"
       sub-message="When add item to favorite, the item will appear on the favorite list."
     >
-      <button class="btn btn-primary" style="width: 234px">Find Products</button>
+      <router-link to="/collection" class="btn btn-primary" style="width: 234px">Find Products</router-link>
     </product-not-found>
   </div>
   <FooterComponent></FooterComponent>

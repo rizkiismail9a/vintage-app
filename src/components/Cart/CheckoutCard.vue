@@ -1,15 +1,20 @@
 <template>
   <div class="checkout__card d-flex flex-column gap-4 bg-white">
     <p style="color: #616161" class="font-400">Order</p>
-    <!-- checkout__list -->
-    <div class="product__info d-flex gap-4 flex-grow-1 p-0">
-      <img src="../../assets/images/baju1.png" alt="gambar produk" width="48" class="object-fit-cover" height="48" />
+    <!-- checkout__list looping di sini-->
+    <div v-if="isLoading" class="d-flex justify-content-center">
+      <loading-spinner></loading-spinner>
+    </div>
+    <div v-else class="product__info d-flex gap-4 flex-grow-1 p-0" v-for="product in getCart">
+      <img :src="product.imageLink" alt="gambar produk" width="48" class="object-fit-cover" height="48" />
       <div class="d-flex flex-column justify-content-between flex-grow-1">
         <div class="product__metadata m-0 flex-grow-1">
-          <h1 class="m-0 font-400 product__name d-flex align-items-center justify-content-between w-100">Baju Kuning <span>1x</span></h1>
-          <p class="m-0 font-400" style="font-size: 12px; letter-spacing: 0.1px; color: #404040">8/M</p>
+          <h1 class="m-0 font-400 product__name d-flex align-items-center justify-content-between w-100">
+            {{ product.name }} <span>{{ product.amount }}x</span>
+          </h1>
+          <p class="m-0 font-400" style="font-size: 12px; letter-spacing: 0.1px; color: #404040">{{ product.size }}</p>
         </div>
-        <p class="my-0 font-500 font-0a">Rp200.000</p>
+        <p class="my-0 font-500 font-0a">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(product.price * product.amount) }}</p>
       </div>
     </div>
   </div>
@@ -22,9 +27,28 @@
 </template>
 
 <script setup>
+import LoadingSpinner from "../Loading/LoadingSpinner.vue";
 import AddressCard from "./AddressCard.vue";
 import DelivaryCard from "./DelivaryCard.vue";
 import PaymentCard from "./PaymentCard.vue";
+import { useProductStore } from "../../stores/product";
+import { computed, onMounted, ref } from "vue";
+const isLoading = ref(false);
+onMounted(async () => {
+  isLoading.value = true;
+  await productStore.findCartContent();
+  isLoading.value = false;
+});
+const productStore = useProductStore();
+const getCart = computed(() => {
+  if (productStore.buyAgain.length > 0) {
+    return productStore.buyAgain;
+  } else if (productStore.buyNow.length > 0) {
+    return productStore.buyNow;
+  } else {
+    return productStore.getCart;
+  }
+});
 </script>
 
 <style scoped>

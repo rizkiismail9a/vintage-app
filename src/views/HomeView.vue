@@ -64,7 +64,7 @@ function findByBrand(brand) {
 </script>
 <style scoped>
 .main__container {
-  margin-top: 46px;
+  padding-top: 46px;
   margin-bottom: 140px;
   min-height: 100vh;
 }

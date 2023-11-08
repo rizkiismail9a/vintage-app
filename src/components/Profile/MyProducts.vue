@@ -21,27 +21,28 @@
 <script setup>
 import MyProductCard from "../Products/MyProductCard.vue";
 import SimpleLoading from "../Loading/SimpleLoading.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useProductStore } from "../../stores/product";
 import { useRouter } from "vue-router";
 const productStore = useProductStore();
 const isLoading = ref(false);
-const myProducts = ref([]);
+const myProducts = computed(() => {
+  return productStore.userProducts;
+});
 const deletingMsg = ref("");
 const isGoingToEdit = ref(false);
 const router = useRouter();
 onMounted(async () => {
   isLoading.value = true;
-  const data = await productStore.finMyProduct();
+  await productStore.finMyProduct();
   isLoading.value = false;
-  myProducts.value = data;
 });
 async function deleteThisProduct(productKey) {
   try {
     deletingMsg.value = "loading...";
     await productStore.deleteMyProduct(productKey);
     deletingMsg.value = "products has been deleted";
-    myProducts.splice(index, 1);
+    // myProducts.splice(index, 1);
     setTimeout(() => {
       deletingMsg.value = "";
     }, 3000);

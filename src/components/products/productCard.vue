@@ -7,13 +7,12 @@
       <div class="product__info d-flex flex-column">
         <h3 class="product__price font-500">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(props.product.price) }}</h3>
         <h1 class="product__name flex-grow-1 text-truncate">{{ props.product.name }}</h1>
-
         <div class="d-flex justify-content-between">
           <span class="product__size">{{ props.product.size }}</span>
           <span class="like__button pointer">
-            <i class="fa-regular fa-heart" v-if="!isLiked" @click="likeThePost(props.product.productKey)"></i>
+            <i class="fa-regular fa-heart" v-if="isLiked === false" @click="likeThePost(props.product.productKey)"></i>
             <i class="fa-solid fa-heart" style="color: red" v-else @click="dislikeThePost(props.product.productKey)"></i>
-            {{ likesCounterRef }}
+            {{ likesCounter }}
           </span>
         </div>
       </div>
@@ -52,19 +51,13 @@ function goToDetail() {
 const isLiked = ref(false);
 const likesCounter = computed(() => {
   const likesObject = props.product.likes;
-  if (likesObject !== undefined) {
-    return Object.keys(props.product?.likes).length;
-  } else {
-    return 0;
-  }
+  return likesObject === undefined ? 0 : Object.keys(likesObject).length;
 });
-const likesCounterRef = toRef(likesCounter);
 async function likeThePost(productKey) {
   try {
     if (!authStore.getToken) {
       return router.push("/login");
     }
-    likesCounterRef.value += 1;
     isLiked.value = true;
     await productStore.likeAProduct({ productKey });
   } catch (error) {
@@ -77,7 +70,6 @@ async function dislikeThePost(productKey) {
   for (let key in likes) {
     if (likes[key].UID === authStore.getUser.userId) {
       try {
-        likesCounterRef.value -= 1;
         isLiked.value = false;
         await productStore.disLikeAProduct({ productKey, likesKey: key });
       } catch (error) {

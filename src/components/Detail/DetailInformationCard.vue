@@ -4,7 +4,8 @@
     <div class="d-flex justify-content-between flex-column">
       <div class="d-flex justify-content-between detail__price mb-2">
         <h3>{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(product.price) }}</h3>
-        <i class="fa-regular fa-heart pointer" v-if="!isLiked" @click="likeThePost"></i>
+
+        <i class="fa-regular fa-heart pointer" v-if="isLiked === false" @click="likeThePost"></i>
         <i class="fa-solid fa-heart pointer" v-else style="color: red" @click="dislikeThePost"></i>
       </div>
       <p class="detail__name mb-2">{{ product.name }}</p>
@@ -35,7 +36,7 @@
     </div>
     <hr />
     <div class="detail__button d-flex flex-column flex-grow-1 gap-3 my-2">
-      <button class="btn btn-primary">Buy Now</button>
+      <button class="btn btn-primary" @click="$emit('buyNow')">Buy Now</button>
       <button class="btn btn-outline-primary" @click="$emit('addToCart')">Add to Cart</button>
     </div>
     <hr />
@@ -69,15 +70,15 @@ const router = useRouter();
 onMounted(() => {
   const likes = productStore.getProductDetail.likes;
   const userId = authStore.getUser.userId;
-  if (userId) {
-    for (let key in likes) {
-      if (likes[key].UID == userId) {
-        isLiked.value = true;
-      }
+  for (let key in likes) {
+    console.log(likes[key].UID === userId.value);
+    if (likes[key].UID === userId) {
+      isLiked.value = true;
+    } else {
+      console.log("salah");
     }
-  } else {
-    isLiked.value = false;
   }
+  return console.log("salah, di luar");
 });
 const product = computed(() => {
   return productStore.getProductDetail;

@@ -14,21 +14,21 @@
     <div class="row">
       <div class="col-12 d-flex justify-content-between align-items-center">
         <p class="font-400" style="color: #616161">Order</p>
-        <p class="font-400" style="color: #616161">Rp800.000</p>
+        <p class="font-400" style="color: #616161">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(totalPrice) }}</p>
       </div>
       <div class="col-12 d-flex justify-content-between align-items-center">
         <p class="font-400" style="color: #616161">Protection Fee</p>
-        <p class="font-400" style="color: #616161">Rp0</p>
+        <p class="font-400" style="color: #616161">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(protectionFee) }}</p>
       </div>
       <div class="col-12 d-flex justify-content-between align-items-center">
         <p class="font-400" style="color: #616161">Shipping</p>
-        <p class="font-400" style="color: #616161">Rp17.000</p>
+        <p class="font-400" style="color: #616161">{{ shippingFee }}</p>
       </div>
     </div>
     <hr />
     <div class="d-flex justify-content-between align-items-center">
       <h2 class="font-500 font-0a" style="font-size: 16px">Total to pay</h2>
-      <h2 class="font-500 font-0a" style="font-size: 16px">Rp817.000</h2>
+      <h2 class="font-500 font-0a" style="font-size: 16px">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(totalPrice + shippingFee + protectionFee) }}</h2>
     </div>
     <button @click="order" class="btn btn-primary w-100 buy__button">Order Now</button>
   </div>
@@ -37,12 +37,36 @@
 <script setup>
 import BaseModalOne from "../Modal/BaseModalOne.vue";
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useProductStore } from "../../stores/product";
 const showModal = ref(false);
 const router = useRouter();
-function order() {
+const productStore = useProductStore();
+const shippingFee = ref(17000);
+const protectionFee = ref(0);
+async function order() {
+  await productStore.checkout();
   showModal.value = true;
 }
+const totalPrice = computed(() => {
+  let prices = 0;
+  if (productStore.buyAgain.length > 0) {
+    productStore.buyAgain.forEach((item) => {
+      prices += item.price * item.amount;
+    });
+    return prices;
+  } else if (productStore.buyNow.length > 0) {
+    productStore.buyNow.forEach((item) => {
+      prices += item.price * item.amount;
+    });
+    return prices;
+  } else {
+    productStore.getCart.forEach((item) => {
+      prices += item.price * item.amount;
+    });
+    return prices;
+  }
+});
 </script>
 
 <style scoped>

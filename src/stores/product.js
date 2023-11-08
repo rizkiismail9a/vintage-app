@@ -10,13 +10,22 @@ export const useProductStore = defineStore("product", {
       productOnDetail: {},
       relatedProducts: [],
       cart: [],
+      buyAgain: [],
+      buyNow: [],
+      userProducts: [],
     };
   },
   getters: {
     getAllProducts: (state) => state.products,
     getProductDetail: (state) => state.productOnDetail,
     popularProduct: (state) => {
-      return state.products.slice(0, 5);
+      return state.products
+        .sort((a, b) => {
+          const likesLengthA = a.likes === undefined ? 0 : Object.keys(a.likes).length;
+          const likesLengthB = b.likes === undefined ? 0 : Object.keys(b.likes).length;
+          return likesLengthB - likesLengthA;
+        })
+        .slice(0, 5);
     },
     newProduct: (state) => {
       return state.products
@@ -60,6 +69,7 @@ export const useProductStore = defineStore("product", {
           const result = { productKey: key, ...products[key] };
           this.products.push(result);
         }
+        return this.products;
       } catch (error) {
         console.log(error);
       }
@@ -101,14 +111,16 @@ export const useProductStore = defineStore("product", {
           myProducts.push({ productKey: key, ...products[key] });
         }
       }
+      this.userProducts = myProducts;
       // console.log(myProducts);
-      return myProducts;
+      // return myProducts;
     },
     // delete my product
     async deleteMyProduct(payload) {
       const token = Cookies.get("accessToken");
       try {
         await axios.delete(import.meta.env.VITE_BASE_URI + `/products/${payload}.json?auth=${token}`);
+        await this.finMyProduct();
       } catch (error) {
         throw new Error(error.response.data.error.message);
       }
@@ -162,12 +174,11 @@ export const useProductStore = defineStore("product", {
       const token = Cookies.get("accessToken");
       const userKey = Cookies.get("userKey");
       const { cart } = authStore.getUser;
-      // console.log(cart.length);
       // cek apakah produk itu sudah ada di cart sebelumnya
       for (let key in cart) {
         if (cart[key].productKey === payload) {
           try {
-            let { amount, ...rest } = cart[key];
+            let { amount } = cart[key];
             amount += 1;
             const newData = { amount };
             await axios.patch(import.meta.env.VITE_BASE_URI + `/users/${userKey}/cart/${key}.json?auth=${token}`, newData);
@@ -239,6 +250,10 @@ export const useProductStore = defineStore("product", {
       try {
         const { data: product } = await axios.get(import.meta.env.VITE_BASE_URI + `/products/${productKey}.json`);
         const { likes } = product;
+        // if (Object.keys(likes).length === 1) {
+        //   // const likesNull = "";
+        //   return await axios.put(import.meta.env.VITE_BASE_URI + `/products/${productKey}/likes.json?auth=${token}`, {});
+        // }
         for (let key in likes) {
           if (key === likesKey) {
             console.log(key, likesKey);
@@ -249,6 +264,51 @@ export const useProductStore = defineStore("product", {
         console.log(newData);
         await axios.put(import.meta.env.VITE_BASE_URI + `/products/${productKey}/likes.json?auth=${token}`, newData);
         await this.findAllProducts();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // checkout from cart
+    async checkout() {
+      const authStore = useAuthStore();
+      const UID = Cookies.get("UID");
+      const cart = this.cart;
+      const buyAgain = this.buyAgain;
+      const buyNow = this.buyNow;
+      const userKey = Cookies.get("userKey");
+      const token = Cookies.get("accessToken");
+      let productObj = null;
+      if (buyAgain.length > 0) {
+        productObj = Object.assign({}, buyAgain);
+      } else if (buyNow.length > 0) {
+        productObj = Object.assign({}, buyNow);
+      } else {
+        productObj = Object.assign({}, cart);
+      }
+      try {
+        await axios.post(import.meta.env.VITE_BASE_URI + `/users/${userKey}/transactionHistory.json?auth=${token}`, {
+          checkoutedAt: new Date().toLocaleDateString("en-EN", { weekday: "short", year: "numeric", month: "short", day: "numeric" }),
+          ...productObj,
+        });
+        await axios.put(import.meta.env.VITE_BASE_URI + `/users/${userKey}/cart.json?auth=${token}`, {});
+        this.cart = [];
+        this.buyNow = [];
+        this.buyAgain = [];
+        await authStore.findUser(UID);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // buy again
+    buyProductsAgain(products) {
+      this.buyAgain = products;
+    },
+    async buyTheProductNow(productKey) {
+      try {
+        this.buyNow = [];
+        const { data: product } = await axios.get(import.meta.env.VITE_BASE_URI + `/products/${productKey}.json`);
+        const boughtProduct = { amount: 1, ...product };
+        this.buyNow.push(boughtProduct);
       } catch (error) {
         console.log(error);
       }
