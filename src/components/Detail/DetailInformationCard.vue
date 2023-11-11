@@ -4,9 +4,12 @@
     <div class="d-flex justify-content-between flex-column">
       <div class="d-flex justify-content-between detail__price mb-2">
         <h3>{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(product.price) }}</h3>
-
-        <i class="fa-regular fa-heart pointer" v-if="isLiked === false" @click="likeThePost"></i>
-        <i class="fa-solid fa-heart pointer" v-else style="color: red" @click="dislikeThePost"></i>
+        <div v-if="isLiked === 'true'">
+          <i class="fa-solid fa-heart pointer" style="color: red" @click="dislikeThePost"></i>
+        </div>
+        <div v-else>
+          <i class="fa-regular fa-heart pointer" @click="likeThePost"></i>
+        </div>
       </div>
       <p class="detail__name mb-2">{{ product.name }}</p>
       <div class="detail__size d-flex align-items-center w-75 justify-content-between mb-2">
@@ -58,31 +61,18 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { useProductStore } from "../../stores/product";
 import { useAuthStore } from "../../stores/auth";
 import { useRoute, useRouter } from "vue-router";
 const productStore = useProductStore();
 const authStore = useAuthStore();
-const isLiked = ref(false);
 const route = useRoute();
 const router = useRouter();
-onMounted(() => {
-  const likes = productStore.getProductDetail.likes;
-  const userId = authStore.getUser.userId;
-  for (let key in likes) {
-    console.log(likes[key].UID === userId.value);
-    if (likes[key].UID === userId) {
-      isLiked.value = true;
-    } else {
-      console.log("salah");
-    }
-  }
-  return console.log("salah, di luar");
-});
 const product = computed(() => {
   return productStore.getProductDetail;
 });
+const isLiked = ref(route.query.isLiked);
 const uploader = computed(() => {
   return authStore.userById;
 });

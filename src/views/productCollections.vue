@@ -20,7 +20,8 @@
       <LoadingSpinner></LoadingSpinner>
     </div>
     <div v-else-if="!isLoading" class="products__wrapper row gx-4 gy-5">
-      <ProductCard v-for="item in productsCollection" :product="item"></ProductCard>
+      <ProductCard v-if="isSearching == false" v-for="item in productsCollection" :product="item"></ProductCard>
+      <ProductCard v-else v-for="item in searchResultArr" :product="item"></ProductCard>
     </div>
     <product-not-found v-if="productsCollection.length < 1 && !isLoading" image-link="/images/bag-cross.png" pop-message="Product not found" sub-message="We cannot find what you looking for, try to use other keywords or reset keyword.">
       <button
@@ -53,34 +54,37 @@ const keyCard = ref("");
 const productStore = useProductStore();
 const isLoading = ref(false);
 const route = useRoute();
-const productsCollection = ref([]);
+const isSearching = ref(false);
+const searchResultArr = ref([]);
+const productsCollection = computed(() => productStore.getAllProducts);
 onMounted(async () => {
   try {
     isLoading.value = true;
     const result = await productStore.findAllProducts();
     if (route.query.brand) {
-      const result = productsCollection.value.filter((item) => item.brand.toLowerCase().includes(route.query.brand.toLowerCase()));
+      const result = productStore.getAllProducts.filter((item) => item.brand.toLowerCase().includes(route.query.brand.toLowerCase()));
       isLoading.value = false;
-      productsCollection.value = result;
+      searchResultArr.value = result;
       return;
     }
     isLoading.value = false;
-    productsCollection.value = result;
   } catch (error) {
     console.log(error);
   }
 });
-function bringBackAllProducts() {
-  productsCollection.value = productStore.getAllProducts;
+async function bringBackAllProducts() {
+  isSearching.value = false;
+  // searchResultArr.value = productStore.getAllProducts;
 }
 function search(keyword) {
+  isSearching.value = true;
   keyCard.value = keyword;
-
   if (keyword === "") {
     bringBackAllProducts();
+    return;
   }
-  const result = productsCollection.value.filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()));
-  productsCollection.value = result;
+  const result = productStore.getAllProducts.filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()));
+  searchResultArr.value = result;
 }
 </script>
 

@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, reactive } from "vue";
 import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
 import NavbarComponent from "../components/navbar/NavbarComponent.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
@@ -45,11 +45,10 @@ const isLoading = ref(false);
 onMounted(async () => {
   isLoading.value = true;
   await productStore.findAllProducts();
+  popularProducts = productStore.popularProduct;
   isLoading.value = false;
 });
-const popularProducts = computed(() => {
-  return productStore.popularProduct;
-});
+let popularProducts = reactive(productStore.popularProduct);
 
 const newProducts = computed(() => {
   return productStore.newProduct;

@@ -26,7 +26,7 @@ export const useAuthStore = defineStore("auth", {
       await this.findUser(payload.UID);
       await this.refresh(payload.token);
       await productStore.findAllProducts();
-      // await productStore.findCartContent();
+      await productStore.findCartContent();
     },
     // register
     // simpan di autentikasi

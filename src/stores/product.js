@@ -206,11 +206,11 @@ export const useProductStore = defineStore("product", {
       for (let key in cart) {
         if (key === cartKey) {
           try {
-            let { amount, ...rest } = cart[key];
+            let { amount } = cart[key];
             amount = inputan;
             const newData = { amount };
             await axios.patch(import.meta.env.VITE_BASE_URI + `/users/${userKey}/cart/${cartKey}.json?auth=${token}`, newData);
-            await authStore.findUser(UID);
+            await this.findCartContent();
             return;
           } catch (error) {
             console.log(error);
@@ -250,18 +250,12 @@ export const useProductStore = defineStore("product", {
       try {
         const { data: product } = await axios.get(import.meta.env.VITE_BASE_URI + `/products/${productKey}.json`);
         const { likes } = product;
-        // if (Object.keys(likes).length === 1) {
-        //   // const likesNull = "";
-        //   return await axios.put(import.meta.env.VITE_BASE_URI + `/products/${productKey}/likes.json?auth=${token}`, {});
-        // }
         for (let key in likes) {
           if (key === likesKey) {
-            console.log(key, likesKey);
             delete likes[key];
           }
         }
         const newData = { ...likes };
-        console.log(newData);
         await axios.put(import.meta.env.VITE_BASE_URI + `/products/${productKey}/likes.json?auth=${token}`, newData);
         await this.findAllProducts();
       } catch (error) {

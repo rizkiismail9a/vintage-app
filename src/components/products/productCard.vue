@@ -12,7 +12,7 @@
           <span class="like__button pointer">
             <i class="fa-regular fa-heart" v-if="isLiked === false" @click="likeThePost(props.product.productKey)"></i>
             <i class="fa-solid fa-heart" style="color: red" v-else @click="dislikeThePost(props.product.productKey)"></i>
-            {{ likesCounter }}
+            {{ likesCounter.likes }}
           </span>
         </div>
       </div>
@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, toRef } from "vue";
+import { onMounted, ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../../stores/auth";
 import { useProductStore } from "../../stores/product";
@@ -31,6 +31,8 @@ const props = defineProps({
 });
 const authStore = useAuthStore();
 const productStore = useProductStore();
+const isLiked = ref(false);
+const router = useRouter();
 onMounted(() => {
   const likes = props.product.likes;
   const userId = authStore.getUser.userId;
@@ -44,14 +46,11 @@ onMounted(() => {
     isLiked.value = false;
   }
 });
-const router = useRouter();
 function goToDetail() {
-  router.push({ name: "Detail Product", params: { id: props.product.productKey } });
+  router.push({ name: "Detail Product", params: { id: props.product.productKey }, query: { isLiked: isLiked.value } });
 }
-const isLiked = ref(false);
-const likesCounter = computed(() => {
-  const likesObject = props.product.likes;
-  return likesObject === undefined ? 0 : Object.keys(likesObject).length;
+let likesCounter = reactive({
+  likes: props.product.likes == undefined ? 0 : Object.keys(props.product.likes).length,
 });
 async function likeThePost(productKey) {
   try {
@@ -59,6 +58,7 @@ async function likeThePost(productKey) {
       return router.push("/login");
     }
     isLiked.value = true;
+    likesCounter.likes++;
     await productStore.likeAProduct({ productKey });
   } catch (error) {
     console.log(error);
@@ -71,6 +71,7 @@ async function dislikeThePost(productKey) {
     if (likes[key].UID === authStore.getUser.userId) {
       try {
         isLiked.value = false;
+        likesCounter.likes--;
         await productStore.disLikeAProduct({ productKey, likesKey: key });
       } catch (error) {
         console.log(error);

@@ -35,18 +35,22 @@ import { useProductStore } from "../../stores/product";
 import { computed, onMounted, ref } from "vue";
 const isLoading = ref(false);
 onMounted(async () => {
-  isLoading.value = true;
-  await productStore.findCartContent();
-  isLoading.value = false;
+  try {
+    isLoading.value = true;
+    await productStore.findCartContent();
+    isLoading.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 });
 const productStore = useProductStore();
 const getCart = computed(() => {
-  if (productStore.buyAgain.length > 0) {
+  if (productStore.getCart.length) {
+    return productStore.cart;
+  } else if (productStore.buyAgain.length) {
     return productStore.buyAgain;
-  } else if (productStore.buyNow.length > 0) {
-    return productStore.buyNow;
   } else {
-    return productStore.getCart;
+    return productStore.buyNow;
   }
 });
 </script>
