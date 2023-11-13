@@ -20,10 +20,9 @@
       <LoadingSpinner></LoadingSpinner>
     </div>
     <div v-else-if="!isLoading" class="products__wrapper row gx-4 gy-5">
-      <ProductCard v-if="isSearching == false" v-for="item in productsCollection" :product="item"></ProductCard>
-      <ProductCard v-else v-for="item in searchResultArr" :product="item"></ProductCard>
+      <ProductCard v-for="item in productsCollection" :product="item"></ProductCard>
     </div>
-    <product-not-found v-if="productsCollection.length < 1 && !isLoading" image-link="/images/bag-cross.png" pop-message="Product not found" sub-message="We cannot find what you looking for, try to use other keywords or reset keyword.">
+    <product-not-found v-if="!productsCollection.length && !isLoading" image-link="/images/bag-cross.png" pop-message="Product not found" sub-message="We cannot find what you looking for, try to use other keywords or reset keyword.">
       <button
         v-if="!$route.query.brand"
         class="btn btn-primary"
@@ -42,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
 import NavbarComponent from "../components/navbar/NavbarComponent.vue";
@@ -55,26 +54,30 @@ const productStore = useProductStore();
 const isLoading = ref(false);
 const route = useRoute();
 const isSearching = ref(false);
-const searchResultArr = ref([]);
-const productsCollection = computed(() => productStore.getAllProducts);
+// const searchResultArr = ref([]);
+const productsCollection = ref([]);
 onMounted(async () => {
   try {
     isLoading.value = true;
-    const result = await productStore.findAllProducts();
-    if (route.query.brand) {
-      const result = productStore.getAllProducts.filter((item) => item.brand.toLowerCase().includes(route.query.brand.toLowerCase()));
-      isLoading.value = false;
-      searchResultArr.value = result;
-      return;
-    }
+    await productStore.findAllProducts();
     isLoading.value = false;
   } catch (error) {
     console.log(error);
   }
 });
+watchEffect(() => {
+  if (route.query.brand) {
+    const result = productStore.getAllProducts.filter((item) => {
+      return item.brand.toLowerCase().includes(route.query.brand.toLowerCase());
+    });
+    productsCollection.value = result;
+  } else {
+    productsCollection.value = productStore.getAllProducts;
+  }
+});
 async function bringBackAllProducts() {
   isSearching.value = false;
-  // searchResultArr.value = productStore.getAllProducts;
+  productsCollection.value = productStore.getAllProducts;
 }
 function search(keyword) {
   isSearching.value = true;
@@ -84,7 +87,8 @@ function search(keyword) {
     return;
   }
   const result = productStore.getAllProducts.filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()));
-  searchResultArr.value = result;
+  console.log(result);
+  productsCollection.value = result;
 }
 </script>
 
