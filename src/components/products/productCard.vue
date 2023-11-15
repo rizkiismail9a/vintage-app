@@ -47,7 +47,7 @@ onMounted(() => {
   }
 });
 function goToDetail() {
-  router.push({ name: "Detail Product", params: { id: props.product.productKey }, query: { isLiked: isLiked.value } });
+  router.push({ name: "Detail Product", params: { id: props.product.productKey } });
 }
 let likesCounter = reactive({
   likes: props.product.likes == undefined ? 0 : Object.keys(props.product.likes).length,

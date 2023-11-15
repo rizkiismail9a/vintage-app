@@ -4,7 +4,7 @@
     <div class="d-flex justify-content-between flex-column">
       <div class="d-flex justify-content-between detail__price mb-2">
         <h3>{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(product.price) }}</h3>
-        <div v-if="isLiked === 'true'">
+        <div v-if="isLiked">
           <i class="fa-solid fa-heart pointer" style="color: red" @click="dislikeThePost"></i>
         </div>
         <div v-else>
@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import { useProductStore } from "../../stores/product";
 import { useAuthStore } from "../../stores/auth";
 import { useRoute, useRouter } from "vue-router";
@@ -72,7 +72,15 @@ const router = useRouter();
 const product = computed(() => {
   return productStore.getProductDetail;
 });
-const isLiked = ref(route.query.isLiked);
+const isLiked = ref(true);
+watchEffect(() => {
+  const likes = productStore.getProductDetail.likes;
+  for (let key in likes) {
+    if (likes[key].UID === authStore.getUser.userId) {
+      isLiked.value = true;
+    }
+  }
+});
 const uploader = computed(() => {
   return authStore.userById;
 });
@@ -81,7 +89,7 @@ async function likeThePost() {
     if (!authStore.getToken) {
       return router.push("/login");
     }
-    isLiked.value = true;
+    isLiked.value = "true";
     await productStore.likeAProduct({ productKey: route.params.id });
   } catch (error) {
     console.log(error);
