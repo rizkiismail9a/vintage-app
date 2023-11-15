@@ -50,7 +50,6 @@ const getFirstObject = computed(() => {
   for (let key in rest) {
     accArr.push(props.product[key]);
   }
-  console.log(accArr);
   return accArr;
 });
 const totalPrice = computed(() => {

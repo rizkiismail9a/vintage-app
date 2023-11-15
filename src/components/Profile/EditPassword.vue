@@ -1,27 +1,69 @@
 <template>
-  <form class="profile__card card d-flex flex-column gap-3">
+  <form @submit.prevent="changePassword" class="profile__card card d-flex flex-column gap-3">
     <span class="font-400 font-61" style="font-size: 14px">Change password</span>
+    <div v-if="isLoading" class="alert alert-info" role="alert">Loading...</div>
+    <div v-if="isSucceed" class="alert alert-success" role="alert">Password has been changed</div>
     <!-- input form -->
     <div class="mb-3 position-relative">
-      <label for="oldPassword" class="form-label font-500 font-0a" style="font-size: 14px">Old Password</label>
-      <input type="password" class="form-control" id="oldPassword" placeholder="Old password" />
-      <i class="fa-solid fa-eye position-absolute" style="right: 10px; top: 42px"></i>
-    </div>
-    <div class="mb-3 position-relative">
       <label for="newPassword" class="form-label font-500 font-0a" style="font-size: 14px">New Password</label>
-      <input type="password" class="form-control" id="newPassword" placeholder="New password" />
-      <i class="fa-solid fa-eye position-absolute" style="right: 10px; top: 42px"></i>
+      <input :type="showNewPassword ? 'text' : 'password'" class="form-control" id="newPassword" placeholder="New password" v-model="newData.newPassword" @keyup="passwordValidation" />
+      <i v-if="showNewPassword === false" class="fa-solid fa-eye position-absolute" @click="showNewPassword = !showNewPassword" style="right: 10px; top: 42px"></i>
+      <i v-else class="fa-solid fa-eye-slash position-absolute" @click="showNewPassword = !showNewPassword" style="right: 10px; top: 42px"></i>
+      <p class="text-danger m-0 p-1 px-4" v-if="errorMsg">
+        <i>{{ errorMsg }}</i>
+      </p>
     </div>
     <div class="mb-3 position-relative">
       <label for="passConfirm" class="form-label font-500 font-0a" style="font-size: 14px">Confirmation New Password</label>
-      <input type="password" class="form-control" id="passConfirm" placeholder="Confirmation Password" />
-      <i class="fa-solid fa-eye position-absolute" style="right: 10px; top: 42px"></i>
+      <input :type="showConfirmPassword ? 'text' : 'password'" class="form-control" id="passConfirm" placeholder="Confirmation Password" v-model="newData.newPasswordConfirm" @keyup="passwordValidation" />
+      <i v-if="showConfirmPassword === false" class="fa-solid fa-eye position-absolute" @click="showConfirmPassword = !showConfirmPassword" style="right: 10px; top: 42px"></i>
+      <i v-else class="fa-solid fa-eye-slash position-absolute" @click="showConfirmPassword = !showConfirmPassword" style="right: 10px; top: 42px"></i>
+      <p class="text-danger m-0 p-1 px-4" v-if="confirmError">
+        <i>{{ confirmError }}</i>
+      </p>
     </div>
     <button type="submit" class="btn btn-primary align-self-end">Save Changes</button>
   </form>
 </template>
 
-<script setup></script>
+<script setup>
+import { useAuthStore } from "../../stores/auth";
+import { reactive, ref } from "vue";
+const isSucceed = ref(false);
+const isLoading = ref(false);
+const errorMsg = ref("");
+const showNewPassword = ref(false);
+const showConfirmPassword = ref(false);
+const confirmError = ref("");
+const newData = reactive({
+  newPassword: "",
+  newPasswordConfirm: "",
+});
+const authStore = useAuthStore();
+function passwordValidation() {
+  if (newData.newPassword.length < 8) {
+    errorMsg.value = "password must be at least 8 characters";
+  } else {
+    errorMsg.value = "";
+  }
+}
+async function changePassword() {
+  if (newData.newPasswordConfirm !== newData.newPassword) {
+    return (confirmError.value = "Password confirmation doesn't match");
+  }
+  try {
+    isLoading.value = true;
+    await authStore.changeOldPassword({ newPassword: newData.newPassword });
+    isSucceed.value = true;
+    setTimeout(() => {
+      isSucceed.value = false;
+    }, 300);
+    isLoading.value = false;
+  } catch (error) {
+    console.log(error);
+  }
+}
+</script>
 
 <style scoped>
 .profile__card {

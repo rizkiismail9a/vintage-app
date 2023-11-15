@@ -146,5 +146,19 @@ export const useAuthStore = defineStore("auth", {
         console.log(error);
       }
     },
+    // change password
+    async changeOldPassword(payload) {
+      const token = this.accessToken;
+      const key = import.meta.env.VITE_API_KEY;
+      try {
+        const { data } = await axios.post(import.meta.env.VITE_UPDATE_PASS + key, {
+          idToken: token,
+          password: payload.newPassword,
+          returnSecureToken: false,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 });

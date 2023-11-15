@@ -13,8 +13,7 @@
         </div>
         <div class="d-flex flex-column position-relative">
           <label for="password" class="font-500 mb-1">Password <span style="color: red">*</span></label>
-          <input v-if="!showPassword" type="password" id="password" class="input__form mx-0" placeholder="Enter your password" v-model="loginData.password" />
-          <input v-else type="text" id="password" class="input__form mx-0" placeholder="Enter your password" v-model="loginData.password" />
+          <input :type="showPassword ? 'text' : 'password'" id="password" class="input__form mx-0" placeholder="Enter your password" v-model="loginData.password" />
           <i v-if="!showPassword" @click="showPassword = true" class="fa-solid fa-eye position-absolute" style="right: 15px; top: 38px"></i>
           <i v-else class="fa-solid fa-eye-slash position-absolute" @click="showPassword = false" style="right: 15px; top: 38px"></i>
         </div>

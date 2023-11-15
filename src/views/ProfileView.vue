@@ -7,7 +7,7 @@
     </div>
     <!-- profile info card -->
     <div class="col-md-9">
-      <Transition>
+      <Transition name="page" appear>
         <component :is="component[getParams]"></component>
       </Transition>
     </div>
@@ -26,12 +26,12 @@ import MyProducts from "../components/Profile/MyProducts.vue";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 const route = useRoute();
-const component = {
+const component = ref({
   "profile-detail": ProfileDetail,
   "edit-password": EditPassword,
   "transaction-history": TransactionHistory,
   "my-products": MyProducts,
-};
+});
 const getParams = computed(() => {
   return route.params.component;
 });
@@ -43,14 +43,13 @@ const getParams = computed(() => {
   margin-bottom: 50px;
   min-height: 100vh;
 }
-.v-enter-active,
-.v-leave-active {
-  transition: transform 0.7s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.4s linear;
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.5s;
 }
-
-.v-enter-from,
-.v-leave-to {
+.page-enter-from,
+.page-leave-to {
   opacity: 0;
-  transform: translateY(-50%);
+  transform: translateY(300px);
 }
 </style>

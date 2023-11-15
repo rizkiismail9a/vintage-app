@@ -28,18 +28,16 @@
         <!-- password -->
         <div class="d-flex flex-column position-relative">
           <label for="password" class="font-500 mb-1">Password <span style="color: red">*</span></label>
-          <input v-if="!showPassword" type="password" id="password" class="input__form mx-0" placeholder="Enter your password" v-model="newData.password" />
-          <input v-else type="text" id="password" class="input__form mx-0" placeholder="Enter your password" v-model="newData.password" />
-          <i v-if="!showPassword" @click="showPassword = true" class="fa-solid fa-eye position-absolute" style="right: 15px; top: 38px"></i>
-          <i v-else class="fa-solid fa-eye-slash position-absolute" @click="showPassword = false" style="right: 15px; top: 38px"></i>
+          <input :type="showPassword ? 'text' : 'password'" id="password" class="input__form mx-0" placeholder="Enter your password" v-model="newData.password" />
+          <i v-if="showPassword === false" @click="showPassword = !showPassword" class="fa-solid fa-eye position-absolute" style="right: 15px; top: 38px"></i>
+          <i v-if="showPassword === true" @click="showPassword = !showPassword" class="fa-solid fa-eye-slash position-absolute" style="right: 15px; top: 38px"></i>
         </div>
         <!-- password -->
         <div class="d-flex flex-column position-relative">
           <label for="passwordConfirm" class="font-500 mb-1">Confirmation Password <span style="color: red">*</span></label>
-          <input v-if="!showPassword" type="password" id="passwordConfirm" class="input__form mx-0" placeholder="Enter your password" v-model="newData.passwordConfirm" />
-          <input type="text" v-else id="passwordConfirm" class="input__form mx-0" placeholder="Enter your password" v-model="newData.passwordConfirm" />
-          <i v-if="!showPassword" @click="showPassword = true" class="fa-solid fa-eye position-absolute" style="right: 15px; top: 38px"></i>
-          <i v-else class="fa-solid fa-eye-slash position-absolute" @click="showPassword = false" style="right: 15px; top: 38px"></i>
+          <input :type="showConfirmPassword ? 'text' : 'password'" id="passwordConfirm" class="input__form mx-0" placeholder="Enter your password" v-model="newData.passwordConfirm" />
+          <i v-if="!showConfirmPassword" @click="showConfirmPassword = true" class="fa-solid fa-eye position-absolute" style="right: 15px; top: 38px"></i>
+          <i v-else class="fa-solid fa-eye-slash position-absolute" @click="showConfirmPassword = false" style="right: 15px; top: 38px"></i>
         </div>
         <!-- checkbox -->
         <div class="d-flex gap-2 agreement d-flex align-items-start">
@@ -68,6 +66,7 @@ const showModal = ref(false);
 const errorMsg = ref("");
 const isLoading = ref(false);
 const showPassword = ref(false);
+const showConfirmPassword = ref(false);
 const newData = reactive({
   fullname: "",
   username: "",

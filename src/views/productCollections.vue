@@ -1,5 +1,7 @@
 <template>
   <NavbarComponent :is-at-collection="true" @search="search"></NavbarComponent>
+  <SideBarMenu :isSidebarActive="showSidebar" @hide-sidebar="showSidebar = !showSidebar" @filterByPrice="filterByPrice" @sortByPrice="sortByPrice" @filterBySize="filterBySize"></SideBarMenu>
+
   <div class="collection__container container mx-auto">
     <div class="page__title d-flex flex-row justify-content-between align-items-center">
       <h2 class="font-500" style="font-size: 24px">{{ $route.query?.brand }} Items</h2>
@@ -16,6 +18,16 @@
       </div>
     </div>
     <hr />
+    <div class="overlay__button d-flex align-items-center w-100 justify-content-between">
+      <div class="d-flex align-items-center gap-2 pointer" @click="showSidebar = true">
+        <p class="font-0a font-500 m-0">Filter</p>
+        <i class="fa-solid fa-sliders"></i>
+      </div>
+      <div class="d-flex align-items-center gap-2 pointer" v-if="showResetButton" @click="resetFilter">
+        <p class="font-0a font-500 m-0">Reset Filter</p>
+        <i class="fa-solid fa-xmark" style="font-size: 18px"></i>
+      </div>
+    </div>
     <div v-if="isLoading" class="d-flex h-100 mx-auto p-5 justify-content-center align-items-center">
       <LoadingSpinner></LoadingSpinner>
     </div>
@@ -48,13 +60,15 @@ import NavbarComponent from "../components/navbar/NavbarComponent.vue";
 import ProductCard from "../components/Products/ProductCard.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
 import ProductNotFound from "../components/Products/ProductNotFound.vue";
+import SideBarMenu from "../components/Overlayout/SideBarMenu.vue";
 import { useProductStore } from "../stores/product";
 const keyCard = ref("");
 const productStore = useProductStore();
 const isLoading = ref(false);
 const route = useRoute();
 const isSearching = ref(false);
-// const searchResultArr = ref([]);
+const showSidebar = ref(null);
+const showResetButton = ref(false);
 const productsCollection = ref([]);
 onMounted(async () => {
   try {
@@ -90,6 +104,36 @@ function search(keyword) {
   console.log(result);
   productsCollection.value = result;
 }
+async function filterByPrice({ startAt, endAt }) {
+  isLoading.value = true;
+  showResetButton.value = true;
+  const result = await productStore.filterByPriceRange({ startAt, endAt });
+  productsCollection.value = result;
+  isLoading.value = false;
+}
+function resetFilter() {
+  isLoading.value = true;
+  showResetButton.value = false;
+  productsCollection.value = productStore.getAllProducts;
+  isLoading.value = false;
+}
+function sortByPrice(mode) {
+  const products = productsCollection.value;
+  showResetButton.value = true;
+  if (mode === "ascending") {
+    const result = products.sort((a, b) => a.price - b.price);
+    productsCollection.value = result;
+  } else {
+    const result = products.sort((a, b) => b.price - a.price);
+    productsCollection.value = result;
+  }
+}
+function filterBySize(size) {
+  const products = productStore.getAllProducts;
+  showResetButton.value = true;
+  const result = products.filter((item) => item.size === size);
+  productsCollection.value = result;
+}
 </script>
 
 <style scoped>
@@ -114,6 +158,7 @@ function search(keyword) {
   font-size: 16px;
   color: #404040;
 }
+
 .products__404-card {
   width: 343px;
 }

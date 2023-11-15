@@ -144,6 +144,9 @@ input:focus {
   box-shadow: 0px 1px 3px 0px #1018281a;
   background-color: #cb3a31;
 }
+.fa-magnifying-glass {
+  left: 10px;
+}
 @media screen and (min-width: 992px) {
   .navbar {
     padding: 12px 120px 12px 120px;
@@ -186,7 +189,6 @@ input:focus {
   }
   div .navbar__form {
     width: 100%;
-    padding: 0 12px 0 12px;
     border-radius: 8px;
     justify-content: space-around;
     color: #757575;

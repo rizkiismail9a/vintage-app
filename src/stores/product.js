@@ -64,6 +64,7 @@ export const useProductStore = defineStore("product", {
     async findAllProducts() {
       try {
         const { data: products } = await axios.get(import.meta.env.VITE_BASE_URI + `/products.json`);
+        // const { data: products } = await axios.get(import.meta.env.VITE_BASE_URI + `/products.json?orderBy="price"&startAt=100000&endAt=700000`);
         this.products = [];
         for (let key in products) {
           const result = { productKey: key, ...products[key] };
@@ -297,6 +298,7 @@ export const useProductStore = defineStore("product", {
     buyProductsAgain(products) {
       this.buyAgain = products;
     },
+    // buy the product now
     async buyTheProductNow(productKey) {
       try {
         this.buyNow = [];
@@ -306,6 +308,39 @@ export const useProductStore = defineStore("product", {
       } catch (error) {
         console.log(error);
       }
+    },
+    // filter by price range
+    async filterByPriceRange({ startAt, endAt }) {
+      let result = [];
+      try {
+        if (startAt && endAt) {
+          result = [];
+          const { data } = await axios.get(import.meta.env.VITE_BASE_URI + `/products.json?orderBy="price"&startAt=${startAt}&endAt=${endAt}&print=pretty`);
+          for (let key in data) {
+            result.push(data[key]);
+          }
+        } else if (startAt && !endAt) {
+          result = [];
+          const { data } = await axios.get(import.meta.env.VITE_BASE_URI + `/products.json?orderBy="price"&startAt=${startAt}&print=pretty`);
+          for (let key in data) {
+            result.push(data[key]);
+          }
+        }
+        return result;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // filter by size
+    async filterBySize(size) {
+      let result = [];
+      try {
+        const { data } = await axios.get(import.meta.env.VITE_BASE_URI + `/products.json?orderBy="size"&startAt="${size}"`);
+        for (let key in data) {
+          result.push(data[key]);
+        }
+        console.log(result);
+      } catch (error) {}
     },
   },
 });
