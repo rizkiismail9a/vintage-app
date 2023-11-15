@@ -3,9 +3,9 @@
     <p style="color: #616161" class="font-400">Order</p>
     <!-- checkout__list looping di sini-->
     <div v-if="isLoading" class="d-flex justify-content-center">
-      <loading-spinner></loading-spinner>
+      <Icon icon="line-md:loading-loop" color="#009499" width="150" />
     </div>
-    <div v-else class="product__info d-flex gap-4 flex-grow-1 p-0" v-for="product in getCart">
+    <div v-else class="product__info d-flex gap-4 flex-grow-1 p-0" v-for="product in cartContent">
       <img :src="product.imageLink" alt="gambar produk" width="48" class="object-fit-cover" height="48" />
       <div class="d-flex flex-column justify-content-between flex-grow-1">
         <div class="product__metadata m-0 flex-grow-1">
@@ -27,24 +27,28 @@
 </template>
 
 <script setup>
+import { Icon } from "@iconify/vue";
 import LoadingSpinner from "../Loading/LoadingSpinner.vue";
 import AddressCard from "./AddressCard.vue";
 import DelivaryCard from "./DelivaryCard.vue";
 import PaymentCard from "./PaymentCard.vue";
 import { useProductStore } from "../../stores/product";
-import { computed, onMounted, ref } from "vue";
-const isLoading = ref(false);
-onMounted(async () => {
+import { computed, onBeforeMount, onMounted, ref, watchEffect } from "vue";
+const isLoading = ref(true);
+// const cartContent = ref([]);
+const productStore = useProductStore();
+onBeforeMount(async () => {
   try {
-    isLoading.value = true;
+    // isLoading.value = true;
     await productStore.findCartContent();
+
     isLoading.value = false;
   } catch (error) {
     console.log(error);
   }
 });
-const productStore = useProductStore();
-const getCart = computed(() => {
+
+const cartContent = computed(() => {
   if (productStore.getCart.length) {
     return productStore.cart;
   } else if (productStore.buyAgain.length) {

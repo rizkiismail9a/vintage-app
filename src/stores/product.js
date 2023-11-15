@@ -166,6 +166,7 @@ export const useProductStore = defineStore("product", {
         }
       });
       this.cart = data;
+      return data;
     },
     // add a product to cart
     async addToCart(payload) {
@@ -204,6 +205,7 @@ export const useProductStore = defineStore("product", {
       const { cart } = authStore.getUser;
       const userKey = Cookies.get("userKey");
       const token = Cookies.get("accessToken");
+      const UID = Cookies.get("UID");
       for (let key in cart) {
         if (key === cartKey) {
           try {
@@ -211,7 +213,7 @@ export const useProductStore = defineStore("product", {
             amount = inputan;
             const newData = { amount };
             await axios.patch(import.meta.env.VITE_BASE_URI + `/users/${userKey}/cart/${cartKey}.json?auth=${token}`, newData);
-            await this.findCartContent();
+            await authStore.findUser(UID);
             return;
           } catch (error) {
             console.log(error);

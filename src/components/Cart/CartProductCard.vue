@@ -56,7 +56,7 @@
 
 <script setup>
 import LoadingSpinner from "../Loading/LoadingSpinner.vue";
-import { computed, onMounted, ref } from "vue";
+import { computed, onBeforeMount, onMounted, ref, watchEffect } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import { useProductStore } from "../../stores/product";
 const authStore = useAuthStore();
@@ -65,18 +65,20 @@ const isLoading = ref(false);
 const user = computed(() => {
   return authStore.getUser;
 });
-onMounted(async () => {
+const cartContent = ref([]);
+onBeforeMount(async () => {
   try {
     isLoading.value = true;
-    await productStore.findCartContent();
+    watchEffect(async () => {
+      const result = await productStore.findCartContent();
+      cartContent.value = result;
+    });
     isLoading.value = false;
   } catch (error) {
     console.log(error);
   }
 });
-const cartContent = computed(() => {
-  return productStore.getCart;
-});
+
 async function changeAmount(inputan, cartKey, index) {
   const cartContent = productStore.getCart;
   try {
@@ -84,6 +86,8 @@ async function changeAmount(inputan, cartKey, index) {
       cartContent[index].amount = 1;
       inputan = 1;
     }
+    cartContent[index].amount = inputan;
+    console.log(cartContent);
     await productStore.updateCartAmount({ inputan, cartKey });
   } catch (error) {
     console.log(error);

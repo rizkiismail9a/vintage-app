@@ -15,23 +15,19 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, watch, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../../stores/auth";
 import { useProductStore } from "../../stores/product";
 const router = useRouter();
 const authStore = useAuthStore();
 const productStore = useProductStore();
+// const totalPrice = ref(0);
 function checkout() {
   router.push("/cart/checkout-card/checkout-summary");
 }
 const cartLength = computed(() => {
-  const cartObject = authStore.getUser.cart;
-  if (cartObject) {
-    return Object.keys(authStore.getUser.cart).length;
-  } else {
-    return 0;
-  }
+  return productStore.getCart.length;
 });
 const totalPrice = computed(() => {
   let prices = 0;
@@ -40,6 +36,15 @@ const totalPrice = computed(() => {
   });
   return prices;
 });
+// watch(
+//   () => productStore.getCart,
+//   () => {
+//     totalPrice.value = 0;
+//     productStore.getCart.forEach((item) => {
+//       totalPrice.value += item.price * item.amount;
+//     });
+//   }
+// );
 </script>
 
 <style scoped>
