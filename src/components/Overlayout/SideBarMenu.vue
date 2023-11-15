@@ -87,12 +87,11 @@ function sortByPrice(mode) {
 .filter-menu__button {
   flex-wrap: wrap;
 }
-.content-enter-active {
-  transition: all 0.6s ease 0.3s;
-}
+.content-enter-active,
 .content-leave-active {
-  transition: all 0.6s ease 0.3s;
+  transition: all 0.6s ease;
 }
+
 .content-enter-from {
   transform: translateX(-1000px);
 }
