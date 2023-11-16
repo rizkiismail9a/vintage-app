@@ -39,6 +39,8 @@
         </div>
       </div>
     </Transition>
+    <!-- <div class="sidebar__container position-fixed" v-if="isSidebarActive">
+    </div> -->
   </Teleport>
 </template>
 
@@ -73,6 +75,13 @@ function sortByPrice(mode) {
 </script>
 
 <style scoped>
+.sidebar__container {
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(169, 169, 169, 0.305);
+  top: 0;
+  left: 0;
+}
 .sidebar__content {
   width: 485px;
   padding-top: 88px;
@@ -89,14 +98,15 @@ function sortByPrice(mode) {
 }
 .content-enter-active,
 .content-leave-active {
-  transition: all 0.6s ease;
+  transition: all 0.6s linear;
 }
 
 .content-enter-from {
+  opacity: 0;
   transform: translateX(-1000px);
 }
 .content-leave-to {
-  /* opacity: 0; */
+  opacity: 0;
   transform: translateX(-1000px) !important;
 }
 .container-enter-active,

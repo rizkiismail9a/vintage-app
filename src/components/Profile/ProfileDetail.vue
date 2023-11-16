@@ -210,4 +210,16 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+@media screen and (max-width: 768px) {
+  .profile__card {
+    width: 100%;
+  }
+  .edit__photo {
+    flex-direction: column !important;
+  }
+  .btn-primary {
+    width: 100%;
+  }
+}
 </style>

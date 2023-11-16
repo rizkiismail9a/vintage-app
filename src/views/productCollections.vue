@@ -71,6 +71,7 @@ const showSidebar = ref(null);
 const showResetButton = ref(false);
 const productsCollection = ref([]);
 onMounted(async () => {
+  // scrollToTop();
   try {
     isLoading.value = true;
     await productStore.findAllProducts();
@@ -128,12 +129,20 @@ function sortByPrice(mode) {
     productsCollection.value = result;
   }
 }
-function filterBySize(size) {
-  const products = productStore.getAllProducts;
-  showResetButton.value = true;
-  const result = products.filter((item) => item.size === size);
-  productsCollection.value = result;
+async function filterBySize(size) {
+  // const products = productStore.getAllProducts;
+  // showResetButton.value = true;
+  // const result = products.filter((item) => item.size === size);
+  // productsCollection.value = result;
+  try {
+    showResetButton.value = true;
+    const result = await productStore.filterBySize(size);
+    productsCollection.value = result;
+  } catch (error) {
+    console.log(error);
+  }
 }
+window.scrollTo({ top: 0, behavior: "smooth" });
 </script>
 
 <style scoped>

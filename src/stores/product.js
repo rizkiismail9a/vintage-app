@@ -337,12 +337,15 @@ export const useProductStore = defineStore("product", {
     async filterBySize(size) {
       let result = [];
       try {
-        const { data } = await axios.get(import.meta.env.VITE_BASE_URI + `/products.json?orderBy="size"&startAt="${size}"`);
+        const { data } = await axios.get(import.meta.env.VITE_BASE_URI + `/products.json?orderBy="size"&startAt="${size}"&endAt="${size}"`);
         for (let key in data) {
           result.push(data[key]);
         }
-        console.log(result);
-      } catch (error) {}
+        // console.log(result);
+        return result;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 });

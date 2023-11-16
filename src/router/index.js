@@ -78,7 +78,7 @@ const router = createRouter({
     },
   ],
   scrollBehavior() {
-    return { top: 0 };
+    return window.scrollTo({ top: 0, behavior: "smooth" });
   },
 });
 router.beforeEach((to, from, next) => {

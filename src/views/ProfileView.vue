@@ -52,4 +52,9 @@ const getParams = computed(() => {
   opacity: 0;
   transform: translateY(300px);
 }
+@media screen and (max-width: 768px) {
+  .profile__wrapper {
+    padding-top: 140px;
+  }
+}
 </style>
