@@ -60,9 +60,9 @@ const lowestPrice = ref("");
 const highestPrice = ref("");
 function priceRange(startAt, endAt, mode) {
   if (mode === "manual") {
-    emits("filterByPrice", { startAt: lowestPrice.value, endAt: highestPrice.value });
+    emits("filterByPrice", { startAt: lowestPrice.value, endAt: highestPrice.value, mode });
   } else {
-    emits("filterByPrice", { startAt, endAt });
+    emits("filterByPrice", { startAt, endAt, mode });
   }
 }
 function sizeRange(size) {

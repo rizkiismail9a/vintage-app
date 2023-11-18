@@ -105,11 +105,17 @@ function search(keyword) {
   console.log(result);
   productsCollection.value = result;
 }
-async function filterByPrice({ startAt, endAt }) {
+async function filterByPrice({ startAt, endAt, mode }) {
   isLoading.value = true;
   showResetButton.value = true;
-  const result = await productStore.filterByPriceRange({ startAt, endAt });
-  productsCollection.value = result;
+  if (mode === "manual") {
+    const result = await productStore.filterByPriceRange({ startAt, endAt });
+    productsCollection.value = result;
+  } else {
+    const result = await productStore.filterByPriceRange({ startAt, endAt });
+    productsCollection.value = result;
+    showSidebar.value = false;
+  }
   isLoading.value = false;
 }
 function resetFilter() {
@@ -117,6 +123,7 @@ function resetFilter() {
   showResetButton.value = false;
   productsCollection.value = productStore.getAllProducts;
   isLoading.value = false;
+  showSidebar.value = false;
 }
 function sortByPrice(mode) {
   const products = productsCollection.value;
@@ -128,16 +135,14 @@ function sortByPrice(mode) {
     const result = products.sort((a, b) => b.price - a.price);
     productsCollection.value = result;
   }
+  showSidebar.value = false;
 }
 async function filterBySize(size) {
-  // const products = productStore.getAllProducts;
-  // showResetButton.value = true;
-  // const result = products.filter((item) => item.size === size);
-  // productsCollection.value = result;
   try {
     showResetButton.value = true;
     const result = await productStore.filterBySize(size);
     productsCollection.value = result;
+    showSidebar.value = false;
   } catch (error) {
     console.log(error);
   }
