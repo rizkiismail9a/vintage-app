@@ -56,8 +56,8 @@
 import { ref, computed, onMounted, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
-import NavbarComponent from "../components/navbar/NavbarComponent.vue";
 import ProductCard from "../components/Products/ProductCard.vue";
+import NavbarComponent from "../components/Navbar/NavbarComponent.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
 import ProductNotFound from "../components/Products/ProductNotFound.vue";
 import SideBarMenu from "../components/Overlayout/SideBarMenu.vue";
