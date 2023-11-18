@@ -39,8 +39,8 @@
 <script setup>
 import ProductCard from "../components/Products/ProductCard.vue";
 import CartProductCard from "../components/Cart/CartProductCard.vue";
-import NavbarComponent from "../components/navbar/NavbarComponent.vue";
-import FooterComponent from "../components/footer/FooterComponent.vue";
+import NavbarComponent from "../components/Navbar/NavbarComponent.vue";
+import FooterComponent from "../components/Footer/FooterComponent.vue";
 import CartSummary from "../components/Cart/CartSummary.vue";
 import CheckoutCart from "../components/Cart/CheckoutCard.vue";
 import CheckoutSummary from "../components/Cart/CheckoutSummary.vue";

@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import NavbarComponent from "../components/navbar/NavbarComponent.vue";
+import NavbarComponent from "../components/Navbar/NavbarComponent.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
 import SettingCard from "../components/Profile/SettingCard.vue";
 import ProfileDetail from "../components/Profile/ProfileDetail.vue";

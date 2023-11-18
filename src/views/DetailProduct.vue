@@ -46,8 +46,8 @@
 import { computed, onMounted, ref, watch, watchEffect } from "vue";
 import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
 import ProductCard from "../components/Products/ProductCard.vue";
-import NavbarComponent from "../components/navbar/NavbarComponent.vue";
-import FooterComponent from "../components/footer/FooterComponent.vue";
+import NavbarComponent from "../components/Navbar/NavbarComponent.vue";
+import FooterComponent from "../components/Footer/FooterComponent.vue";
 import DetailInformationCard from "../components/Detail/DetailInformationCard.vue";
 import BaseModalOne from "../components/Modal/BaseModalOne.vue";
 import { useProductStore } from "../stores/product";

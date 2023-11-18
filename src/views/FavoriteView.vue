@@ -27,7 +27,7 @@
 
 <script setup>
 import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
-import NavbarComponent from "../components/navbar/NavbarComponent.vue";
+import NavbarComponent from "../components/Navbar/NavbarComponent.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
 import ProductCard from "../components/Products/ProductCard.vue";
 import ProductNotFound from "../components/Products/ProductNotFound.vue";
