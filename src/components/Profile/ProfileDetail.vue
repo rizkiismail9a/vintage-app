@@ -63,8 +63,8 @@
           </div>
         </div>
         <div class="d-flex w-100 gap-2">
-          <!-- desa -->
-          <div class="mb-3">
+          <!-- kode pos -->
+          <div class="mb-3 zip__code">
             <label for="post" class="form-label font-500 font-61" style="font-size: 14px">Postal Code</label>
             <input type="number" class="form-control" id="post" aria-describedby="emailHelp" v-model.number="newUserData.postCode" />
           </div>
@@ -211,7 +211,7 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
   .profile__card {
     width: 100%;
   }
@@ -220,6 +220,9 @@ input[type="number"] {
   }
   .btn-primary {
     width: 100%;
+  }
+  .zip__code {
+    width: 100% !important;
   }
 }
 </style>

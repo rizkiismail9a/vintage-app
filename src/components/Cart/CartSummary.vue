@@ -15,12 +15,10 @@
 </template>
 
 <script setup>
-import { computed, watch, ref } from "vue";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
-import { useAuthStore } from "../../stores/auth";
 import { useProductStore } from "../../stores/product";
 const router = useRouter();
-const authStore = useAuthStore();
 const productStore = useProductStore();
 // const totalPrice = ref(0);
 function checkout() {
@@ -36,15 +34,6 @@ const totalPrice = computed(() => {
   });
   return prices;
 });
-// watch(
-//   () => productStore.getCart,
-//   () => {
-//     totalPrice.value = 0;
-//     productStore.getCart.forEach((item) => {
-//       totalPrice.value += item.price * item.amount;
-//     });
-//   }
-// );
 </script>
 
 <style scoped>
@@ -71,5 +60,16 @@ const totalPrice = computed(() => {
   border: none;
   border-radius: 4px;
   box-shadow: 0px 1px 2px 0px #1018280f;
+}
+@media screen and (max-width: 900px) and (min-width: 768px) {
+  .subtotal__price,
+  .total__item {
+    flex-direction: column;
+    line-height: 0.8;
+    align-items: flex-start;
+  }
+  .checkout__button {
+    margin-top: 12px;
+  }
 }
 </style>

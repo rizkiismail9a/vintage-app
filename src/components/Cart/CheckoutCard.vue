@@ -41,7 +41,6 @@ onBeforeMount(async () => {
   try {
     // isLoading.value = true;
     await productStore.findCartContent();
-
     isLoading.value = false;
   } catch (error) {
     console.log(error);

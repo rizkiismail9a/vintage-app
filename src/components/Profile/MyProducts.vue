@@ -67,4 +67,9 @@ async function editThisProduct(productKey) {
 .add-products__button {
   background-color: #009499;
 }
+@media screen and (max-width: 900px) {
+  .profile__card {
+    width: 100% !important;
+  }
+}
 </style>

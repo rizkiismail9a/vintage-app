@@ -104,4 +104,9 @@ async function dislikeThePost(productKey) {
   font-size: 14px;
   color: #616161;
 }
+@media screen and (max-width: 900px) and (min-width: 768px) {
+  .product__price {
+    font-size: 14px;
+  }
+}
 </style>

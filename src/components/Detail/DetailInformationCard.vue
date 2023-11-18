@@ -1,8 +1,8 @@
 <template>
-  <div class="detail__information card d-flex flex-column position-sticky" style="top: 100px">
+  <div class="detail__information card d-flex flex-column position-sticky">
     <!-- price -->
     <div class="d-flex justify-content-between flex-column">
-      <div class="d-flex justify-content-between detail__price mb-2">
+      <div class="d-flex justify-content-between align-items-center detail__price mb-2">
         <h3>{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(product.price) }}</h3>
         <div v-if="isLiked">
           <i class="fa-solid fa-heart pointer" style="color: red" @click="dislikeThePost"></i>
@@ -72,7 +72,7 @@ const router = useRouter();
 const product = computed(() => {
   return productStore.getProductDetail;
 });
-const isLiked = ref(true);
+const isLiked = ref(false);
 watchEffect(() => {
   const likes = productStore.getProductDetail.likes;
   for (let key in likes) {
@@ -116,6 +116,7 @@ async function dislikeThePost() {
 .detail__information {
   padding: 24px;
   border-radius: 8px;
+  top: 100px;
 }
 .detail__price {
   font-size: 28px;
@@ -139,12 +140,19 @@ async function dislikeThePost() {
   border-color: #ededed !important;
   padding: 16px;
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
   .detail__information {
-    margin: 88px 0;
+    /* margin: 88px 0; */
+    top: 0 !important;
   }
   .detail__size {
     width: 100% !important;
+  }
+  .detail__price {
+    font-size: 18px;
+  }
+  .detail__price h3 {
+    font-size: 18px;
   }
 }
 </style>

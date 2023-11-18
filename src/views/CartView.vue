@@ -1,6 +1,6 @@
 <template>
   <NavbarComponent></NavbarComponent>
-  <div class="cart__wrapper container row mx-auto gx-4" :class="{ 'bg-f5': getRoute === 'checkout-card' }">
+  <div class="cart__wrapper container row mx-auto gx-4 flex-column flex-md-row" :class="{ 'bg-f5': getRoute === 'checkout-card' }">
     <div class="cart__products col-md-8">
       <!-- cart title -->
       <div v-if="getParams1 === 'cart-product-card'" class="cart__title d-flex justify-content-between align-items-center border-bottom">
@@ -96,7 +96,7 @@ const cartLength = computed(() => {
   background-color: #f5f5f5;
 }
 .cart__title {
-  /* padding-top: 24px; */
+  padding-top: 24px;
   padding-bottom: 20px;
   margin-bottom: 21px;
 }
@@ -114,9 +114,10 @@ const cartLength = computed(() => {
 .other__product {
   margin-bottom: 150px;
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
   .cart__wrapper {
-    padding-top: 74px !important;
+    /* padding-top: 140px !important; */
+    margin-bottom: 20px;
   }
 }
 </style>

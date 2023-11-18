@@ -30,6 +30,11 @@ const getTransactionHistory = computed(() => {
 </script>
 
 <style scoped>
+@media screen and (max-width: 768px) {
+  .profile__card {
+    width: 100% !important;
+  }
+}
 .profile__card {
   width: 793px;
   padding: 20px 24px 20px 24px;

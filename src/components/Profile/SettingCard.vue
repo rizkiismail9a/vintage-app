@@ -1,5 +1,5 @@
 <template>
-  <div class="sticky-top" style="top: 88px">
+  <div class="sticky-top profile__navigation">
     <div class="setting__title">
       <h1 class="font-500">Setting</h1>
     </div>
@@ -17,6 +17,9 @@
 <script setup></script>
 
 <style scoped>
+.profile__navigation {
+  top: 88px;
+}
 .setting__title {
   margin-bottom: 21px;
 }
@@ -42,5 +45,13 @@
 }
 .router-link-active {
   color: #0a0a0a !important;
+}
+@media screen and (max-width: 768px) {
+  .profile__navigation {
+    width: 100%;
+  }
+  .setting__title {
+    padding: 0 14px;
+  }
 }
 </style>

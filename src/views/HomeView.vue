@@ -14,7 +14,7 @@
       <div class="shop-by-brand__title">
         <h2 class="font-500" style="font-size: 24px">Shop by brand</h2>
       </div>
-      <div class="brands d-flex justify-content-between">
+      <div class="brands d-flex justify-content-between overflow-x-scroll">
         <div class="brand__cards" v-for="b in brands" @click="findByBrand(b)">
           {{ b }}
         </div>

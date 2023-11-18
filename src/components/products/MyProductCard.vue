@@ -7,9 +7,9 @@
   <div class="col-md-6">
     <div class="card d-flex flex-column p-3">
       <router-link :to="{ name: 'Detail Product', params: { id: product.productKey } }" class="d-flex align-items-center justify-content-between">
-        <div class="product__info d-flex justify-content-between flex-column h-100">
+        <div class="product__info d-flex justify-content-between flex-column h-100 w-50">
           <p class="font-400 font-61">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(product.price) }}</p>
-          <h1 class="font-500 font-0a">{{ product.name }}</h1>
+          <h1 class="font-500 font-0a text-truncate w-50">{{ product.name }}</h1>
           <span class="font-500 font-61 mt-auto" style="justify-self: end">{{ new Date(product.createdAt).toLocaleDateString("en-EN", { weekday: "short", year: "numeric", month: "short", day: "numeric" }) }}</span>
         </div>
         <img :src="product.imageLink" alt="" width="100" class="object-fit-cover" />

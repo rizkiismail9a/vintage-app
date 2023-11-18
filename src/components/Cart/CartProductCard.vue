@@ -21,9 +21,9 @@
   <div v-for="(product, index) in cartContent" :key="product.productKey" class="cart__product-card bg-white d-flex flex-column gap-4">
     <div class="product__info d-flex gap-4 flex-grow-1">
       <img :src="product.imageLink" alt="gambar produk" width="80" class="object-fit-cover" height="80" />
-      <div class="d-flex flex-column justify-content-between">
-        <div class="product__metadata m-0 flex-grow-1">
-          <p class="m-0 font-400 product__name text-truncate">{{ product.name }}</p>
+      <div class="d-flex flex-column justify-content-between w-100">
+        <div class="product__metadata m-0 flex-grow-1 w-100">
+          <p class="m-0 font-400 product__name m-0">{{ product.name }}</p>
           <p class="m-0 font-400" style="font-size: 12px; letter-spacing: 0.1px; color: #404040">{{ product.size }}</p>
         </div>
         <p class="my-0 font-500" style="font-size: 14px; color: #0a0a0a">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(product.price * product.amount) }}</p>
@@ -110,6 +110,7 @@ async function removeProduct(cartKey, index) {
   font-size: 14px;
   color: #0a0a0a;
   line-height: 2;
+  width: 100%;
 }
 .address {
   margin-top: 12px;

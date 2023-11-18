@@ -171,7 +171,7 @@ input:focus {
     margin-left: 27px;
   }
 }
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 900px) {
   .navbar__logo,
   .navbar__form,
   .navbar__auth,

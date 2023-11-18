@@ -13,29 +13,37 @@
   <div v-if="isLoading" class="detail__wrapper d-flex justify-content-center align-items-center h-100">
     <LoadingSpinner></LoadingSpinner>
   </div>
-  <div class="detail__wrapper container-md mx-auto row gx-5 flex-column-reverse flex-md-row">
-    <div class="col-md-8 row d-flex">
-      <img class="detail__image w-100 object-fit-cover" :src="detailProduct.imageLink" alt="product name" />
-      <!-- other product list -->
-      <div class="other__product d-flex flex-column w-100">
-        <div class="products__title d-flex flex-row justify-content-between align-items-center">
-          <h2 class="font-500" style="font-size: 24px">Other Products</h2>
-        </div>
-        <div class="row gy-5">
-          <product-card :is-on-detail="true" v-for="p in relatedProduct" :product="p"></product-card>
+  <!-- product img -->
+  <div class="detail__wrapper container mx-auto">
+    <div class="row gx-3 flex-column flex-md-row detail-card__and__image">
+      <div class="col-md-8 row d-flex">
+        <img class="detail__image w-100 object-fit-cover" :src="detailProduct.imageLink" alt="product name" />
+        <!-- other product list -->
+      </div>
+      <!-- detail information -->
+      <div class="col-md-4">
+        <detail-information-card @addToCart="addToCart" @buyNow="buyNow"></detail-information-card>
+      </div>
+    </div>
+    <div class="other__product d-flex flex-column w-100">
+      <div class="products__title d-flex flex-row justify-content-between align-items-center">
+        <h2 class="font-500" style="font-size: 24px">Other Products</h2>
+      </div>
+      <div class="row gx-3">
+        <div class="col-md-8">
+          <div class="row gy-5">
+            <product-card :is-on-detail="true" v-for="p in relatedProduct" :product="p"></product-card>
+          </div>
         </div>
       </div>
     </div>
-    <!-- detail information -->
-    <div class="col-md-4">
-      <detail-information-card @addToCart="addToCart" @buyNow="buyNow"></detail-information-card>
-    </div>
   </div>
+
   <FooterComponent></FooterComponent>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch, watchEffect } from "vue";
 import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
 import ProductCard from "../components/Products/ProductCard.vue";
 import NavbarComponent from "../components/navbar/NavbarComponent.vue";
@@ -100,5 +108,14 @@ async function buyNow() {
 }
 .products__title {
   margin-bottom: 24px;
+}
+@media screen and (max-width: 768px) {
+  .other__product {
+    width: 100% !important;
+  }
+  .detail-card__and__image {
+    align-items: center;
+    margin-bottom: 20px;
+  }
 }
 </style>

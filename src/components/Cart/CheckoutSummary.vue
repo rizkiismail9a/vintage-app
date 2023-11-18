@@ -9,24 +9,24 @@
     <router-link to="/profile/transaction-history" class="btn btn-primary">Go to History Transaction</router-link>
   </BaseModalOne>
   <div class="card summary__card w-100 position-sticky d-flex flex-column" style="top: 98px">
-    <p style="color: #616161" class="font-400 mb-4">Order summary</p>
-    <!-- price list -->
-    <div class="row">
+    <p class="font-400 mb-4 font-61">Order summary</p>
+    <!-- summary list -->
+    <div class="row summary__list">
       <div class="col-12 d-flex justify-content-between align-items-center">
-        <p class="font-400" style="color: #616161">Order</p>
-        <p class="font-400" style="color: #616161">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(totalPrice) }}</p>
+        <p class="font-400 font-61">Order</p>
+        <p class="font-400 font-61">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(totalPrice) }}</p>
       </div>
       <div class="col-12 d-flex justify-content-between align-items-center">
-        <p class="font-400" style="color: #616161">Protection Fee</p>
-        <p class="font-400" style="color: #616161">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(protectionFee) }}</p>
+        <p class="font-400 font-61">Protection Fee</p>
+        <p class="font-400 font-61">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(protectionFee) }}</p>
       </div>
       <div class="col-12 d-flex justify-content-between align-items-center">
-        <p class="font-400" style="color: #616161">Shipping</p>
-        <p class="font-400" style="color: #616161">{{ shippingFee }}</p>
+        <p class="font-400 font-61">Shipping</p>
+        <p class="font-400 font-61">{{ shippingFee }}</p>
       </div>
     </div>
     <hr />
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex justify-content-between total__to__pay">
       <h2 class="font-500 font-0a" style="font-size: 16px">Total to pay</h2>
       <h2 class="font-500 font-0a" style="font-size: 16px">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(totalPrice + shippingFee + protectionFee) }}</h2>
     </div>
@@ -82,5 +82,14 @@ const totalPrice = computed(() => {
 .buy__button {
   margin-top: 20px;
   padding: 10px 16px 10px 16px;
+}
+@media screen and (max-width: 900px) and (min-width: 768px) {
+  .total__to__pay {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .summary__list {
+    font-size: 14px;
+  }
 }
 </style>

@@ -66,6 +66,14 @@ async function changePassword() {
 </script>
 
 <style scoped>
+@media screen and (max-width: 900px) {
+  .profile__card {
+    width: 100% !important;
+  }
+  .btn-primary {
+    width: 100%;
+  }
+}
 .profile__card {
   width: 793px;
   padding: 20px 24px 20px 24px;

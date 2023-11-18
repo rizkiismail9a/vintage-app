@@ -17,10 +17,15 @@ import ProductForm from "../components/Products/ProductForm.vue";
 
 <style scoped>
 .product__form {
-  margin-top: 88px;
+  padding-top: 88px;
 }
 .title h1 {
   font-size: 24px;
   margin-bottom: 18px;
+}
+@media screen and (max-width: 900px) {
+  .product__form {
+    padding-top: 150px;
+  }
 }
 </style>
