@@ -1,5 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import ProductCollection from "../views/ProductCollections.vue";
+import DetailProduct from "../views/DetailProduct.vue";
+import CartView from "../views/CartView.vue";
+import ProfileView from "../views/ProfileView.vue";
+import FavoriteView from "../views/FavoriteView.vue";
+import AddProductView from "../views/AddProductView.vue";
+import EditProductView from "../views/EditProductView.vue";
+import LoginView from "../views/LoginView.vue";
+import RegisterView from "../views/RegisterView.vue";
 import Cookies from "js-cookie";
 
 const router = createRouter({
@@ -13,17 +22,17 @@ const router = createRouter({
     {
       path: "/collection",
       name: "Collection",
-      component: () => import("../views/ProductCollections.vue"),
+      component: ProductCollection,
     },
     {
       path: "/collection/:id",
       name: "Detail Product",
-      component: () => import("../views/DetailProduct.vue"),
+      component: DetailProduct,
     },
     {
       path: "/cart/:component1/:component2",
       name: "Cart",
-      component: () => import("../views/CartView.vue"),
+      component: CartView,
       meta: {
         forAuthedUser: true,
       },
@@ -31,7 +40,7 @@ const router = createRouter({
     {
       path: "/profile/:component",
       name: "User Profile",
-      component: () => import("../views/ProfileView.vue"),
+      component: ProfileView,
       meta: {
         forAuthedUser: true,
       },
@@ -39,7 +48,7 @@ const router = createRouter({
     {
       path: "/product/favorite",
       name: "User Favorite",
-      component: () => import("../views/FavoriteView.vue"),
+      component: FavoriteView,
       meta: {
         forAuthedUser: true,
       },
@@ -47,7 +56,7 @@ const router = createRouter({
     {
       path: "/product/register",
       name: "Add New Product",
-      component: () => import("../views/AddProductView.vue"),
+      component: AddProductView,
       meta: {
         forAuthedUser: true,
       },
@@ -55,7 +64,7 @@ const router = createRouter({
     {
       path: "/product/edit/:id",
       name: "Edit New Product",
-      component: () => import("../views/EditProductView.vue"),
+      component: EditProductView,
       meta: {
         forAuthedUser: true,
       },
@@ -63,7 +72,7 @@ const router = createRouter({
     {
       path: "/login",
       name: "Login",
-      component: () => import("../views/LoginView.vue"),
+      component: LoginView,
       meta: {
         forGuest: true,
       },
@@ -71,7 +80,7 @@ const router = createRouter({
     {
       path: "/signup",
       name: "Sign Up",
-      component: () => import("../views/RegisterView.vue"),
+      component: RegisterView,
       meta: {
         forGuest: true,
       },
