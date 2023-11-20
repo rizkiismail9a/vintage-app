@@ -75,13 +75,13 @@ function sortByPrice(mode) {
 </script>
 
 <style scoped>
-.sidebar__container {
+/* .sidebar__container {
   width: 100%;
   height: 100vh;
   background-color: rgba(169, 169, 169, 0.305);
   top: 0;
   left: 0;
-}
+} */
 .sidebar__content {
   width: 485px;
   padding-top: 88px;
@@ -91,6 +91,7 @@ function sortByPrice(mode) {
   top: 0;
   left: 0;
   height: 100vh;
+  z-index: 50;
   /* transition: all 1s ease-in; */
 }
 .filter-menu__button {

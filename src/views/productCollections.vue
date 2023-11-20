@@ -1,6 +1,8 @@
 <template>
   <NavbarComponent :is-at-collection="true" @search="search"></NavbarComponent>
-  <SideBarMenu :isSidebarActive="showSidebar" @hide-sidebar="showSidebar = !showSidebar" @filterByPrice="filterByPrice" @sortByPrice="sortByPrice" @filterBySize="filterBySize"></SideBarMenu>
+  <div class="sidebar__container" :class="{ 'sidebar__container-toggle': showSidebar }">
+    <SideBarMenu :isSidebarActive="showSidebar" @hide-sidebar="showSidebar = !showSidebar" @filterByPrice="filterByPrice" @sortByPrice="sortByPrice" @filterBySize="filterBySize"></SideBarMenu>
+  </div>
 
   <div class="collection__container container mx-auto">
     <div class="page__title d-flex flex-row justify-content-between align-items-center">
@@ -67,7 +69,7 @@ const productStore = useProductStore();
 const isLoading = ref(false);
 const route = useRoute();
 const isSearching = ref(false);
-const showSidebar = ref(null);
+const showSidebar = ref(false);
 const showResetButton = ref(false);
 const productsCollection = ref([]);
 onMounted(async () => {
@@ -172,9 +174,19 @@ window.scrollTo({ top: 0, behavior: "smooth" });
   font-size: 16px;
   color: #404040;
 }
-
-.products__404-card {
-  width: 343px;
+.sidebar__container {
+  position: fixed;
+  top: 0;
+  background-color: rgba(128, 128, 128, 0.267);
+  width: 100%;
+  height: 100vh;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.9s;
+}
+.sidebar__container-toggle {
+  opacity: 1;
+  visibility: visible;
 }
 @media screen and (max-width: 768px) {
   .collection__container {
