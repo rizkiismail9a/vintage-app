@@ -1,5 +1,5 @@
 <template>
-  <NavbarComponent></NavbarComponent>
+  <!-- <NavbarComponent></NavbarComponent> -->
   <div class="profile__wrapper container mx-auto row gx-4">
     <!-- setting -->
     <div class="setting d-flex flex-column justify-content-between col-md-3">

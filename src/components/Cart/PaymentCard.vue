@@ -1,7 +1,7 @@
 <template>
   <div class="card payment__card">
-    <p style="color: #616161" class="font-400">Payment details</p>
-    <div class="user__payment border rounded d-flex gap-3 align-items-center" style="padding: 16px">
+    <p class="font-400 font-61">Payment details</p>
+    <div class="user__payment border rounded d-flex gap-3 align-items-center" style="padding: 16px" id="payment_element">
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/1600px-PayPal.svg.png?20230314142951" alt="" height="40" width="40" class="align-self-start object-fit-contain" />
       <div>
         <p class="font-500 font-0a m-0">PayPal</p>
@@ -16,7 +16,57 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { loadStripe } from "@stripe/stripe-js";
+import { ref, onMounted, watch } from "vue";
+import { useAuthStore } from "../../stores/auth";
+import { useProductStore } from "../../stores/product";
+import { useRouter } from "vue-router";
+const errorMsg = ref("");
+const authStore = useAuthStore();
+const productStore = useProductStore();
+let stripe = "";
+let elements = "";
+const totalPrice = ref(0);
+
+onMounted(() => {
+  let prices = 0;
+  if (productStore.buyAgain.length > 0) {
+    productStore.buyAgain.forEach((item) => {
+      prices += item.price * item.amount;
+    });
+    totalPrice.value = prices;
+  } else if (productStore.buyNow.length > 0) {
+    productStore.buyNow.forEach((item) => {
+      prices += item.price * item.amount;
+    });
+    totalPrice.value = prices;
+  } else {
+    productStore.getCart.forEach((item) => {
+      prices += item.price * item.amount;
+    });
+    totalPrice.value = prices;
+  }
+});
+watch(
+  () => totalPrice.value,
+  () => {
+    if (totalPrice.value > 0) {
+      stripeInitilize();
+    }
+  }
+);
+async function stripeInitilize() {
+  try {
+    const stripePK = import.meta.env.VITE_STRIPE_PK_KEY;
+    stripe = await loadStripe(`${stripePK}`);
+    console.log(stripe);
+    elements = stripe.elements(); //parsing client secret di sini
+  } catch (error) {
+    console.log(error);
+  }
+}
+</script>
 
 <style scoped>
 .payment__card {

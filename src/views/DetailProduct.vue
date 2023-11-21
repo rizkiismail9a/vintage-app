@@ -9,7 +9,7 @@
     <button class="btn btn-outline-primary" @click="showModal = false">Continue shopping</button>
     <router-link to="/cart/cart-product-card/cart-summary" class="btn btn-primary">Go to cart</router-link>
   </base-modal-one>
-  <NavbarComponent></NavbarComponent>
+  <!-- <NavbarComponent></NavbarComponent> -->
   <div v-if="isLoading" class="detail__wrapper d-flex justify-content-center align-items-center h-100">
     <LoadingSpinner></LoadingSpinner>
   </div>

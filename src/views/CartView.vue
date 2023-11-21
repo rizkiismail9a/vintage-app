@@ -1,5 +1,5 @@
 <template>
-  <NavbarComponent></NavbarComponent>
+  <!-- <NavbarComponent></NavbarComponent> -->
   <div class="cart__wrapper container row mx-auto gx-4 flex-column flex-md-row" :class="{ 'bg-f5': getRoute === 'checkout-card' }">
     <div class="cart__products col-md-8">
       <!-- cart title -->
@@ -44,17 +44,23 @@ import FooterComponent from "../components/Footer/FooterComponent.vue";
 import CartSummary from "../components/Cart/CartSummary.vue";
 import CheckoutCart from "../components/Cart/CheckoutCard.vue";
 import CheckoutSummary from "../components/Cart/CheckoutSummary.vue";
-import { computed, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { computed, onMounted, watchEffect } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useProductStore } from "../stores/product.js";
 import { useAuthStore } from "../stores/auth";
 const route = useRoute();
+const router = useRouter();
 const productStore = useProductStore();
 const authStore = useAuthStore();
 onMounted(async () => {
-  // Ini dipakai untuk ambil other products
-  // await productStore.findAllProducts();
   await productStore.findCartContent();
+});
+watchEffect(() => {
+  if (route.fullPath === "/cart/checkout-card/checkout-summary") {
+    if (!authStore.isLogin) {
+      return router.push("/login");
+    }
+  }
 });
 const component1 = {
   "cart-product-card": CartProductCard,

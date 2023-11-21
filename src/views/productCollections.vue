@@ -1,5 +1,5 @@
 <template>
-  <NavbarComponent :is-at-collection="true" @search="search"></NavbarComponent>
+  <!-- <NavbarComponent></NavbarComponent> -->
   <div class="sidebar__container" :class="{ 'sidebar__container-toggle': showSidebar }">
     <SideBarMenu :isSidebarActive="showSidebar" @hide-sidebar="showSidebar = !showSidebar" @filterByPrice="filterByPrice" @sortByPrice="sortByPrice" @filterBySize="filterBySize"></SideBarMenu>
   </div>
@@ -55,7 +55,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watchEffect } from "vue";
+import { ref, computed, onMounted, watchEffect, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
 import ProductCard from "../components/Products/ProductCard.vue";
@@ -68,45 +68,63 @@ const keyCard = ref("");
 const productStore = useProductStore();
 const isLoading = ref(false);
 const route = useRoute();
+const brand = ref(route.query?.brand);
+const keyword = ref("");
 const isSearching = ref(false);
 const showSidebar = ref(false);
 const showResetButton = ref(false);
 const productsCollection = ref([]);
 onMounted(async () => {
-  // scrollToTop();
   try {
     isLoading.value = true;
     await productStore.findAllProducts();
+    keyword.value = route.query?.keyword;
+    // productsCollection.value = productStore.getAllProducts;
     isLoading.value = false;
   } catch (error) {
     console.log(error);
   }
 });
-watchEffect(() => {
-  if (route.query.brand) {
-    const result = productStore.getAllProducts.filter((item) => {
-      return item.brand.toLowerCase().includes(route.query.brand.toLowerCase());
-    });
-    productsCollection.value = result;
-  } else {
-    productsCollection.value = productStore.getAllProducts;
+watch(
+  keyword,
+  (newVal, oldVal) => {
+    keyCard.value = newVal;
+    console.log(newVal);
+    if (newVal) {
+      console.log("tes");
+      const result = productStore.getAllProducts.filter((item) => {
+        return item.name.toLowerCase().includes(newVal.toLowerCase());
+      });
+      productsCollection.value = result;
+      // console.log(result);
+    } else {
+      productsCollection.value = productStore.getAllProducts;
+    }
+  },
+  {
+    immediate: true,
   }
-});
+);
+
+watch(
+  brand,
+  (newVal, oldVal) => {
+    if (newVal) {
+      const result = productStore.getAllProducts.filter((item) => {
+        return item.brand.toLowerCase().includes(newVal.toLowerCase());
+      });
+      productsCollection.value = result;
+    }
+  },
+  {
+    immediate: true,
+  }
+);
 async function bringBackAllProducts() {
   isSearching.value = false;
   productsCollection.value = productStore.getAllProducts;
 }
-function search(keyword) {
-  isSearching.value = true;
-  keyCard.value = keyword;
-  if (keyword === "") {
-    bringBackAllProducts();
-    return;
-  }
-  const result = productStore.getAllProducts.filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()));
-  console.log(result);
-  productsCollection.value = result;
-}
+
 async function filterByPrice({ startAt, endAt, mode }) {
   isLoading.value = true;
   showResetButton.value = true;

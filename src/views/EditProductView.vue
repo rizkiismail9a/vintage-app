@@ -1,5 +1,5 @@
 <template>
-  <SimpleNavbar></SimpleNavbar>
+  <!-- <SimpleNavbar></SimpleNavbar> -->
   <div class="product__form container mx-auto pb-4">
     <div class="title">
       <h1 class="font-500 font-0a">Add New Product</h1>

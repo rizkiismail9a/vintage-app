@@ -46,17 +46,17 @@
           </div>
           <!-- kecamatan -->
           <div class="mb-3 flex-grow-1">
-            <label for="street" class="form-label font-500 font-61" style="font-size: 14px">Subdistrict</label>
-            <input type="text" class="form-control" id="street" aria-describedby="emailHelp" v-model="newUserData.subdistrict" />
+            <label for="street" class="form-label font-500 font-61" style="font-size: 14px">City</label>
+            <input type="text" class="form-control" id="street" aria-describedby="emailHelp" v-model="newUserData.city" />
           </div>
         </div>
         <div class="d-flex w-100 gap-2">
-          <!-- desa -->
+          <!-- Kabupaten -->
           <div class="mb-3 flex-grow-1">
             <label for="regency" class="form-label font-500 font-61" style="font-size: 14px">Regency</label>
             <input type="text" class="form-control" id="regency" aria-describedby="emailHelp" v-model="newUserData.regency" />
           </div>
-          <!-- kecamatan -->
+          <!-- Provinsi -->
           <div class="mb-3 flex-grow-1">
             <label for="province" class="form-label font-500 font-61" style="font-size: 14px">Province</label>
             <input type="text" class="form-control" id="province" aria-describedby="emailHelp" v-model="newUserData.province" />
@@ -65,8 +65,8 @@
         <div class="d-flex w-100 gap-2">
           <!-- kode pos -->
           <div class="mb-3 zip__code">
-            <label for="post" class="form-label font-500 font-61" style="font-size: 14px">Postal Code</label>
-            <input type="number" class="form-control" id="post" aria-describedby="emailHelp" v-model.number="newUserData.postCode" />
+            <label for="post" class="form-label font-500 font-61" style="font-size: 14px">Zip Code</label>
+            <input type="number" class="form-control" id="post" aria-describedby="emailHelp" v-model.number="newUserData.zipcode" />
           </div>
         </div>
       </div>
@@ -78,13 +78,10 @@
 <script setup>
 import BaseModalTwo from "../Modal/BaseModalTwo.vue";
 import SimpleLoading from "../Loading/SimpleLoading.vue";
-import { computed, ref, reactive } from "vue";
+import { ref, reactive } from "vue";
 import { useAuthStore } from "../../stores/auth";
 const authStore = useAuthStore();
 const errorMsg = ref("");
-const userData = computed(() => {
-  return authStore.user;
-});
 const temporaryLink = ref("/images/person.png");
 
 const newUserData = reactive({
@@ -94,10 +91,10 @@ const newUserData = reactive({
   username: authStore.getUser.username,
   address: authStore.getUser?.address,
   district: authStore.getUser?.district,
-  subdistrict: authStore.getUser?.subdistrict,
+  city: authStore.getUser?.city,
   regency: authStore.getUser?.regency,
   province: authStore.getUser?.province,
-  postCode: authStore.getUser?.postCode,
+  zipcode: authStore.getUser?.zipcode,
 });
 function createLink(e) {
   const file = e.target.files[0];
@@ -121,8 +118,8 @@ async function updateProfile() {
     newUserData.imageLink === authStore.getUser.imageLink &&
     newUserData.address === authStore.getUser.address &&
     newUserData.district === authStore.getUser.district &&
-    newUserData.subdistrict === authStore.getUser.subdistrict &&
-    newUserData.postCode === authStore.getUser.postCode &&
+    newUserData.city === authStore.getUser.city &&
+    newUserData.zipcode === authStore.getUser.zipcode &&
     newUserData.province === authStore.getUser.province &&
     newUserData.regency === authStore.getUser.regency
   ) {

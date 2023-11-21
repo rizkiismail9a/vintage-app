@@ -11,10 +11,10 @@
       <i class="fa-solid fa-bars fs-1 d-block d-md-none hamburger_btn mb-4" @click="showNavbar = !showNavbar"></i>
       <div class="nav-collapse d-flex flex-md-row flex-column align-items-center flex-grow-1" :class="{ toggle: showNavbar }">
         <!-- search form -->
-        <form @submit.prevent="emitSearchFunc" class="d-flex navbar__form flex-grow-1 align-items-center position-relative" role="search">
+        <form @submit.prevent="searchProducts" class="d-flex navbar__form flex-grow-1 align-items-center position-relative" role="search">
           <i class="fa-solid fa-magnifying-glass fs-5 px-2 position-absolute"></i>
           <label for="searchProduct" class="form-label flex-grow-1 m-0 w-100">
-            <input type="text" class="form-control ps-5" id="searchProduct" aria-describedby="emailHelp" @click="goToCollection" autofocus v-model="keyword" placeholder="Search for items" />
+            <input type="text" class="form-control ps-5" id="searchProduct" aria-describedby="emailHelp" autofocus v-model="keyword" placeholder="Search for items" />
           </label>
           <div class="mb-3"></div>
         </form>
@@ -56,26 +56,31 @@
 
 <script setup>
 import BaseModalThree from "../Modal/BaseModalThree.vue";
-import { computed, ref } from "vue";
-import { useRouter } from "vue-router";
+import { computed, ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "../../stores/auth";
 import { useProductStore } from "../../stores/product";
 const showNavbar = ref(false);
 const wannaLogout = ref(false);
 const router = useRouter();
+const route = useRoute();
 const emits = defineEmits(["goToCollection", "search"]);
-const props = defineProps({
-  isAtCollection: { type: Boolean, default: false },
-});
 const keyword = ref("");
 const wannaGoToProfile = ref(false);
 const authStore = useAuthStore();
 const productStore = useProductStore();
-function goToCollection() {
-  if (!props.isAtCollection) {
-    router.push("/collection");
+// function goToCollection() {
+//   if (!props.isAtCollection) {
+//     router.push("/collection");
+//   }
+// }
+onMounted(async () => {
+  await router.isReady();
+  if (router.currentRoute.value.name == "Collection") {
+    console.log("search keyword", route.query.keyword);
+    keyword.value = route.query.keyword;
   }
-}
+});
 const user = computed(() => {
   return authStore.getUser;
 });
@@ -99,8 +104,14 @@ async function logout() {
   wannaLogout.value = false;
   router.push("/");
 }
-function emitSearchFunc() {
-  emits("search", keyword.value);
+
+function searchProducts() {
+  router.push({
+    name: "Collection",
+    query: {
+      keyword: keyword.value,
+    },
+  });
 }
 </script>
 

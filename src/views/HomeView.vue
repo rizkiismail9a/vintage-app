@@ -1,5 +1,5 @@
 <template>
-  <NavbarComponent />
+  <!-- <NavbarComponent /> -->
   <!-- banner -->
   <BannerView></BannerView>
   <!-- main session -->

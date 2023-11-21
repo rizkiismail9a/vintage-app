@@ -1,5 +1,5 @@
 <template>
-  <simple-navbar></simple-navbar>
+  <!-- <simple-navbar></simple-navbar> -->
   <div class="container mx-auto d-flex justify-content-center align-items-center" style="min-height: 100vh">
     <LoginCard></LoginCard>
   </div>

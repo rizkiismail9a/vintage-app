@@ -1,5 +1,5 @@
 <template>
-  <NavbarComponent></NavbarComponent>
+  <!-- <NavbarComponent></NavbarComponent> -->
   <div class="favorite__wrapper mx-auto container">
     <div class="page__title d-flex flex-row justify-content-between align-items-center">
       <h2 class="font-500">Favorite items</h2>
