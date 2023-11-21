@@ -68,6 +68,7 @@ const keyCard = ref("");
 const productStore = useProductStore();
 const isLoading = ref(false);
 const route = useRoute();
+const router = useRouter();
 const brand = ref(route.query?.brand);
 const keyword = ref("");
 const isSearching = ref(false);
@@ -123,6 +124,9 @@ watch(
 async function bringBackAllProducts() {
   isSearching.value = false;
   productsCollection.value = productStore.getAllProducts;
+  let query = Object.assign({}, route.query);
+  delete query.keyword;
+  router.replace({ query });
 }
 
 async function filterByPrice({ startAt, endAt, mode }) {
@@ -142,6 +146,7 @@ function resetFilter() {
   isLoading.value = true;
   showResetButton.value = false;
   productsCollection.value = productStore.getAllProducts;
+  keyCard.value = "";
   isLoading.value = false;
   showSidebar.value = false;
 }
