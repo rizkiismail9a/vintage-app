@@ -42,8 +42,8 @@
             <i v-else class="fa-solid fa-user fs-4"></i>
             <i @click="wannaGoToProfile = !wannaGoToProfile" class="fa-solid fa-chevron-down font-40 font-75 pointer" style="margin-left: 8px"></i>
             <div v-if="wannaGoToProfile" class="card d-flex flex-column position-absolute profile__dropdown gap-3 p-1">
-              <router-link to="/profile/profile-detail" class="font-400 font-40 px-2 py-2 pointer"><img class="me-2" src="/images/person.png" />Profile</router-link>
-              <router-link to="/profile/transaction-history" class="font-400 font-40 px-2 pointer"><img class="me-2" src="../../assets/images/receipt.png" />Order</router-link>
+              <router-link @click="wannaGoToProfile = !wannaGoToProfile" to="/profile/profile-detail" class="font-400 font-40 px-2 py-2 pointer"><img class="me-2" src="/images/person.png" />Profile</router-link>
+              <router-link @click="wannaGoToProfile = !wannaGoToProfile" to="/profile/transaction-history" class="font-400 font-40 px-2 pointer"><img class="me-2" src="../../assets/images/receipt.png" />Order</router-link>
               <span class="font-400 px-2 py-2 pointer border-top" @click="wannaLogout = true"><img class="me-2" src="../../assets/images/exit.png" />Logout</span>
             </div>
           </div>

@@ -14,10 +14,10 @@
     <LoadingSpinner></LoadingSpinner>
   </div>
   <!-- product img -->
-  <div class="detail__wrapper container mx-auto">
+  <div v-else class="detail__wrapper container mx-auto">
     <div class="row gx-3 flex-column flex-md-row detail-card__and__image">
       <div class="col-md-8 row d-flex">
-        <img class="detail__image w-100 object-fit-cover" :src="detailProduct.imageLink" alt="product name" />
+        <img class="detail__image w-100 object-fit-cover" :src="images[0]" alt="product name" />
         <!-- other product list -->
       </div>
       <!-- detail information -->
@@ -46,7 +46,6 @@
 import { computed, onMounted, ref, watch, watchEffect } from "vue";
 import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
 import ProductCard from "../components/Products/ProductCard.vue";
-import NavbarComponent from "../components/Navbar/NavbarComponent.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
 import DetailInformationCard from "../components/Detail/DetailInformationCard.vue";
 import BaseModalOne from "../components/Modal/BaseModalOne.vue";
@@ -66,8 +65,8 @@ onMounted(async () => {
   await productStore.findRelatedProduct();
   isLoading.value = false;
 });
-const detailProduct = computed(() => {
-  return productStore.getProductDetail;
+const images = computed(() => {
+  return productStore.getImagesLink;
 });
 const relatedProduct = computed(() => {
   const data = productStore.getRelatedProducts;

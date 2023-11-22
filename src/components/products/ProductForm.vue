@@ -8,8 +8,8 @@
       <div class="d-flex flex-column gap-3">
         <label for="product__image" class="w-100 font-500 font-0a">
           Product Image
-          <input class="form-control" type="file" id="product__image" @change="createLink" />
-          <img v-if="temporaryLink" :src="temporaryLink" width="150" height="150" class="rounded my-3 object-fit-cover" />
+          <input class="form-control" type="file" id="product__image" @change="createLink" multiple />
+          <img v-if="temporaryLink.length" v-for="link in temporaryLink" :src="link" width="150" height="150" class="rounded my-3 mx-1 object-fit-cover" />
         </label>
         <label for="product__name" class="w-100 font-500 font-0a">
           Product Name
@@ -34,6 +34,7 @@
           Product Size
           <select class="form-select" aria-label="Default select example" v-model="productData.size">
             <option value="M">M</option>
+            <option value="M">S</option>
             <option value="L">L</option>
             <option value="XL">XL</option>
             <option value="XXL">XXL</option>
@@ -69,7 +70,7 @@ const props = defineProps({
 });
 const isLoading = ref(false);
 const errorMsg = ref("");
-const temporaryLink = ref("");
+const temporaryLink = ref([]);
 const productStore = useProductStore();
 const productData = ref({
   imageLink: "",
@@ -85,17 +86,36 @@ onMounted(async () => {
   if (props.isForEdit) {
     productData.value = {};
     productData.value = productStore.productOnDetail;
-    temporaryLink.value = productStore.productOnDetail.imageLink;
+    const links = productStore.productOnDetail?.imageLink;
+    let values = [];
+    for (let key in links) {
+      values.push(links[key]);
+    }
+    temporaryLink.value = values;
   }
+  return;
 });
+const reader = (file, callback) => {
+  const fileReader = new FileReader();
+  fileReader.onload = () => callback(null, fileReader.result);
+  fileReader.onerror = (err) => callback(err);
+  fileReader.readAsDataURL(file);
+};
 const createLink = (e) => {
-  const file = e.target.files[0];
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.addEventListener("load", () => {
-    temporaryLink.value = reader.result;
-    productData.value.imageLink = reader.result;
-  });
+  const { item, length, ...files } = e.target.files;
+  if (!files) {
+    return;
+  }
+  for (let key in files) {
+    reader(files[key], (error, result) => {
+      if (error) {
+        console.log(error);
+        return;
+      }
+      temporaryLink.value.push(result);
+      productData.value.imageLink = temporaryLink.value;
+    });
+  }
 };
 const router = useRouter();
 const route = useRoute();

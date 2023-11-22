@@ -18,6 +18,13 @@ export const useProductStore = defineStore("product", {
   getters: {
     getAllProducts: (state) => state.products,
     getProductDetail: (state) => state.productOnDetail,
+    getImagesLink: (state) => {
+      let linkArr = [];
+      for (let key in state.productOnDetail.imageLink) {
+        linkArr.push(state.productOnDetail.imageLink[key]);
+      }
+      return linkArr;
+    },
     popularProduct: (state) => {
       return state.products
         .sort((a, b) => {

@@ -2,7 +2,7 @@
   <div class="col-6 product__card" :class="{ 'col-md-3': isOnDetail === true, 'col-md-2': isOnDetail === false }">
     <div class="d-flex flex-column row-gap-2">
       <div @click="goToDetail" class="pointer">
-        <img :src="props.product.imageLink" :alt="props.product.name" class="product__image w-100" />
+        <img :src="images[0]" :alt="props.product.name" class="product__image w-100" />
       </div>
       <div class="product__info d-flex flex-column">
         <h3 class="product__price font-500">{{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(props.product.price) }}</h3>
@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, ref, reactive, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../../stores/auth";
 import { useProductStore } from "../../stores/product";
@@ -32,6 +32,14 @@ const props = defineProps({
 const authStore = useAuthStore();
 const productStore = useProductStore();
 const isLiked = ref(false);
+const images = computed(() => {
+  const imageLinks = props.product.imageLink;
+  let linksArr = [];
+  for (let key in imageLinks) {
+    linksArr.push(imageLinks[key]);
+  }
+  return linksArr;
+});
 const router = useRouter();
 onMounted(() => {
   const likes = props.product.likes;
