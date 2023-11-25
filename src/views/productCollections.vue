@@ -1,5 +1,4 @@
 <template>
-  <!-- <NavbarComponent></NavbarComponent> -->
   <div class="sidebar__container" :class="{ 'sidebar__container-toggle': showSidebar }">
     <SideBarMenu :isSidebarActive="showSidebar" @hide-sidebar="showSidebar = !showSidebar" @filterByPrice="filterByPrice" @sortByPrice="sortByPrice" @filterBySize="filterBySize"></SideBarMenu>
   </div>
@@ -55,11 +54,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watchEffect, watch } from "vue";
+import { ref, onMounted, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
 import ProductCard from "../components/Products/ProductCard.vue";
-import NavbarComponent from "../components/Navbar/NavbarComponent.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
 import ProductNotFound from "../components/Products/ProductNotFound.vue";
 import SideBarMenu from "../components/Overlayout/SideBarMenu.vue";
@@ -70,7 +68,7 @@ const isLoading = ref(false);
 const route = useRoute();
 const router = useRouter();
 const brand = ref(route.query?.brand);
-const keyword = ref("");
+const keyword = ref(route.query?.keyword);
 const isSearching = ref(false);
 const showSidebar = ref(false);
 const showResetButton = ref(false);
@@ -79,54 +77,33 @@ onMounted(async () => {
   try {
     isLoading.value = true;
     await productStore.findAllProducts();
-    keyword.value = route.query?.keyword;
-    // productsCollection.value = productStore.getAllProducts;
+    productsCollection.value = productStore.getAllProducts;
     isLoading.value = false;
   } catch (error) {
     console.log(error);
   }
 });
-watch(
-  keyword,
-  (newVal, oldVal) => {
-    keyCard.value = newVal;
-    console.log(newVal);
-    if (newVal) {
-      console.log("tes");
-      const result = productStore.getAllProducts.filter((item) => {
-        return item.name.toLowerCase().includes(newVal.toLowerCase());
-      });
-      productsCollection.value = result;
-      // console.log(result);
-    } else {
-      productsCollection.value = productStore.getAllProducts;
-    }
-  },
-  {
-    immediate: true,
+watchEffect(() => {
+  if (brand && brand.value) {
+    const result = productsCollection.value.filter((item) => item.brand.toLowerCase() === brand.value.toLowerCase());
+    productsCollection.value = result;
+    return;
   }
-);
-
-watch(
-  brand,
-  (newVal, oldVal) => {
-    if (newVal) {
-      const result = productStore.getAllProducts.filter((item) => {
-        return item.brand.toLowerCase().includes(newVal.toLowerCase());
-      });
-      productsCollection.value = result;
-    }
-  },
-  {
-    immediate: true,
+  if (keyword && keyword.value) {
+    const result = productsCollection.value.filter((item) => item.name.toLowerCase().includes(keyword.value.toLowerCase()));
+    productsCollection.value = result;
+    return;
   }
-);
+  productsCollection.value = productStore.getAllProducts;
+});
 async function bringBackAllProducts() {
+  isLoading.value = true;
   isSearching.value = false;
   productsCollection.value = productStore.getAllProducts;
   let query = Object.assign({}, route.query);
   delete query.keyword;
   router.replace({ query });
+  isLoading.value = false;
 }
 
 async function filterByPrice({ startAt, endAt, mode }) {

@@ -1,5 +1,4 @@
 <template>
-  <!-- <NavbarComponent></NavbarComponent> -->
   <div class="profile__wrapper container mx-auto row gx-4">
     <!-- setting -->
     <div class="setting d-flex flex-column justify-content-between col-md-3">
@@ -16,7 +15,6 @@
 </template>
 
 <script setup>
-import NavbarComponent from "../components/Navbar/NavbarComponent.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
 import SettingCard from "../components/Profile/SettingCard.vue";
 import ProfileDetail from "../components/Profile/ProfileDetail.vue";

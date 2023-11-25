@@ -6,7 +6,7 @@
       <Icon icon="line-md:loading-loop" color="#009499" width="150" />
     </div>
     <div v-else class="product__info d-flex gap-4 flex-grow-1 p-0" v-for="product in cartContent">
-      <img :src="product.imageLink" alt="gambar produk" width="48" class="object-fit-cover" height="48" />
+      <img :src="images[0]" alt="gambar produk" width="48" class="object-fit-cover" height="48" />
       <div class="d-flex flex-column justify-content-between flex-grow-1">
         <div class="product__metadata m-0 flex-grow-1">
           <h1 class="m-0 font-400 product__name d-flex align-items-center justify-content-between w-100">
@@ -46,7 +46,34 @@ onBeforeMount(async () => {
     console.log(error);
   }
 });
-
+const images = computed(() => {
+  let imageLinks = [];
+  if (productStore.getCart.length) {
+    for (let i = 0; i < productStore.getCart.length; i++) {
+      for (let key in productStore.getCart[i].imageLink) {
+        imageLinks.push(productStore.getCart[i].imageLink[key]);
+      }
+    }
+  } else if (productStore.buyAgain.length) {
+    for (let i = 0; i < productStore.buyAgain.length; i++) {
+      for (let key in productStore.buyAgain[i].imageLink) {
+        imageLinks.push(productStore.buyAgain[i].imageLink[key]);
+      }
+    }
+  } else {
+    for (let i = 0; i < productStore.buyNow.length; i++) {
+      for (let key in productStore.buyNow[i].imageLink) {
+        imageLinks.push(productStore.buyNow[i].imageLink[key]);
+      }
+    }
+  }
+  for (let i = 0; i < cartContent.value.length; i++) {
+    for (let key in cartContent.value[i].imageLink) {
+      imageLinks.push(cartContent.value[i].imageLink[key]);
+    }
+  }
+  return imageLinks;
+});
 const cartContent = computed(() => {
   if (productStore.getCart.length) {
     return productStore.cart;

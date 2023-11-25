@@ -1,5 +1,4 @@
 <template>
-  <!-- <NavbarComponent></NavbarComponent> -->
   <div class="cart__wrapper container row mx-auto gx-4 flex-column flex-md-row" :class="{ 'bg-f5': getRoute === 'checkout-card' }">
     <div class="cart__products col-md-8">
       <!-- cart title -->
@@ -28,9 +27,9 @@
         </div>
       </div>
     </div>
+    <!-- <cart-summary></cart-summary> -->
     <div class="cart__summary col-md-4 d-md-block d-none">
       <component :is="component2[getParams2]"></component>
-      <!-- <cart-summary></cart-summary> -->
     </div>
   </div>
   <FooterComponent></FooterComponent>
@@ -39,7 +38,6 @@
 <script setup>
 import ProductCard from "../components/Products/ProductCard.vue";
 import CartProductCard from "../components/Cart/CartProductCard.vue";
-import NavbarComponent from "../components/Navbar/NavbarComponent.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
 import CartSummary from "../components/Cart/CartSummary.vue";
 import CheckoutCart from "../components/Cart/CheckoutCard.vue";

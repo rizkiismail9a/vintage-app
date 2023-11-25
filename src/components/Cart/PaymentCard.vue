@@ -17,7 +17,6 @@
 </template>
 
 <script setup>
-import { loadStripe } from "@stripe/stripe-js";
 import { ref, onMounted, watch } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import { useProductStore } from "../../stores/product";
@@ -25,8 +24,7 @@ import { useRouter } from "vue-router";
 const errorMsg = ref("");
 const authStore = useAuthStore();
 const productStore = useProductStore();
-let stripe = "";
-let elements = "";
+
 const totalPrice = ref(0);
 
 onMounted(() => {
@@ -48,24 +46,6 @@ onMounted(() => {
     totalPrice.value = prices;
   }
 });
-watch(
-  () => totalPrice.value,
-  () => {
-    if (totalPrice.value > 0) {
-      stripeInitilize();
-    }
-  }
-);
-async function stripeInitilize() {
-  try {
-    const stripePK = import.meta.env.VITE_STRIPE_PK_KEY;
-    stripe = await loadStripe(`${stripePK}`);
-    console.log(stripe);
-    elements = stripe.elements(); //parsing client secret di sini
-  } catch (error) {
-    console.log(error);
-  }
-}
 </script>
 
 <style scoped>

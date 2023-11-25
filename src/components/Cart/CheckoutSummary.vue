@@ -40,7 +40,6 @@ import { useRouter } from "vue-router";
 import { ref, computed } from "vue";
 import { useProductStore } from "../../stores/product";
 const showModal = ref(false);
-const router = useRouter();
 const productStore = useProductStore();
 const shippingFee = ref(17000);
 const protectionFee = ref(0);

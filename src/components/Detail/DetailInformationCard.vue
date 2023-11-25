@@ -101,7 +101,6 @@ async function dislikeThePost() {
   for (let key in likes) {
     if (likes[key].UID === authStore.getUser.userId) {
       try {
-        // likesCounter.value -= 1;
         isLiked.value = false;
         await productStore.disLikeAProduct({ productKey: route.params.id, likesKey: key });
       } catch (error) {

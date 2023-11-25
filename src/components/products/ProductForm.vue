@@ -5,12 +5,17 @@
     </BaseModalTwo>
     <SimpleLoading v-if="isLoading"> Loading... </SimpleLoading>
     <form @submit.prevent="addNewProduct">
-      <div class="d-flex flex-column gap-3">
-        <label for="product__image" class="w-100 font-500 font-0a">
-          Product Image
-          <input class="form-control" type="file" id="product__image" @change="createLink" multiple />
-          <img v-if="temporaryLink.length" v-for="link in temporaryLink" :src="link" width="150" height="150" class="rounded my-3 mx-1 object-fit-cover" />
-        </label>
+      <div class="d-flex flex-column gap-3 font-500 font-0a">
+        Product Image
+        <div class="border rounded pointer d-flex flex-column align-items-center justify-content-center p-5 w-100">
+          <div v-if="temporaryLink.length" class="w-100 d-flex flex-wrap">
+            <img v-for="(link, index) in temporaryLink" :src="link" width="150" height="150" class="rounded my-3 mx-1 object-fit-cover" @click="deleteImages(index)" />
+          </div>
+          <label for="product__image" class="w-100 text-center">
+            <i class="fa-solid fa-camera font-0a fs-1 pointer"></i>
+            <input class="form-control" type="file" id="product__image" @change="createLink" multiple :accept="filePermited" hidden />
+          </label>
+        </div>
         <label for="product__name" class="w-100 font-500 font-0a">
           Product Name
           <input type="text" class="form-control" id="product__name" placeholder="Add your product name" v-model="productData.name" />
@@ -64,7 +69,7 @@ import BaseModalTwo from "../Modal/BaseModalTwo.vue";
 import SimpleLoading from "../Loading/SimpleLoading.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useProductStore } from "../../stores/product";
-
+const filePermited = ".png, .jpg, .jpeg, .PNG, .JPG, .JPEG,";
 const props = defineProps({
   isForEdit: { type: Boolean, default: false },
 });
@@ -107,6 +112,12 @@ const createLink = (e) => {
     return;
   }
   for (let key in files) {
+    const maxSize = 1000000; //2 MB
+    if (files[key].size > maxSize) {
+      errorMsg.value = "Each file must not bigger than 1MB";
+      setTimeout(() => (errorMsg.value = ""), 10000);
+      return;
+    }
     reader(files[key], (error, result) => {
       if (error) {
         console.log(error);
@@ -139,5 +150,8 @@ async function addNewProduct() {
       errorMsg.value = error;
     }
   }
+}
+function deleteImages(index) {
+  return temporaryLink.value.splice(index, 1);
 }
 </script>

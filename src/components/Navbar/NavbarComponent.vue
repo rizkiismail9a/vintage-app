@@ -38,7 +38,9 @@
           </div>
           <!-- profile foto -->
           <div class="d-flex align-items-center gap-1 position-relative">
-            <img v-if="user.imageLink" :src="user.imageLink" width="40" height="40" class="rounded-circle" />
+            <router-link v-if="user.imageLink" to="/profile/profile-detail">
+              <img :src="user.imageLink" width="40" height="40" class="rounded-circle" />
+            </router-link>
             <i v-else class="fa-solid fa-user fs-4"></i>
             <i @click="wannaGoToProfile = !wannaGoToProfile" class="fa-solid fa-chevron-down font-40 font-75 pointer" style="margin-left: 8px"></i>
             <div v-if="wannaGoToProfile" class="card d-flex flex-column position-absolute profile__dropdown gap-3 p-1">
@@ -69,11 +71,6 @@ const keyword = ref("");
 const wannaGoToProfile = ref(false);
 const authStore = useAuthStore();
 const productStore = useProductStore();
-// function goToCollection() {
-//   if (!props.isAtCollection) {
-//     router.push("/collection");
-//   }
-// }
 onMounted(async () => {
   await router.isReady();
   if (router.currentRoute.value.name == "Collection") {

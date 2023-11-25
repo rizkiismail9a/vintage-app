@@ -2,7 +2,7 @@
   <div v-if="isLoading" class="d-flex justify-content-center align-items-center">
     <LoadingSpinner></LoadingSpinner>
   </div>
-  <div v-if="cartContent.length !== 0 && !isLoading" class="address mx-4 d-flex gap-3 align-items-center p-0">
+  <div v-else-if="cartContent.length !== 0 && !isLoading" class="address mx-4 d-flex gap-3 align-items-center p-0">
     <img src="../../assets/images/addressPin.png" alt="address pin" width="16" />
     <p class="m-0 font-40">
       Shipping to <b style="color: #0a0a0a">{{ user.regency }}, {{ user.province }}</b>
@@ -18,9 +18,9 @@
     <router-link to="/collection" class="btn btn-primary find__product">Find Products</router-link>
   </div>
   <!-- looping di sini -->
-  <div v-for="(product, index) in cartContent" :key="product.productKey" class="cart__product-card bg-white d-flex flex-column gap-4">
+  <div v-if="cartContent.length !== 0 && !isLoading" v-for="(product, index) in cartContent" :key="product.productKey" class="cart__product-card bg-white d-flex flex-column gap-4">
     <div class="product__info d-flex gap-4 flex-grow-1">
-      <img :src="product.imageLink" alt="gambar produk" width="80" class="object-fit-cover" height="80" />
+      <img :src="images[0]" alt="gambar produk" width="80" class="object-fit-cover" height="80" />
       <div class="d-flex flex-column justify-content-between w-100">
         <div class="product__metadata m-0 flex-grow-1 w-100">
           <p class="m-0 font-400 product__name m-0">{{ product.name }}</p>
@@ -56,29 +56,36 @@
 
 <script setup>
 import LoadingSpinner from "../Loading/LoadingSpinner.vue";
-import { computed, onBeforeMount, onMounted, ref, watchEffect } from "vue";
+import { computed, onBeforeMount, ref, watchEffect } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import { useProductStore } from "../../stores/product";
 const authStore = useAuthStore();
 const productStore = useProductStore();
-const isLoading = ref(false);
+const isLoading = ref(true);
 const user = computed(() => {
   return authStore.getUser;
 });
-const cartContent = ref([]);
+const cartContent = ref(["1"]);
 onBeforeMount(async () => {
   try {
-    isLoading.value = true;
     watchEffect(async () => {
       const result = await productStore.findCartContent();
       cartContent.value = result;
+      isLoading.value = false;
     });
-    isLoading.value = false;
   } catch (error) {
     console.log(error);
   }
 });
-
+const images = computed(() => {
+  let imageLinks = [];
+  for (let i = 0; i < cartContent.value.length; i++) {
+    for (let key in cartContent.value[i].imageLink) {
+      imageLinks.push(cartContent.value[i].imageLink[key]);
+    }
+  }
+  return imageLinks;
+});
 async function changeAmount(inputan, cartKey, index) {
   const cartContent = productStore.getCart;
   try {
@@ -87,7 +94,6 @@ async function changeAmount(inputan, cartKey, index) {
       inputan = 1;
     }
     cartContent[index].amount = inputan;
-    console.log(cartContent);
     await productStore.updateCartAmount({ inputan, cartKey });
   } catch (error) {
     console.log(error);

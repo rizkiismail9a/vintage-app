@@ -1,5 +1,4 @@
 <template>
-  <!-- <NavbarComponent></NavbarComponent> -->
   <div class="favorite__wrapper mx-auto container">
     <div class="page__title d-flex flex-row justify-content-between align-items-center">
       <h2 class="font-500">Favorite items</h2>
@@ -27,7 +26,6 @@
 
 <script setup>
 import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
-import NavbarComponent from "../components/Navbar/NavbarComponent.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
 import ProductCard from "../components/Products/ProductCard.vue";
 import ProductNotFound from "../components/Products/ProductNotFound.vue";

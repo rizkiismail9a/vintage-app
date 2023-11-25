@@ -13,7 +13,7 @@
     <div class="products__list row g-4 justify-content-between">
       <p v-if="isLoading">Loading...</p>
       <p v-else-if="(!myProducts || myProducts.length < 1) && !isLoading">Nothing here, but us chicken</p>
-      <MyProductCard v-for="item in myProducts" :product="item" @delete-product="deleteThisProduct" @editProduct="editThisProduct"></MyProductCard>
+      <MyProductCard v-else-if="!isLoading && myProducts.length" v-for="item in myProducts" :product="item" @delete-product="deleteThisProduct" @editProduct="editThisProduct"></MyProductCard>
     </div>
   </div>
 </template>
@@ -25,7 +25,7 @@ import { ref, onMounted, computed } from "vue";
 import { useProductStore } from "../../stores/product";
 import { useRouter } from "vue-router";
 const productStore = useProductStore();
-const isLoading = ref(false);
+const isLoading = ref(true);
 const myProducts = computed(() => {
   return productStore.userProducts;
 });
@@ -33,7 +33,6 @@ const deletingMsg = ref("");
 const isGoingToEdit = ref(false);
 const router = useRouter();
 onMounted(async () => {
-  isLoading.value = true;
   await productStore.finMyProduct();
   isLoading.value = false;
 });

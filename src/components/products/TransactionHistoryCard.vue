@@ -14,7 +14,7 @@
       <div class="d-flex flex-column w-100">
         <!-- product and detail -->
         <div class="product__order d-flex align-items-center gap-4 mb-3 w-100">
-          <img :src="getFirstObject[0].imageLink" width="64" height="64" class="object-fit-cover" alt="" />
+          <img :src="getFirstObject[0].imageLink[0]" width="64" height="64" class="object-fit-cover" alt="" />
           <div class="d-flex flex-column gap-2 product__name-size">
             <h2 class="font-500 text-black text-truncate overflow-hidden h2-product__name">{{ getFirstObject[0].name }}</h2>
             <p class="font-400 font-40 m-0" style="font-size: 14px">{{ getFirstObject[0].amount }} product x {{ new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(getFirstObject[0].price) }}</p>

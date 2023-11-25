@@ -17,7 +17,6 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
 import ProductCard from "./ProductCard.vue";
 const props = defineProps({
   productTitle: { type: String },

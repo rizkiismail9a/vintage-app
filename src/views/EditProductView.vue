@@ -1,5 +1,4 @@
 <template>
-  <!-- <SimpleNavbar></SimpleNavbar> -->
   <div class="product__form container mx-auto pb-4">
     <div class="title">
       <h1 class="font-500 font-0a">Add New Product</h1>
@@ -12,7 +11,6 @@
 
 <script setup>
 import { onMounted } from "vue";
-import SimpleNavbar from "../components/Navbar/SimpleNavbar.vue";
 import ProductForm from "../components/Products/ProductForm.vue";
 import { useProductStore } from "../stores/product";
 import { useRoute } from "vue-router";

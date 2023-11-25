@@ -12,7 +12,7 @@
           <h1 class="font-500 font-0a text-truncate w-50">{{ product.name }}</h1>
           <span class="font-500 font-61 mt-auto" style="justify-self: end">{{ new Date(product.createdAt).toLocaleDateString("en-EN", { weekday: "short", year: "numeric", month: "short", day: "numeric" }) }}</span>
         </div>
-        <img :src="product.imageLink" alt="" width="100" class="object-fit-cover" />
+        <img :src="images[0]" alt="" width="100" class="object-fit-cover" />
       </router-link>
       <hr />
       <div class="d-flex justify-content-between">
@@ -26,9 +26,16 @@
 <script setup>
 import { useRouter } from "vue-router";
 import BaseModalOne from "../Modal/BaseModalOne.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 const props = defineProps({
   product: { type: Object },
+});
+const images = computed(() => {
+  let imageLinks = [];
+  for (let key in props.product.imageLink) {
+    imageLinks.push(props.product.imageLink[key]);
+  }
+  return imageLinks;
 });
 const router = useRouter();
 const emits = defineEmits(["deleteProduct", "editProduct"]);
@@ -40,20 +47,6 @@ function deleteProduct(productKey) {
 function editProduct(productKey) {
   emits("editProduct", productKey);
 }
-// const productStore = useProductStore();
-// async function deleteProduct(key) {
-//   try {
-//     showModal.value = false;
-//     deleting.value = "loading...";
-//     await productStore.deleteMyProduct(key);
-//     deleting.value = "products has been deleted";
-//     setTimeout(() => {
-//       deleting.value = "";
-//     }, 3000);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
 </script>
 
 <style scoped>

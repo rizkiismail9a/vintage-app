@@ -1,5 +1,4 @@
 <template>
-  <!-- <NavbarComponent /> -->
   <!-- banner -->
   <BannerView></BannerView>
   <!-- main session -->
@@ -32,7 +31,6 @@
 <script setup>
 import { ref, computed, onMounted, reactive } from "vue";
 import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
-import NavbarComponent from "../components/Navbar/NavbarComponent.vue";
 import FooterComponent from "../components/Footer/FooterComponent.vue";
 import BannerView from "../components/Header/BannerView.vue";
 import ProductsList from "../components/Products/ProductsList.vue";
