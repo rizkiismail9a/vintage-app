@@ -28,18 +28,15 @@
 
 <script setup>
 import { Icon } from "@iconify/vue";
-import LoadingSpinner from "../Loading/LoadingSpinner.vue";
 import AddressCard from "./AddressCard.vue";
 import DelivaryCard from "./DelivaryCard.vue";
 import PaymentCard from "./PaymentCard.vue";
 import { useProductStore } from "../../stores/product";
-import { computed, onBeforeMount, onMounted, ref, watchEffect } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 const isLoading = ref(true);
-// const cartContent = ref([]);
 const productStore = useProductStore();
 onBeforeMount(async () => {
   try {
-    // isLoading.value = true;
     await productStore.findCartContent();
     isLoading.value = false;
   } catch (error) {
@@ -67,11 +64,7 @@ const images = computed(() => {
       }
     }
   }
-  for (let i = 0; i < cartContent.value.length; i++) {
-    for (let key in cartContent.value[i].imageLink) {
-      imageLinks.push(cartContent.value[i].imageLink[key]);
-    }
-  }
+
   return imageLinks;
 });
 const cartContent = computed(() => {

@@ -25,7 +25,7 @@ export const useAuthStore = defineStore("auth", {
       const productStore = useProductStore();
       await this.findUser(payload.UID);
       await this.refresh(payload.token);
-      await productStore.findAllProducts();
+      // await productStore.findAllProducts();
       await productStore.findCartContent();
     },
     // register

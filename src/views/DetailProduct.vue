@@ -112,7 +112,6 @@ onMounted(async () => {
   isLoading.value = false;
 });
 function setThumbsSwiper(swiper) {
-  const swiperEl = document.querySelector(".mySwiper").swiper;
   thumbnails.value = swiper;
 }
 const images = computed(() => {

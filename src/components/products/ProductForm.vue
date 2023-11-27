@@ -7,9 +7,14 @@
     <form @submit.prevent="addNewProduct">
       <div class="d-flex flex-column gap-3 font-500 font-0a">
         Product Image
-        <div class="border rounded pointer d-flex flex-column align-items-center justify-content-center p-5 w-100">
+        <div class="border rounded d-flex flex-column align-items-center justify-content-center p-5 w-100">
           <div v-if="temporaryLink.length" class="w-100 d-flex flex-wrap">
-            <img v-for="(link, index) in temporaryLink" :src="link" width="150" height="150" class="rounded my-3 mx-1 object-fit-cover" @click="deleteImages(index)" />
+            <div v-for="(link, index) in temporaryLink" class="image__wrapper rounded my-3 mx-1 position-relative">
+              <div class="position-absolute w-100 h-100 align-items-center justify-content-center delete-button__container">
+                <i class="fa-solid fa-trash pointer" @click="deleteImages(index)" style="color: #ff0000"></i>
+              </div>
+              <img :src="link" width="150" height="150" class="image__preview w-100 object-fit-cover" />
+            </div>
           </div>
           <label for="product__image" class="w-100 text-center">
             <i class="fa-solid fa-camera font-0a fs-1 pointer"></i>
@@ -112,7 +117,7 @@ const createLink = (e) => {
     return;
   }
   for (let key in files) {
-    const maxSize = 1000000; //2 MB
+    const maxSize = 1000000; //1 MB
     if (files[key].size > maxSize) {
       errorMsg.value = "Each file must not bigger than 1MB";
       setTimeout(() => (errorMsg.value = ""), 10000);
@@ -155,3 +160,12 @@ function deleteImages(index) {
   return temporaryLink.value.splice(index, 1);
 }
 </script>
+<style scoped>
+.delete-button__container {
+  background-color: rgba(125, 125, 125, 0.346);
+  display: none;
+}
+.image__wrapper:hover .delete-button__container {
+  display: flex;
+}
+</style>

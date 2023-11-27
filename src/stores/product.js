@@ -71,7 +71,6 @@ export const useProductStore = defineStore("product", {
     async findAllProducts() {
       try {
         const { data: products } = await axios.get(import.meta.env.VITE_BASE_URI + `/products.json`);
-        // const { data: products } = await axios.get(import.meta.env.VITE_BASE_URI + `/products.json?orderBy="price"&startAt=100000&endAt=700000`);
         this.products = [];
         for (let key in products) {
           const result = { productKey: key, ...products[key] };
@@ -93,20 +92,16 @@ export const useProductStore = defineStore("product", {
         await axios.post(import.meta.env.VITE_BASE_URI + `/products.json?auth=${token}`, newData);
       } catch (error) {
         throw new Error(error.response.data.error.message);
-        // console.log(error);
       }
     },
     async editProduct(payload) {
       const authStore = useAuthStore();
       const token = authStore.getToken;
       try {
-        // const userId = Cookies.get("UID");
-        // const createdAt = new Date();
         const newData = { ...payload.product };
         await axios.put(import.meta.env.VITE_BASE_URI + `/products/${payload.id}.json?auth=${token}`, newData);
       } catch (error) {
         throw new Error(error.response.data.error.message);
-        // console.log(error);
       }
     },
     // get my product
@@ -120,8 +115,6 @@ export const useProductStore = defineStore("product", {
         }
       }
       this.userProducts = myProducts;
-      // console.log(myProducts);
-      // return myProducts;
     },
     // delete my product
     async deleteMyProduct(payload) {
