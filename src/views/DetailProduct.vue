@@ -61,7 +61,7 @@
       </div>
     </div>
     <!-- other product list -->
-    <div class="other__product d-flex flex-column w-100">
+    <div class="other__product d-flex flex-column w-100 mt-3">
       <div class="products__title d-flex flex-row justify-content-between align-items-center">
         <h2 class="font-500" style="font-size: 24px">Other Products</h2>
       </div>

@@ -20,7 +20,7 @@
   <!-- looping di sini -->
   <div v-if="cartContent.length !== 0 && !isLoading" v-for="(product, index) in cartContent" :key="product.productKey" class="cart__product-card bg-white d-flex flex-column gap-4">
     <div class="product__info d-flex gap-4 flex-grow-1">
-      <img :src="images[0]" alt="gambar produk" width="80" class="object-fit-cover" height="80" />
+      <img :src="product.imageLink[0]" alt="gambar produk" width="80" class="object-fit-cover" height="80" />
       <div class="d-flex flex-column justify-content-between w-100">
         <div class="product__metadata m-0 flex-grow-1 w-100">
           <p class="m-0 font-400 product__name m-0">{{ product.name }}</p>
@@ -65,7 +65,7 @@ const isLoading = ref(true);
 const user = computed(() => {
   return authStore.getUser;
 });
-const cartContent = ref(["1"]);
+const cartContent = ref([]);
 onBeforeMount(async () => {
   try {
     watchEffect(async () => {
@@ -76,15 +76,6 @@ onBeforeMount(async () => {
   } catch (error) {
     console.log(error);
   }
-});
-const images = computed(() => {
-  let imageLinks = [];
-  for (let i = 0; i < cartContent.value.length; i++) {
-    for (let key in cartContent.value[i].imageLink) {
-      imageLinks.push(cartContent.value[i].imageLink[key]);
-    }
-  }
-  return imageLinks;
 });
 async function changeAmount(inputan, cartKey, index) {
   const cartContent = productStore.getCart;

@@ -87,10 +87,11 @@ const router = createRouter({
     },
   ],
   scrollBehavior() {
-    return window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scroll({ top: 0 });
   },
 });
 router.beforeEach((to, from, next) => {
+  window.scroll({ top: 0 });
   const accessToken = Cookies.get("accessToken");
   document.title = to.name + " | Vintage";
   if (to.meta.forAuthedUser && !accessToken) {

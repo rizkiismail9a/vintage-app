@@ -98,6 +98,9 @@ const newUserData = reactive({
 });
 function createLink(e) {
   const file = e.target.files[0];
+  if (file.size > 1000000) {
+    return (errorMsg.value = "Profile picture size must not more than 1MB");
+  }
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.addEventListener("load", () => {
@@ -132,6 +135,7 @@ async function updateProfile() {
     isLoading.value = "Loading...";
     await authStore.updateProfile(newUserData);
     return setTimeout(() => {
+      errorMsg.value = "";
       isLoading.value = "Profile updated!";
     }, 3000);
   } catch (error) {

@@ -9,11 +9,17 @@
 </template>
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-import { computed, ref, watch } from "vue";
+import { computed, onMounted } from "vue";
 import NavbarComponent from "./components/Navbar/NavbarComponent.vue";
 import SimpleNavbar from "./components/Navbar/SimpleNavbar.vue";
 const router = useRouter();
 const route = useRoute();
+onMounted(() => {
+  if (route.fullPath !== "/cart/checkout-card/checkout-summary") {
+    localStorage.removeItem("buyNow");
+    localStorage.removeItem("buyAgain");
+  }
+});
 const routePath = computed(() => {
   const greyPage = ["/cart/checkout-card/checkout-summary", "/profile/profile-detail", "/profile/transaction-history", "/profile/edit-password"];
   const currentPath = router.currentRoute?.value.path;
