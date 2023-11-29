@@ -11,7 +11,7 @@
 import { useRoute, useRouter } from "vue-router";
 import { computed, onMounted } from "vue";
 import NavbarComponent from "./components/Navbar/NavbarComponent.vue";
-import SimpleNavbar from "./components/Navbar/SimpleNavbar.vue";
+import SimpleNavbar from "@/components/Navbar/SimpleNavbar.vue";
 const router = useRouter();
 const route = useRoute();
 onMounted(() => {
