@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import HomeView from "@/views/HomeView.vue";
 import ProductCollection from "@/views/ProductCollections.vue";
-import DetailProduct from "../views/DetailProduct.vue";
-import CartView from "../views/CartView.vue";
-import ProfileView from "../views/ProfileView.vue";
-import FavoriteView from "../views/FavoriteView.vue";
-import AddProductView from "../views/AddProductView.vue";
-import EditProductView from "../views/EditProductView.vue";
-import LoginView from "../views/LoginView.vue";
-import RegisterView from "../views/RegisterView.vue";
+import DetailProduct from "@/views/DetailProduct.vue";
+import CartView from "@/views/CartView.vue";
+import ProfileView from "@/views/ProfileView.vue";
+import FavoriteView from "@/views/FavoriteView.vue";
+import AddProductView from "@/views/AddProductView.vue";
+import EditProductView from "@/views/EditProductView.vue";
+import LoginView from "@/views/LoginView.vue";
+import RegisterView from "@/views/RegisterView.vue";
 import Cookies from "js-cookie";
 
 const router = createRouter({
