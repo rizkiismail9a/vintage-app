@@ -49,17 +49,7 @@ const route = useRoute();
 const router = useRouter();
 const productStore = useProductStore();
 const authStore = useAuthStore();
-watchEffect(() => {
-  if (route.fullPath === "/cart/checkout-card/checkout-summary") {
-    if (!authStore.isLogin) {
-      return router.push("/login");
-    } else {
-      if (!localStorage.getItem("buyNow") || !localStorage.getItem("buyAgain") || !productStore.getCart) {
-        return router.push("/collection");
-      }
-    }
-  }
-});
+
 const component1 = {
   "cart-product-card": CartProductCard,
   "checkout-card": CheckoutCart,
