@@ -30,10 +30,10 @@
 
 <script setup>
 import { ref, computed, onMounted, reactive } from "vue";
-import LoadingSpinner from "../components/Loading/LoadingSpinner.vue";
-import FooterComponent from "../components/Footer/FooterComponent.vue";
-import BannerView from "../components/Header/BannerView.vue";
-import ProductsList from "../components/Products/ProductsList.vue";
+import LoadingSpinner from "@/components/Loading/LoadingSpinner.vue";
+import FooterComponent from "@/components/Footer/FooterComponent.vue";
+import BannerView from "@/components/Header/BannerView.vue";
+import ProductsList from "@/components/Products/ProductsList.vue";
 import { useProductStore } from "../stores/product";
 import { useRouter } from "vue-router";
 const brands = ref(["Vans", "Boho", "Mango", "Reebok", "Converse", "Sandro", "Nike", "Adidas", "Dior", "Puma", "Zara", "Bershka", "American Eagle"]);

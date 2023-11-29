@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import ProductForm from "../components/Products/ProductForm.vue";
+import ProductForm from "@/components/Products/ProductForm.vue";
 </script>
 
 <style scoped>
