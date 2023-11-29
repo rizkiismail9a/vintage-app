@@ -84,11 +84,11 @@ export const useProductStore = defineStore("product", {
     // create new product
     async addNewProduct(payload) {
       const authStore = useAuthStore();
+      const userId = Cookies.get("UID");
       const token = authStore.getToken;
       try {
-        const userId = Cookies.get("UID");
         const createdAt = new Date();
-        const newData = { userId, likes: "", createdAt, ...payload };
+        const newData = { userId, uploader: authStore.user.fullname, regency: authStore.user.regency, likes: "", createdAt, ...payload };
         await axios.post(import.meta.env.VITE_BASE_URI + `/products.json?auth=${token}`, newData);
       } catch (error) {
         throw new Error(error.response.data.error.message);
@@ -133,7 +133,6 @@ export const useProductStore = defineStore("product", {
       try {
         const { data } = await axios.get(import.meta.env.VITE_BASE_URI + `/products/${payload}.json`);
         this.productOnDetail = data;
-        await authStore.findUserById(data.userId);
       } catch (error) {
         console.log(error);
       }
@@ -265,22 +264,21 @@ export const useProductStore = defineStore("product", {
         console.log(error);
       }
     },
-    // checkout from cart
+    // checkout from checkout summary
     async checkout() {
       const authStore = useAuthStore();
       const UID = Cookies.get("UID");
-      const cart = this.cart;
-      const buyAgain = this.buyAgain;
-      const buyNow = this.buyNow;
+      this.buyAgain.push(JSON.parse(localStorage.getItem("buyAgain")));
+      this.buyNow.push(JSON.parse(localStorage.getItem("buyNow")));
       const userKey = Cookies.get("userKey");
       const token = Cookies.get("accessToken");
       let productObj = null;
-      if (buyAgain.length > 0) {
-        productObj = Object.assign({}, buyAgain);
-      } else if (buyNow.length > 0) {
-        productObj = Object.assign({}, buyNow);
+      if (this.buyAgain.length) {
+        productObj = Object.assign({}, this.buyAgain);
+      } else if (this.buyNow.length) {
+        productObj = Object.assign({}, this.buyNow);
       } else {
-        productObj = Object.assign({}, cart);
+        productObj = Object.assign({}, this.cart);
       }
       try {
         await axios.post(import.meta.env.VITE_BASE_URI + `/users/${userKey}/transactionHistory.json?auth=${token}`, {
@@ -289,8 +287,10 @@ export const useProductStore = defineStore("product", {
         });
         await axios.put(import.meta.env.VITE_BASE_URI + `/users/${userKey}/cart.json?auth=${token}`, {});
         this.cart = [];
-        this.buyNow = [];
         this.buyAgain = [];
+        this.buyNow = [];
+        localStorage.removeItem("buyNow");
+        localStorage.removeItem("buyAgain");
         await authStore.findUser(UID);
       } catch (error) {
         console.log(error);
@@ -298,15 +298,15 @@ export const useProductStore = defineStore("product", {
     },
     // buy again
     buyProductsAgain(products) {
-      this.buyAgain = products;
+      localStorage.setItem("buyAgain", JSON.stringify(products));
     },
     // buy the product now
     async buyTheProductNow(productKey) {
       try {
         this.buyNow = [];
         const { data: product } = await axios.get(import.meta.env.VITE_BASE_URI + `/products/${productKey}.json`);
-        const boughtProduct = { amount: 1, ...product };
-        this.buyNow.push(boughtProduct);
+        const buyNowProduct = { amount: 1, ...product };
+        localStorage.setItem("buyNow", JSON.stringify(buyNowProduct));
       } catch (error) {
         console.log(error);
       }
@@ -319,13 +319,13 @@ export const useProductStore = defineStore("product", {
           result = [];
           const { data } = await axios.get(import.meta.env.VITE_BASE_URI + `/products.json?orderBy="price"&startAt=${startAt}&endAt=${endAt}&print=pretty`);
           for (let key in data) {
-            result.push(data[key]);
+            result.push({ productKey: key, ...data[key] });
           }
         } else if (startAt && !endAt) {
           result = [];
           const { data } = await axios.get(import.meta.env.VITE_BASE_URI + `/products.json?orderBy="price"&startAt=${startAt}&print=pretty`);
           for (let key in data) {
-            result.push(data[key]);
+            result.push({ productKey: key, ...data[key] });
           }
         }
         return result;

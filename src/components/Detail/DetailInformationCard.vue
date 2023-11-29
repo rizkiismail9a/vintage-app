@@ -17,7 +17,7 @@
         <i class="fa-solid fa-circle" style="font-size: 5px"></i>
         <span>{{ product.quality }}</span>
         <i class="fa-solid fa-circle" style="font-size: 5px"></i>
-        <span>{{ uploader.regency }}</span>
+        <span>{{ product.regency }}</span>
       </div>
     </div>
     <hr />
@@ -25,7 +25,7 @@
     <p class="font-400 font-0a" style="font-size: 14px">{{ product.description }}</p>
     <div class="detail__metadata row gx-3">
       <p class="col-6 font-0a">Store name</p>
-      <p class="col-6 font-40">{{ uploader.fullname }}</p>
+      <p class="col-6 font-40">{{ product.uploader }}</p>
       <p class="col-6 font-0a">Cetagory</p>
       <p class="col-6 font-40">{{ product.cetagory }}</p>
       <p class="col-6 font-0a">Brand</p>
@@ -81,9 +81,9 @@ watchEffect(() => {
     }
   }
 });
-const uploader = computed(() => {
-  return authStore.userById;
-});
+// const uploader = computed(() => {
+//   return authStore.userById;
+// });
 async function likeThePost() {
   try {
     if (!authStore.getToken) {

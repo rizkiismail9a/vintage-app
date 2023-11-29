@@ -22,11 +22,10 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     // attemp
     async attemp(payload) {
-      const productStore = useProductStore();
       await this.findUser(payload.UID);
       await this.refresh(payload.token);
       // await productStore.findAllProducts();
-      await productStore.findCartContent();
+      // await productStore.findCartContent();
     },
     // register
     // simpan di autentikasi

@@ -45,14 +45,13 @@ const shippingFee = ref(17000);
 const protectionFee = ref(0);
 async function order() {
   await productStore.checkout();
+  localStorage.removeItem("checkoutItem");
   showModal.value = true;
 }
 const totalPrice = computed(() => {
   let prices = 0;
-  if (productStore.buyAgain.length > 0) {
-    productStore.buyAgain.forEach((item) => {
-      prices += item.price * item.amount;
-    });
+  if (localStorage.getItem("checkoutItem")) {
+    prices += JSON.parse(localStorage.getItem("checkoutItem")).price;
     return prices;
   } else if (productStore.buyNow.length > 0) {
     productStore.buyNow.forEach((item) => {

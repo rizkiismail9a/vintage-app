@@ -7,16 +7,19 @@
     <form @submit.prevent="addNewProduct">
       <div class="d-flex flex-column gap-3 font-500 font-0a">
         Product Image
-        <div class="border rounded d-flex flex-column align-items-center justify-content-center p-5 w-100">
-          <div v-if="temporaryLink.length" class="w-100 d-flex flex-wrap">
-            <div v-for="(link, index) in temporaryLink" class="image__wrapper rounded my-3 mx-1 position-relative">
-              <div class="position-absolute w-100 h-100 align-items-center justify-content-center delete-button__container">
-                <i class="fa-solid fa-trash pointer" @click="deleteImages(index)" style="color: #ff0000"></i>
+        <div class="border rounded d-flex flex-column align-items-center justify-content-center p-2 w-100">
+          <div v-if="temporaryLink.length" class="w-100 row">
+            <div class="col-md-2 col-6" v-for="(link, index) in temporaryLink">
+              <div class="image__wrapper rounded my-3 mx-1 position-relative">
+                <div class="position-absolute w-100 h-100 align-items-center justify-content-center delete-button__container">
+                  <i class="fa-solid fa-trash pointer" @click="deleteImages(index)" style="color: #ff0000"></i>
+                </div>
+                <!-- image preview -->
+                <img :src="link" width="150" height="150" class="image__preview w-100 object-fit-contain" />
               </div>
-              <img :src="link" width="150" height="150" class="image__preview w-100 object-fit-cover" />
             </div>
           </div>
-          <label for="product__image" class="w-100 text-center">
+          <label for="product__image" class="w-100 text-center p-3">
             <i class="fa-solid fa-camera font-0a fs-1 pointer"></i>
             <input class="form-control" type="file" id="product__image" @change="createLink" multiple :accept="filePermited" hidden />
           </label>
@@ -117,9 +120,9 @@ const createLink = (e) => {
     return;
   }
   for (let key in files) {
-    const maxSize = 1000000; //1 MB
+    const maxSize = 500000; //500 KB
     if (files[key].size > maxSize) {
-      errorMsg.value = "Each file must not bigger than 1MB";
+      errorMsg.value = "Each file must not bigger than 500 KB";
       setTimeout(() => (errorMsg.value = ""), 10000);
       return;
     }
@@ -136,6 +139,11 @@ const createLink = (e) => {
 const router = useRouter();
 const route = useRoute();
 async function addNewProduct() {
+  window.scrollTo({ top: 0 });
+  const formInput = productData.value;
+  if (!formInput.imageLink || !formInput.name || !formInput.price || !formInput.size) {
+    return (errorMsg.value = "Please fill the form properly");
+  }
   if (!props.isForEdit) {
     try {
       isLoading.value = true;

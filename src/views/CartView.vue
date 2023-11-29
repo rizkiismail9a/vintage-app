@@ -23,11 +23,10 @@
           <h2 class="font-500" style="font-size: 24px">Other Products</h2>
         </div>
         <div class="row gy-5">
-          <product-card :is-on-detail="true" v-for="p in getProducts" :product="p"></product-card>
+          <product-card :is-on-detail="true" v-for="product in getProducts" :product="product"></product-card>
         </div>
       </div>
     </div>
-    <!-- <cart-summary></cart-summary> -->
     <div class="cart__summary col-md-4 d-md-block d-none">
       <component :is="component2[getParams2]"></component>
     </div>
@@ -42,7 +41,7 @@ import FooterComponent from "../components/Footer/FooterComponent.vue";
 import CartSummary from "../components/Cart/CartSummary.vue";
 import CheckoutCart from "../components/Cart/CheckoutCard.vue";
 import CheckoutSummary from "../components/Cart/CheckoutSummary.vue";
-import { computed, onMounted, watchEffect } from "vue";
+import { computed, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useProductStore } from "../stores/product.js";
 import { useAuthStore } from "../stores/auth";
@@ -50,16 +49,7 @@ const route = useRoute();
 const router = useRouter();
 const productStore = useProductStore();
 const authStore = useAuthStore();
-onMounted(async () => {
-  await productStore.findCartContent();
-});
-watchEffect(() => {
-  if (route.fullPath === "/cart/checkout-card/checkout-summary") {
-    if (!authStore.isLogin) {
-      return router.push("/login");
-    }
-  }
-});
+
 const component1 = {
   "cart-product-card": CartProductCard,
   "checkout-card": CheckoutCart,
